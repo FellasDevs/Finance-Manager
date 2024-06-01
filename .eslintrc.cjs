@@ -14,6 +14,9 @@ const config = {
     "plugin:@typescript-eslint/stylistic-type-checked"
   ],
   "rules": {
+    "quotes": ["warn", "single"],
+    "semi": ["warn", "always"],
+    "comma-dangle": ["warn", "always-multiline"],
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/consistent-type-imports": [
@@ -56,4 +59,5 @@ const config = {
     ]
   }
 }
+
 module.exports = config;
