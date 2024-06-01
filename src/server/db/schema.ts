@@ -39,7 +39,7 @@ export const BankAccountsTable = createTable('bank_accounts', {
   userId: uuid('user_id')
     .notNull()
     .references(() => UsersTable.id),
-  name: varchar('name', { length: 30 }).notNull(),
+  name: varchar('name', { length: 50 }).notNull(),
   balance: doublePrecision('balance').notNull().default(0),
 });
 

@@ -12,17 +12,17 @@ export default function AccountsPage() {
   } = useBankAccounts();
 
   return (
-    <div className="flex flex-col gap-5 p-5">
+    <div className="flex justify-center gap-32 p-10">
       <BankAccountForm />
 
       <div>
-        <div className="flex gap-5">
-          <span className="text-2xl font-bold">Contas</span>
+        <div className="mb-5 flex gap-3">
+          <span className="text-2xl font-bold">Contas bancárias</span>
 
           {accountsPending && <Spinner />}
         </div>
 
-        <div className="flex w-fit max-w-[30em] flex-col gap-2 rounded-lg p-5 shadow-lg">
+        <div className="flex max-h-[80vh] max-w-[50em] flex-wrap gap-3 overflow-auto rounded-lg p-5 shadow-lg">
           {accounts?.map((account) => (
             <AccountCard key={account.id} account={account} />
           ))}

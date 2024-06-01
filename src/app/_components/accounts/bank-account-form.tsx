@@ -9,7 +9,7 @@ export const BankAccountForm = () => {
 
   return (
     <form
-      className="flex max-w-[20em] flex-col gap-3 rounded p-3 shadow-lg"
+      className="flex h-fit w-[25em] flex-col gap-3 rounded p-3 shadow-lg"
       onSubmit={async (e) => {
         e.preventDefault();
 
@@ -31,7 +31,7 @@ export const BankAccountForm = () => {
     >
       <span className="text-2xl font-bold">Nova conta</span>
 
-      <Input type="text" placeholder="Nome" name="name" />
+      <Input type="text" placeholder="Nome" name="name" maxLength={50} />
 
       <Input type="number" step={0.01} placeholder="Saldo" name="balance" />
 

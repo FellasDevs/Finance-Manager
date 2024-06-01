@@ -10,5 +10,13 @@ export const useTransactions = (accountId: string) => {
     onSuccess: () => transactionsQuery.refetch(),
   });
 
-  return { transactionsQuery, createTransactionMutation };
+  const deleteTransactionMutation = api.transactions.delete.useMutation({
+    onSuccess: () => transactionsQuery.refetch(),
+  });
+
+  return {
+    transactionsQuery,
+    createTransactionMutation,
+    deleteTransactionMutation,
+  };
 };

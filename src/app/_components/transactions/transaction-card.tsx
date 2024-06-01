@@ -1,16 +1,21 @@
+'use client';
+
 import { type FC } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
-import Link from 'next/link';
 import { Button } from '~/components/ui/button';
+import { Trash } from 'lucide-react';
 
 type Transaction = InferRouteOutput['transactions']['getByAccountId'][0];
 
 type Props = {
   transaction: Transaction;
-  hideLink?: boolean;
+  deleteTransaction: () => void;
 };
 
-export const TransactionCard: FC<Props> = ({ transaction, hideLink }) => {
+export const TransactionCard: FC<Props> = ({
+  transaction,
+  deleteTransaction,
+}) => {
   return (
     <div className="flex items-center justify-between gap-10 rounded bg-slate-200 px-5 py-3 shadow-lg ">
       <div>
@@ -25,11 +30,9 @@ export const TransactionCard: FC<Props> = ({ transaction, hideLink }) => {
         <p>Momento: {transaction.time.toLocaleString()}</p>
       </div>
 
-      {!hideLink && (
-        <Link href={transaction.id} passHref>
-          <Button>Ver mais</Button>
-        </Link>
-      )}
+      <Button variant="ghost" size="icon" onClick={deleteTransaction}>
+        <Trash color="red" />
+      </Button>
     </div>
   );
 };

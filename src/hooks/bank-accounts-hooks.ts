@@ -13,5 +13,18 @@ export const useBankAccounts = () => {
     onSuccess: () => accountsQuery.refetch(),
   });
 
-  return { accountsQuery, createAccountMutation };
+  const deleteAccountMutation = api.bankAccounts.delete.useMutation({
+    onSuccess: () => accountsQuery.refetch(),
+  });
+
+  const editAccountMutation = api.bankAccounts.edit.useMutation({
+    onSuccess: () => accountsQuery.refetch(),
+  });
+
+  return {
+    accountsQuery,
+    createAccountMutation,
+    deleteAccountMutation,
+    editAccountMutation,
+  };
 };
