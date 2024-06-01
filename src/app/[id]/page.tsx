@@ -33,7 +33,7 @@ export default function AccountPage({ params: { id } }: Params) {
     <div className="flex justify-center gap-32 p-10">
       <div className="flex flex-col gap-10">
         <div className="w-fit min-w-[15em]">
-          <AccountCard account={accounts} hideLink />
+          <AccountCard account={accounts} hideActions />
         </div>
 
         <TransactionForm accountId={id} refetchAccount={refetch} />
@@ -47,6 +47,7 @@ export default function AccountPage({ params: { id } }: Params) {
 const Transactions = ({ accountId }: { accountId: string }) => {
   const {
     transactionsQuery: { data: transactions, error, isPending },
+    deleteTransactionMutation,
   } = useTransactions(accountId);
 
   if (isPending)
@@ -69,9 +70,11 @@ const Transactions = ({ accountId }: { accountId: string }) => {
         ) : (
           transactions.map((transaction) => (
             <TransactionCard
-              transaction={transaction}
-              hideLink
               key={transaction.id}
+              transaction={transaction}
+              deleteTransaction={() =>
+                deleteTransactionMutation.mutate({ id: transaction.id })
+              }
             />
           ))
         )}

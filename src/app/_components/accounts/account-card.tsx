@@ -12,10 +12,10 @@ type Account = InferRouteOutput['bankAccounts']['getByUserId'][0];
 
 type Props = {
   account: Account;
-  hideLink?: boolean;
+  hideActions?: boolean;
 };
 
-export const AccountCard: FC<Props> = ({ account, hideLink }) => {
+export const AccountCard: FC<Props> = ({ account, hideActions }) => {
   const { deleteAccountMutation } = useBankAccounts();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -28,31 +28,31 @@ export const AccountCard: FC<Props> = ({ account, hideLink }) => {
         <Info account={account} />
       )}
 
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-between">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsEditing(true)}
-          >
-            <Pencil size={18} color="blue" />
-          </Button>
+      {!hideActions && (
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-between">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsEditing(true)}
+            >
+              <Pencil size={18} color="blue" />
+            </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => deleteAccountMutation.mutate({ id: account.id })}
-          >
-            <Trash size={18} color="red" />
-          </Button>
-        </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => deleteAccountMutation.mutate({ id: account.id })}
+            >
+              <Trash size={18} color="red" />
+            </Button>
+          </div>
 
-        {!hideLink && (
           <Link href={account.id} passHref>
             <Button>Ver mais</Button>
           </Link>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

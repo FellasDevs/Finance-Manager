@@ -41,4 +41,12 @@ export const transactionsRouter = createTRPCRouter({
           .where(eq(BankAccountsTable.id, input.accountId));
       });
     }),
+
+  delete: publicProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .delete(TransactionsTable)
+        .where(eq(TransactionsTable.id, input.id));
+    }),
 });
