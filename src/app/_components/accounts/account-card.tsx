@@ -60,7 +60,7 @@ export const AccountCard: FC<Props> = ({ account, hideActions }) => {
 const Info = ({ account }: { account: Account }) => {
   return (
     <div className="max-w-[16em]">
-      <p className="truncate text-lg font-bold">
+      <p className="line-clamp-2 overflow-hidden text-ellipsis text-lg font-bold">
         {account.name || 'Conta sem nome'}
       </p>
 
@@ -101,6 +101,7 @@ const EditForm = ({
         placeholder="Nome"
         defaultValue={account.name}
         name="name"
+        maxLength={50}
       />
 
       <Input

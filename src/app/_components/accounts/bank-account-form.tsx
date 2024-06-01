@@ -31,7 +31,7 @@ export const BankAccountForm = () => {
     >
       <span className="text-2xl font-bold">Nova conta</span>
 
-      <Input type="text" placeholder="Nome" name="name" />
+      <Input type="text" placeholder="Nome" name="name" maxLength={50} />
 
       <Input type="number" step={0.01} placeholder="Saldo" name="balance" />
 
