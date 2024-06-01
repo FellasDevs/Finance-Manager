@@ -9,7 +9,7 @@ export const BankAccountForm = () => {
 
   return (
     <form
-      className="flex max-w-[20em] flex-col gap-3 rounded p-3 shadow-lg"
+      className="flex h-fit w-[25em] flex-col gap-3 rounded p-3 shadow-lg"
       onSubmit={async (e) => {
         e.preventDefault();
 

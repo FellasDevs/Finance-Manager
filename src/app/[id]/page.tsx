@@ -39,9 +39,7 @@ export default function AccountPage({ params: { id } }: Params) {
         <TransactionForm accountId={id} refetchAccount={refetch} />
       </div>
 
-      <div className="max-h-[90vh] w-[30em] overflow-auto rounded p-5 shadow-lg">
-        <Transactions accountId={id} />
-      </div>
+      <Transactions accountId={id} />
     </div>
   );
 }
@@ -60,22 +58,24 @@ const Transactions = ({ accountId }: { accountId: string }) => {
     );
 
   return (
-    <div className="flex flex-col gap-3">
-      <span className="text-2xl font-bold">Transações</span>
+    <div className="w-[30em] rounded p-5 shadow-lg">
+      <div className="m-3 text-2xl font-bold">Transações</div>
 
-      {!!error || !transactions?.length ? (
-        <div className="my-10 text-center text-xl font-bold">
-          Não há transações
-        </div>
-      ) : (
-        transactions.map((transaction) => (
-          <TransactionCard
-            transaction={transaction}
-            hideLink
-            key={transaction.id}
-          />
-        ))
-      )}
+      <div className="flex max-h-[80vh] flex-col gap-2 overflow-auto p-5">
+        {!!error || !transactions?.length ? (
+          <div className="my-10 text-center text-xl font-bold">
+            Não há transações
+          </div>
+        ) : (
+          transactions.map((transaction) => (
+            <TransactionCard
+              transaction={transaction}
+              hideLink
+              key={transaction.id}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 };
