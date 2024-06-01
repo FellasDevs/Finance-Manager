@@ -5,9 +5,7 @@ import { sql } from 'drizzle-orm';
 import {
   date,
   doublePrecision,
-  index,
   pgTableCreator,
-  serial,
   timestamp,
   uuid,
   varchar,
@@ -20,21 +18,6 @@ import {
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 export const createTable = pgTableCreator((name) => name);
-
-export const posts = createTable(
-  'post',
-  {
-    id: serial('id').primaryKey(),
-    name: varchar('name', { length: 256 }),
-    createdAt: timestamp('created_at', { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp('updatedAt', { withTimezone: true }),
-  },
-  (example) => ({
-    nameIndex: index('name_idx').on(example.name),
-  }),
-);
 
 export const UsersTable = createTable('users', {
   id: uuid('id')
