@@ -1,6 +1,5 @@
 import React, { type FC, type ReactNode } from 'react';
 import { createSupabaseServerClient } from '~/utils/supabase/server';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export const metadata = {
@@ -9,7 +8,7 @@ export const metadata = {
 };
 
 const AuthLayout: FC<{ children: ReactNode }> = async ({ children }) => {
-  const supabase = createSupabaseServerClient(cookies());
+  const supabase = createSupabaseServerClient();
 
   const {
     data: { user },

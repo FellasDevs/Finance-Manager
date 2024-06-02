@@ -3,17 +3,14 @@
 import { type FC } from 'react';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
-import { useTransactions } from '~/app/_hooks/transaction-hooks';
+import { api } from '~/trpc/react';
 
 type Props = {
   accountId: string;
-  refetchAccount: () => void;
 };
 
-export const TransactionForm: FC<Props> = ({ accountId, refetchAccount }) => {
-  const {
-    createTransactionMutation: { mutateAsync, isPending },
-  } = useTransactions(accountId);
+export const TransactionForm: FC<Props> = ({ accountId }) => {
+  const { mutateAsync, isPending } = api.transactions.create.useMutation();
 
   return (
     <form
@@ -32,8 +29,6 @@ export const TransactionForm: FC<Props> = ({ accountId, refetchAccount }) => {
             time: new Date(String(values.get('datetime'))),
             accountId,
           });
-
-          refetchAccount();
 
           target.reset();
         } catch (error) {

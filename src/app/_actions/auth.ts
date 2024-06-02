@@ -1,17 +1,16 @@
 'use server';
 
-import { cookies, headers } from 'next/headers';
+import { headers } from 'next/headers';
 import { createSupabaseServerClient } from '~/utils/supabase/server';
 import { type SignupInput } from '~/app/(auth)/signup/page';
 import { type LoginInput } from '~/app/(auth)/login/page';
 import { api } from '~/trpc/server';
+import { redirect } from 'next/navigation';
 
-const supabase = createSupabaseServerClient(cookies());
+const supabase = createSupabaseServerClient();
 const origin = headers().get('origin');
 
 export const signUp = async (data: SignupInput) => {
-  'use server';
-
   const { data: createdUser, error } = await supabase.auth.signUp({
     email: data.email,
     password: data.password,
@@ -27,20 +26,26 @@ export const signUp = async (data: SignupInput) => {
     id: createdUser.user.id,
     email: data.email,
     name: data.name,
-    password: 'exemplo',
+    password: 'senha falsa',
   });
 };
 
 export const logIn = async (data: LoginInput) => {
-  'use server';
-
   const { error } = await supabase.auth.signInWithPassword({
     email: data.email,
     password: data.password,
   });
-  if (error) {
+
+  if (error)
     return {
       error: error.message,
     };
-  }
+
+  return redirect('/accounts');
+};
+
+export const signOut = async () => {
+  const supabase = createSupabaseServerClient();
+  await supabase.auth.signOut();
+  return redirect('/login');
 };

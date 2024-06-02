@@ -4,11 +4,11 @@ import { type FC, useState } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
 import Link from 'next/link';
 import { Pencil, Trash } from 'lucide-react';
-import { useBankAccounts } from '~/app/_hooks/bank-accounts-hooks';
 import { Button } from '~/app/_components/ui/button';
 import { Input } from '~/app/_components/ui/input';
+import { api } from '~/trpc/react';
 
-type Account = InferRouteOutput['bankAccounts']['getByUserId'][0];
+type Account = InferRouteOutput['bankAccounts']['getByUser'][0];
 
 type Props = {
   account: Account;
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const AccountCard: FC<Props> = ({ account, hideActions }) => {
-  const { deleteAccountMutation } = useBankAccounts();
+  const deleteAccountMutation = api.bankAccounts.delete.useMutation();
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -76,7 +76,7 @@ const EditForm = ({
   account: Account;
   setIsEditing: () => void;
 }) => {
-  const { editAccountMutation } = useBankAccounts();
+  const editAccountMutation = api.bankAccounts.edit.useMutation();
 
   return (
     <form

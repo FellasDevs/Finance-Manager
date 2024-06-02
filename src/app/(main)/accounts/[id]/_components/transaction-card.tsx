@@ -4,18 +4,17 @@ import { type FC } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
 import { Button } from '~/app/_components/ui/button';
 import { Trash } from 'lucide-react';
+import { api } from '~/trpc/react';
 
 type Transaction = InferRouteOutput['transactions']['getByAccountId'][0];
 
 type Props = {
   transaction: Transaction;
-  deleteTransaction: () => void;
 };
 
-export const TransactionCard: FC<Props> = ({
-  transaction,
-  deleteTransaction,
-}) => {
+export const TransactionCard: FC<Props> = ({ transaction }) => {
+  const deleteTransactionMutation = api.transactions.delete.useMutation();
+
   return (
     <div className="flex items-center justify-between gap-10 rounded bg-slate-200 px-5 py-3 shadow-lg ">
       <div>
@@ -30,7 +29,11 @@ export const TransactionCard: FC<Props> = ({
         <p>Momento: {transaction.time.toLocaleString()}</p>
       </div>
 
-      <Button variant="ghost" size="icon" onClick={deleteTransaction}>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => deleteTransactionMutation.mutate({ id: transaction.id })}
+      >
         <Trash color="red" />
       </Button>
     </div>

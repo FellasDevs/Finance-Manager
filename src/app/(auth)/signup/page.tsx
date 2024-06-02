@@ -13,13 +13,11 @@ import {
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
 import { useState } from 'react';
-import { signUp } from '~/app/(auth)/actions';
+import { signUp } from '~/app/_actions/auth';
 
 const registerSchema = z.object({
   name: z.string().min(3).max(50),

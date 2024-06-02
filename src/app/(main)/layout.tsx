@@ -1,11 +1,10 @@
-import React, { type FC, type ReactNode } from 'react';
+import React, { type FC, type ReactNode, Suspense } from 'react';
 import { createSupabaseServerClient } from '~/utils/supabase/server';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { AuthButton } from '~/app/_components/auth/logout-button';
+import { AuthButton } from '~/app/(main)/_components/auth-button';
 
 const MainLayout: FC<{ children: ReactNode }> = async ({ children }) => {
-  const supabase = createSupabaseServerClient(cookies());
+  const supabase = createSupabaseServerClient();
 
   const {
     data: { user },
@@ -17,7 +16,10 @@ const MainLayout: FC<{ children: ReactNode }> = async ({ children }) => {
     <>
       <nav className="flex h-[4em] items-center justify-between border-b p-3">
         <span className="text-2xl font-bold">Finance Manager</span>
-        <AuthButton />
+
+        <Suspense>
+          <AuthButton />
+        </Suspense>
       </nav>
 
       {children}

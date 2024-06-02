@@ -1,11 +1,11 @@
-import { useBankAccounts } from '~/app/_hooks/bank-accounts-hooks';
+'use client';
+
 import { Button } from '~/app/_components/ui/button';
 import { Input } from '~/app/_components/ui/input';
+import { api } from '~/trpc/react';
 
 export const BankAccountForm = () => {
-  const {
-    createAccountMutation: { mutateAsync, isPending },
-  } = useBankAccounts();
+  const { mutateAsync, isPending } = api.bankAccounts.create.useMutation();
 
   return (
     <form
@@ -20,7 +20,6 @@ export const BankAccountForm = () => {
           await mutateAsync({
             name: values.get('name') as string,
             balance: Number(values.get('balance')),
-            userId: '4f1065de-2d7e-4892-a493-99969a64acab',
           });
 
           target.reset();
@@ -35,7 +34,12 @@ export const BankAccountForm = () => {
 
       <Input type="number" step={0.01} placeholder="Saldo" name="balance" />
 
-      <Button type="submit" disabled={isPending} variant="outline">
+      <Button
+        type="submit"
+        disabled={isPending}
+        isLoading={isPending}
+        variant="outline"
+      >
         Criar
       </Button>
     </form>

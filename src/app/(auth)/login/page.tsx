@@ -17,7 +17,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { logIn } from '~/app/(auth)/actions';
+import { logIn } from '~/app/_actions/auth';
 
 const loginSchema = z.object({
   email: z.string().email(),

@@ -1,84 +1,40 @@
-'use client';
-
-import { api } from '~/trpc/react';
-import { TransactionForm } from '~/app/_components/transactions/transaction-form';
-import { useTransactions } from '~/app/_hooks/transaction-hooks';
-import { Spinner } from '~/app/_components/ui/spinner';
-import { AccountCard } from '~/app/_components/accounts/account-card';
-import { TransactionCard } from '~/app/_components/transactions/transaction-card';
+import { api } from '~/trpc/server';
+import { AccountCard } from '~/app/(main)/accounts/_components/account-card';
+import { TransactionsList } from '~/app/(main)/accounts/[id]/_components/transaction-list';
+import { TransactionForm } from '~/app/(main)/accounts/[id]/_components/transaction-form';
+import Link from 'next/link';
 
 type Params = {
   params: { id: string };
 };
 
-export default function AccountPage({ params: { id } }: Params) {
-  const {
-    data: accounts,
-    isPending,
-    error,
-    refetch,
-  } = api.bankAccounts.getById.useQuery({ id }, { staleTime: Infinity });
+export default async function AccountPage({ params: { id } }: Params) {
+  const account = await api.bankAccounts.getById({ id });
 
-  if (isPending)
+  if (!account)
     return (
-      <div>
-        Carregando...
-        <Spinner />
+      <div className="flex h-screen flex-col items-center justify-center text-2xl font-bold">
+        <p>Conta não encontrada</p>
+
+        <Link href={'/accounts'}>
+          <p className="underline">Retornar às minhas contas</p>
+        </Link>
       </div>
     );
 
-  if (error || !accounts) return <div>Conta não encontrada</div>;
+  const transactions = await api.transactions.getByAccountId({ accountId: id });
 
   return (
     <div className="flex justify-center gap-32 p-10">
       <div className="flex flex-col gap-10">
         <div className="w-fit min-w-[15em]">
-          <AccountCard account={accounts} hideActions />
+          <AccountCard account={account} hideActions />
         </div>
 
-        <TransactionForm accountId={id} refetchAccount={refetch} />
+        <TransactionForm accountId={id} />
       </div>
 
-      <Transactions accountId={id} />
+      <TransactionsList accountId={id} initialData={transactions} />
     </div>
   );
 }
-
-const Transactions = ({ accountId }: { accountId: string }) => {
-  const {
-    transactionsQuery: { data: transactions, error, isPending },
-    deleteTransactionMutation,
-  } = useTransactions(accountId);
-
-  if (isPending)
-    return (
-      <div>
-        Carregando...
-        <Spinner />
-      </div>
-    );
-
-  return (
-    <div className="w-[30em] rounded p-5 shadow-lg">
-      <div className="m-3 text-2xl font-bold">Transações</div>
-
-      <div className="flex max-h-[80vh] flex-col gap-2 overflow-auto p-5">
-        {!!error || !transactions?.length ? (
-          <div className="my-10 text-center text-xl font-bold">
-            Não há transações
-          </div>
-        ) : (
-          transactions.map((transaction) => (
-            <TransactionCard
-              key={transaction.id}
-              transaction={transaction}
-              deleteTransaction={() =>
-                deleteTransactionMutation.mutate({ id: transaction.id })
-              }
-            />
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
