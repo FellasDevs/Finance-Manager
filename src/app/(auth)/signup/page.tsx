@@ -16,8 +16,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FcGoogle } from 'react-icons/fc';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { signUp } from '~/app/_actions/auth';
+import { OauthButton } from '~/app/(auth)/_components/oauth-button';
 
 const registerSchema = z.object({
   name: z.string().min(3).max(50),
@@ -154,13 +155,7 @@ export default function SignUpPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <Button
-            variant="outline"
-            className="flex w-full items-center gap-2 font-normal text-muted-foreground"
-          >
-            <FcGoogle className="h-5 w-5" />
-            <p>Entre com o Google</p>
-          </Button>
+          <OauthButton provider={'google'} />
 
           <Link href="/login">
             <p className="text-center text-sm text-muted-foreground underline">

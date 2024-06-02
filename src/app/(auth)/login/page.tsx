@@ -16,8 +16,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
-import { FcGoogle } from 'react-icons/fc';
 import { logIn } from '~/app/_actions/auth';
+import { OauthButton } from '~/app/(auth)/_components/oauth-button';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -115,13 +115,7 @@ export default function LoginPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <Button
-            variant="outline"
-            className="flex w-full items-center gap-2 font-normal text-muted-foreground"
-          >
-            <FcGoogle className="h-5 w-5" />
-            <p>Entre com o Google</p>
-          </Button>
+          <OauthButton provider={'google'} />
 
           <Link href="/signup">
             <p className="text-center text-sm text-muted-foreground underline">
