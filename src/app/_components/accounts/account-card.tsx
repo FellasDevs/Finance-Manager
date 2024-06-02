@@ -48,7 +48,7 @@ export const AccountCard: FC<Props> = ({ account, hideActions }) => {
             </Button>
           </div>
 
-          <Link href={account.id} passHref>
+          <Link href={'accounts/' + account.id} passHref>
             <Button>Ver mais</Button>
           </Link>
         </div>
