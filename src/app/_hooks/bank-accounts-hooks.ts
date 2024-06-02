@@ -1,5 +1,5 @@
 import { api } from '~/trpc/react';
-import { useUserStore } from '~/stores/user-store';
+import { useUserStore } from '~/app/_stores/user-store';
 
 export const useBankAccounts = () => {
   const { userId } = useUserStore();

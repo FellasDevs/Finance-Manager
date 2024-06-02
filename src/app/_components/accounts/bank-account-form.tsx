@@ -1,6 +1,6 @@
-import { useBankAccounts } from '~/hooks/bank-accounts-hooks';
-import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
+import { useBankAccounts } from '~/app/_hooks/bank-accounts-hooks';
+import { Button } from '~/app/_components/ui/button';
+import { Input } from '~/app/_components/ui/input';
 
 export const BankAccountForm = () => {
   const {

@@ -3,10 +3,10 @@
 import { type FC, useState } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
 import Link from 'next/link';
-import { Button } from '~/components/ui/button';
 import { Pencil, Trash } from 'lucide-react';
-import { useBankAccounts } from '~/hooks/bank-accounts-hooks';
-import { Input } from '~/components/ui/input';
+import { useBankAccounts } from '~/app/_hooks/bank-accounts-hooks';
+import { Button } from '~/app/_components/ui/button';
+import { Input } from '~/app/_components/ui/input';
 
 type Account = InferRouteOutput['bankAccounts']['getByUserId'][0];
 

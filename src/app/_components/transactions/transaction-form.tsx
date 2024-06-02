@@ -1,9 +1,9 @@
 'use client';
 
 import { type FC } from 'react';
-import { Input } from '~/components/ui/input';
-import { Button } from '~/components/ui/button';
-import { useTransactions } from '~/hooks/transaction-hooks';
+import { Input } from '~/app/_components/ui/input';
+import { Button } from '~/app/_components/ui/button';
+import { useTransactions } from '~/app/_hooks/transaction-hooks';
 
 type Props = {
   accountId: string;

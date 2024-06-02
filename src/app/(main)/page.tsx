@@ -1,9 +1,9 @@
 'use client';
 
 import { AccountCard } from '~/app/_components/accounts/account-card';
-import { useBankAccounts } from '~/hooks/bank-accounts-hooks';
+import { useBankAccounts } from '~/app/_hooks/bank-accounts-hooks';
 import { BankAccountForm } from '~/app/_components/accounts/bank-account-form';
-import { Spinner } from '~/app/_components/global/spinner';
+import { Spinner } from '~/app/_components/ui/spinner';
 
 export default function AccountsPage() {
   const {

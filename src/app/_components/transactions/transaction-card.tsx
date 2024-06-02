@@ -2,7 +2,7 @@
 
 import { type FC } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
-import { Button } from '~/components/ui/button';
+import { Button } from '~/app/_components/ui/button';
 import { Trash } from 'lucide-react';
 
 type Transaction = InferRouteOutput['transactions']['getByAccountId'][0];

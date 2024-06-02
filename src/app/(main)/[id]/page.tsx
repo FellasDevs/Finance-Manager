@@ -2,8 +2,8 @@
 
 import { api } from '~/trpc/react';
 import { TransactionForm } from '~/app/_components/transactions/transaction-form';
-import { useTransactions } from '~/hooks/transaction-hooks';
-import { Spinner } from '~/app/_components/global/spinner';
+import { useTransactions } from '~/app/_hooks/transaction-hooks';
+import { Spinner } from '~/app/_components/ui/spinner';
 import { AccountCard } from '~/app/_components/accounts/account-card';
 import { TransactionCard } from '~/app/_components/transactions/transaction-card';
 
