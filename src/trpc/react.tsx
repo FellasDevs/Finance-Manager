@@ -1,6 +1,10 @@
 'use client';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  MutationCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import { loggerLink, unstable_httpBatchStreamLink } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
@@ -9,7 +13,23 @@ import SuperJSON from 'superjson';
 
 import { type AppRouter } from '~/server/api/root';
 
-const createQueryClient = () => new QueryClient();
+const createQueryClient = () => {
+  const queryClient = new QueryClient({
+    mutationCache: new MutationCache({
+      onSuccess: () => {
+        void queryClient.invalidateQueries();
+      },
+    }),
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: 'always',
+        staleTime: 1000 * 60,
+      },
+    },
+  });
+
+  return queryClient;
+};
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {

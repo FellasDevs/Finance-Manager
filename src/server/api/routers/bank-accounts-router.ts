@@ -1,11 +1,12 @@
-import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BankAccountsTable } from '~/server/db/schema';
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
 const CreateBankAccountSchema = createInsertSchema(BankAccountsTable).omit({
   id: true,
+  userId: true,
 });
 
 const EditBankAccountSchema = createInsertSchema(BankAccountsTable)
@@ -17,43 +18,53 @@ const EditBankAccountSchema = createInsertSchema(BankAccountsTable)
   });
 
 export const bankAccountsRouter = createTRPCRouter({
-  getByUserId: publicProcedure
-    .input(z.object({ userId: z.string().uuid() }))
-    .query(({ ctx, input }) => {
-      return ctx.db
-        .select()
-        .from(BankAccountsTable)
-        .where(eq(BankAccountsTable.userId, input.userId))
-        .orderBy(desc(BankAccountsTable.balance));
-    }),
+  getByUser: privateProcedure.query(({ ctx }) => {
+    return ctx.db
+      .select()
+      .from(BankAccountsTable)
+      .where(eq(BankAccountsTable.userId, ctx.user.id))
+      .orderBy(desc(BankAccountsTable.balance));
+  }),
 
-  getById: publicProcedure
+  getById: privateProcedure
     .input(z.object({ id: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
-      const accounts = await ctx.db
+      const [account] = await ctx.db
         .select()
         .from(BankAccountsTable)
-        .where(eq(BankAccountsTable.id, input.id))
-        .execute();
+        .where(
+          and(
+            eq(BankAccountsTable.id, input.id),
+            eq(BankAccountsTable.userId, ctx.user.id),
+          ),
+        );
 
-      return accounts[0];
+      return account;
     }),
 
-  create: publicProcedure
+  create: privateProcedure
     .input(CreateBankAccountSchema)
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(BankAccountsTable).values(input);
+      await ctx.db.insert(BankAccountsTable).values({
+        ...input,
+        userId: ctx.user.id,
+      });
     }),
 
-  delete: publicProcedure
+  delete: privateProcedure
     .input(z.object({ id: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .delete(BankAccountsTable)
-        .where(eq(BankAccountsTable.id, input.id));
+        .where(
+          and(
+            eq(BankAccountsTable.id, input.id),
+            eq(BankAccountsTable.userId, ctx.user.id),
+          ),
+        );
     }),
 
-  edit: publicProcedure
+  edit: privateProcedure
     .input(EditBankAccountSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db
@@ -62,6 +73,11 @@ export const bankAccountsRouter = createTRPCRouter({
           name: input.name,
           balance: input.balance,
         })
-        .where(eq(BankAccountsTable.id, input.id));
+        .where(
+          and(
+            eq(BankAccountsTable.id, input.id),
+            eq(BankAccountsTable.userId, ctx.user.id),
+          ),
+        );
     }),
 });

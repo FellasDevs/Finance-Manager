@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BankAccountsTable, TransactionsTable } from '~/server/db/schema';
 import { desc, eq, sql } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
@@ -11,7 +11,7 @@ export const CreateTransactionSchema = createInsertSchema(
 });
 
 export const transactionsRouter = createTRPCRouter({
-  getByAccountId: publicProcedure
+  getByAccountId: privateProcedure
     .input(z.object({ accountId: z.string().uuid() }))
     .query(({ ctx, input }) => {
       return ctx.db
@@ -21,7 +21,7 @@ export const transactionsRouter = createTRPCRouter({
         .orderBy(desc(TransactionsTable.time));
     }),
 
-  getById: publicProcedure
+  getById: privateProcedure
     .input(z.object({ id: z.string().uuid() }))
     .query(({ ctx, input }) => {
       return ctx.db
@@ -30,7 +30,7 @@ export const transactionsRouter = createTRPCRouter({
         .where(eq(TransactionsTable.id, input.id));
     }),
 
-  create: publicProcedure
+  create: privateProcedure
     .input(CreateTransactionSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.transaction(async (trx) => {
@@ -42,7 +42,7 @@ export const transactionsRouter = createTRPCRouter({
       });
     }),
 
-  delete: publicProcedure
+  delete: privateProcedure
     .input(z.object({ id: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
       await ctx.db
