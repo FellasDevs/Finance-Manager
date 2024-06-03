@@ -25,7 +25,6 @@ export async function GET(request: Request) {
           email: user.email || '',
           name: String(user.user_metadata.name) || '',
           picture: String(user.user_metadata.picture) || '',
-          password: 'senha falsa',
         });
       }
     } catch (e) {

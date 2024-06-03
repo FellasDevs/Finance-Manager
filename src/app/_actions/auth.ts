@@ -13,19 +13,18 @@ export const signUp = async (data: SignupInput) => {
   const { data: createdUser, error } = await supabase.auth.signUp({
     email: data.email,
     password: data.password,
-    options: { emailRedirectTo: `${headers().get('origin')}/auth/callback` },
+    options: { emailRedirectTo: headers().get('origin') + '/auth/callback' },
   });
 
   if (error) return { error: error.message };
 
   if (!createdUser.user?.id || !createdUser.user.email)
-    return { error: 'Algo deu errado' };
+    return { error: 'User was not created for some reason' };
 
   await api.users.create({
     id: createdUser.user.id,
     email: data.email,
     name: data.name,
-    password: 'senha falsa',
   });
 };
 

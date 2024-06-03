@@ -29,7 +29,6 @@ export const UsersTable = createTable('users', {
   name: varchar('name', { length: 50 }).notNull(),
   email: varchar('email', { length: 50 }).notNull().unique(),
   picture: text('picture'),
-  password: varchar('password', { length: 256 }).notNull(),
 });
 
 export const BankAccountsTable = createTable('bank_accounts', {

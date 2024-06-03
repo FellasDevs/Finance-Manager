@@ -13,7 +13,6 @@ import {
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FcGoogle } from 'react-icons/fc';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
 import React, { useState } from 'react';
@@ -31,6 +30,7 @@ export type SignupInput = z.infer<typeof registerSchema>;
 export default function SignUpPage() {
   const form = useForm<SignupInput>({
     resolver: zodResolver(registerSchema),
+    reValidateMode: 'onChange',
     defaultValues: {
       name: '',
       email: '',
@@ -38,22 +38,22 @@ export default function SignUpPage() {
     },
   });
 
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const onSubmit = async (data: SignupInput) => {
     const result = await signUp(data);
 
     if (!result || result.error) {
-      setSuccess(null);
-      setError(result?.error || 'Algo deu errado, tente novamente mais tarde');
+      console.error(result?.error);
+
+      setSuccess(false);
+      setError(true);
       return;
     }
 
-    setError(null);
-    setSuccess(
-      'Sua conta foi criada com sucesso! Confirme seu e-mail para prosseguir',
-    );
+    setError(false);
+    setSuccess(true);
 
     form.reset();
   };
@@ -135,13 +135,18 @@ export default function SignUpPage() {
             <div className="text-center text-sm font-medium">
               {success && (
                 <div className="rounded-md border border-border bg-green-100 p-3">
-                  <p className="text-muted-foreground">{success}</p>
+                  <p className="text-muted-foreground">
+                    Sua conta foi criada com sucesso! Confirme seu e-mail para
+                    prosseguir
+                  </p>
                 </div>
               )}
 
               {error && (
                 <div className="rounded-md border border-destructive bg-red-100 p-3">
-                  <p className="text-destructive">{error}</p>
+                  <p className="text-destructive">
+                    Algo deu errado, tente novamente mais tarde
+                  </p>
                 </div>
               )}
             </div>
