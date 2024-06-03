@@ -6,6 +6,7 @@ import {
   date,
   doublePrecision,
   pgTableCreator,
+  text,
   timestamp,
   uuid,
   varchar,
@@ -27,6 +28,7 @@ export const UsersTable = createTable('users', {
     .default(sql`uuid_generate_v4()`),
   name: varchar('name', { length: 50 }).notNull(),
   email: varchar('email', { length: 50 }).notNull().unique(),
+  picture: text('picture'),
   password: varchar('password', { length: 256 }).notNull(),
 });
 

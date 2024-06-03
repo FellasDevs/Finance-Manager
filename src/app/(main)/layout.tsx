@@ -14,7 +14,7 @@ const MainLayout: FC<{ children: ReactNode }> = async ({ children }) => {
 
   return (
     <>
-      <nav className="flex h-[4em] items-center justify-between border-b p-3">
+      <nav className="flex h-[4em] items-center justify-between border-b px-5">
         <span className="text-2xl font-bold">Finance Manager</span>
 
         <Suspense>

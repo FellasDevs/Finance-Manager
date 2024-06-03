@@ -15,9 +15,15 @@ export function AccountList({ initialData }: Props) {
 
   return (
     <div className="flex max-h-[80vh] max-w-[50em] flex-wrap gap-3 overflow-auto rounded-lg p-5 shadow-lg">
-      {accounts.data?.map((account) => (
-        <AccountCard key={account.id} account={account} />
-      ))}
+      {accounts.data?.length ? (
+        accounts.data.map((account) => (
+          <AccountCard key={account.id} account={account} />
+        ))
+      ) : (
+        <div className="text-lg font-semibold">
+          Não há nehuma conta ainda, crie uma para começar!
+        </div>
+      )}
     </div>
   );
 }
