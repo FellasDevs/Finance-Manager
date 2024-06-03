@@ -13,7 +13,7 @@ export const OauthButton: FC<{ provider: Provider }> = ({ provider }) => {
   const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: provider,
-      options: { redirectTo: location.origin + '/accounts' },
+      options: { redirectTo: location.origin + '/auth/callback' },
     });
 
     if (error)

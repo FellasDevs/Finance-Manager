@@ -8,13 +8,12 @@ import { api } from '~/trpc/server';
 import { redirect } from 'next/navigation';
 
 const supabase = createSupabaseServerClient();
-const origin = headers().get('origin');
 
 export const signUp = async (data: SignupInput) => {
   const { data: createdUser, error } = await supabase.auth.signUp({
     email: data.email,
     password: data.password,
-    options: { emailRedirectTo: `${origin}/auth/callback` },
+    options: { emailRedirectTo: `${headers().get('origin')}/auth/callback` },
   });
 
   if (error) return { error: error.message };
