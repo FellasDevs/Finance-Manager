@@ -23,7 +23,7 @@ export const bankAccountsRouter = createTRPCRouter({
       .select()
       .from(BankAccountsTable)
       .where(eq(BankAccountsTable.userId, ctx.user.id))
-      .orderBy(desc(BankAccountsTable.balance));
+      .orderBy(desc(BankAccountsTable.updatedAt));
   }),
 
   getById: privateProcedure
