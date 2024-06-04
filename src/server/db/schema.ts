@@ -29,6 +29,8 @@ export const UsersTable = createTable('users', {
   name: varchar('name', { length: 50 }).notNull(),
   email: varchar('email', { length: 50 }).notNull().unique(),
   picture: text('picture'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
 export const BankAccountsTable = createTable('bank_accounts', {
@@ -42,6 +44,8 @@ export const BankAccountsTable = createTable('bank_accounts', {
     .references(() => UsersTable.id),
   name: varchar('name', { length: 50 }).notNull(),
   balance: doublePrecision('balance').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
 export const TransactionsTable = createTable('transactions', {
@@ -55,10 +59,12 @@ export const TransactionsTable = createTable('transactions', {
     .references(() => BankAccountsTable.id),
   time: timestamp('time', { withTimezone: true })
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
+    .defaultNow(),
   description: varchar('description', { length: 30 }),
   category: varchar('category', { length: 30 }),
   value: doublePrecision('value').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
 export const InvoicesTable = createTable('invoices', {
@@ -73,6 +79,8 @@ export const InvoicesTable = createTable('invoices', {
   lim: doublePrecision('lim').notNull().default(0),
   value: doublePrecision('value').notNull().default(0),
   dueDate: date('due_date').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
 export const PurchasesTable = createTable('purchases', {
@@ -86,9 +94,11 @@ export const PurchasesTable = createTable('purchases', {
     .references(() => InvoicesTable.id),
   time: timestamp('time', { withTimezone: true })
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
+    .defaultNow(),
   value: doublePrecision('value').notNull().default(0),
   name: varchar('name', { length: 30 }),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
 export const InvestmentsTable = createTable('investments', {
@@ -102,6 +112,8 @@ export const InvestmentsTable = createTable('investments', {
     .references(() => UsersTable.id),
   name: varchar('name', { length: 30 }).notNull(),
   value: doublePrecision('value').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
 export const InvestmentHistoryTable = createTable('investment_history', {
@@ -115,6 +127,8 @@ export const InvestmentHistoryTable = createTable('investment_history', {
     .references(() => InvestmentsTable.id),
   time: timestamp('time', { withTimezone: true })
     .notNull()
-    .default(sql`CURRENT_TIMESTAMP`),
+    .defaultNow(),
   value: doublePrecision('value').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
