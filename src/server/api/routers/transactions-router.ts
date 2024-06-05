@@ -18,7 +18,7 @@ export const transactionsRouter = createTRPCRouter({
         .select()
         .from(TransactionsTable)
         .where(eq(TransactionsTable.accountId, input.accountId))
-        .orderBy(desc(TransactionsTable.time));
+        .orderBy(desc(TransactionsTable.updatedAt));
     }),
 
   getById: privateProcedure

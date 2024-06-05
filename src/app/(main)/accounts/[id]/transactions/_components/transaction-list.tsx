@@ -4,7 +4,7 @@ import { Spinner } from '~/app/_components/ui/spinner';
 import { api } from '~/trpc/react';
 import { type FC } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
-import { TransactionCard } from '~/app/(main)/accounts/[id]/_components/transaction-card';
+import { TransactionCard } from '~/app/(main)/accounts/[id]/transactions/_components/transaction-card';
 
 type Props = {
   accountId: string;
