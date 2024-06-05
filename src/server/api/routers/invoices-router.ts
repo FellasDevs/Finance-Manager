@@ -16,7 +16,7 @@ export const invoicesRouter = createTRPCRouter({
         .select()
         .from(InvoicesTable)
         .where(eq(InvoicesTable.accountId, input.accountId))
-        .orderBy(desc(InvoicesTable.updatedAt));
+        .orderBy(desc(InvoicesTable.dueDate));
     }),
 
   getById: privateProcedure

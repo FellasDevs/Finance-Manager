@@ -1,7 +1,7 @@
 import { api } from '~/trpc/server';
 import { AccountCard } from '~/app/(main)/accounts/_components/account-card';
-import { TransactionsList } from '~/app/(main)/accounts/[id]/_components/transaction-list';
-import { TransactionForm } from '~/app/(main)/accounts/[id]/_components/transaction-form';
+import { TransactionsList } from '~/app/(main)/accounts/[id]/transactions/_components/transaction-list';
+import { TransactionForm } from '~/app/(main)/accounts/[id]/transactions/_components/transaction-form';
 import Link from 'next/link';
 
 type Params = {
