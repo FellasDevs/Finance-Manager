@@ -1,4 +1,8 @@
-import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
+import {
+  createTRPCRouter,
+  privateProcedure,
+  publicProcedure,
+} from '~/server/api/trpc';
 import { UsersTable } from '~/server/db/schema';
 import { createInsertSchema } from 'drizzle-zod';
 import { eq } from 'drizzle-orm';
@@ -15,7 +19,7 @@ export const usersRouter = createTRPCRouter({
     return user;
   }),
 
-  create: privateProcedure
+  create: publicProcedure
     .input(CreateUserSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(UsersTable).values(input);
