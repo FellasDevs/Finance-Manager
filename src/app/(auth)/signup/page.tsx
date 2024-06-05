@@ -16,7 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
 import React, { useState } from 'react';
-import { signUp } from '~/app/_actions/auth';
+import { signUp } from '~/app/(auth)/_actions/auth';
 import { OauthButton } from '~/app/(auth)/_components/oauth-button';
 
 const registerSchema = z.object({
@@ -42,10 +42,10 @@ export default function SignUpPage() {
   const [success, setSuccess] = useState(false);
 
   const onSubmit = async (data: SignupInput) => {
-    const result = await signUp(data);
+    const error = await signUp(data);
 
-    if (!result || result.error) {
-      console.error(result?.error);
+    if (error) {
+      console.error(error);
 
       setSuccess(false);
       setError(true);

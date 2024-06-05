@@ -1,6 +1,6 @@
 'use client';
 
-import { type FC, useState } from 'react';
+import { type FC, type FormEvent, useState } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
 import Link from 'next/link';
 import { Pencil, Trash } from 'lucide-react';
@@ -78,24 +78,23 @@ const EditForm = ({
 }) => {
   const editAccountMutation = api.bankAccounts.edit.useMutation();
 
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const target = e.target as HTMLFormElement;
+    const values = new FormData(target);
+
+    await editAccountMutation.mutateAsync({
+      id: account.id,
+      name: String(values.get('name')),
+      balance: Number(values.get('balance')),
+    });
+
+    setIsEditing();
+  };
+
   return (
-    <form
-      className="flex flex-col gap-1 py-2"
-      onSubmit={async (e) => {
-        e.preventDefault();
-
-        const target = e.target as HTMLFormElement;
-        const values = new FormData(target);
-
-        await editAccountMutation.mutateAsync({
-          id: account.id,
-          name: String(values.get('name')),
-          balance: Number(values.get('balance')),
-        });
-
-        setIsEditing();
-      }}
-    >
+    <form className="flex flex-col gap-1 py-2" onSubmit={onSubmit}>
       <Input
         type="text"
         placeholder="Nome"
@@ -113,7 +112,12 @@ const EditForm = ({
       />
 
       <div className="flex justify-around">
-        <Button variant="outline" size="sm" onClick={setIsEditing}>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={setIsEditing}
+        >
           Cancelar
         </Button>
 

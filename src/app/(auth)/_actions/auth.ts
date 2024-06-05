@@ -16,16 +16,25 @@ export const signUp = async (data: SignupInput) => {
     options: { emailRedirectTo: headers().get('origin') + '/auth/callback' },
   });
 
-  if (error) return { error: error.message };
+  if (error?.code) {
+    console.error(error);
+    return error.message;
+  }
 
-  if (!createdUser.user?.id || !createdUser.user.email)
-    return { error: 'User was not created for some reason' };
+  if (!createdUser.user?.id || !createdUser.user.email) {
+    console.error('Failed to create user');
+    return 'Ocorreu um erro ao criar seu perfil, por favor contate um administrador';
+  }
 
   await api.users.create({
     id: createdUser.user.id,
     email: data.email,
     name: data.name,
   });
+
+  redirect('/accounts');
+
+  return undefined;
 };
 
 export const logIn = async (data: LoginInput) => {
@@ -34,12 +43,14 @@ export const logIn = async (data: LoginInput) => {
     password: data.password,
   });
 
-  if (error)
-    return {
-      error: error.message,
-    };
+  if (error) {
+    console.error(error);
+    return error.message;
+  }
 
-  return redirect('/accounts');
+  redirect('/accounts');
+
+  return undefined;
 };
 
 export const signOut = async () => {

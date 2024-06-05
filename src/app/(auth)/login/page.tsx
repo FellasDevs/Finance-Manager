@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
-import { logIn } from '~/app/_actions/auth';
+import { logIn } from '~/app/(auth)/_actions/auth';
 import { OauthButton } from '~/app/(auth)/_components/oauth-button';
 
 const loginSchema = z.object({
@@ -38,9 +38,9 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (data: LoginInput) => {
-    const result = await logIn(data);
+    const error = await logIn(data);
 
-    if (result?.error) setError(result.error);
+    if (error) setError(error);
   };
 
   return (
