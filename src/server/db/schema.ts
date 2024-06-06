@@ -57,9 +57,7 @@ export const TransactionsTable = createTable('transactions', {
   accountId: uuid('account_id')
     .notNull()
     .references(() => BankAccountsTable.id),
-  time: timestamp('time', { withTimezone: true })
-    .notNull()
-    .defaultNow(),
+  time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
   description: varchar('description', { length: 30 }),
   category: varchar('category', { length: 30 }),
   value: doublePrecision('value').notNull().default(0),
@@ -83,6 +81,20 @@ export const InvoicesTable = createTable('invoices', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
+export const PurchaseCategoriesTable = createTable('purchase-categories', {
+  id: uuid('id')
+    .primaryKey()
+    .notNull()
+    .unique()
+    .default(sql`uuid_generate_v4()`),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => UsersTable.id),
+  name: varchar('name', { length: 50 }).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+});
+
 export const PurchasesTable = createTable('purchases', {
   id: uuid('id')
     .primaryKey()
@@ -92,11 +104,10 @@ export const PurchasesTable = createTable('purchases', {
   invoiceId: uuid('invoice_id')
     .notNull()
     .references(() => InvoicesTable.id),
-  time: timestamp('time', { withTimezone: true })
-    .notNull()
-    .defaultNow(),
+  time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
   value: doublePrecision('value').notNull().default(0),
-  name: varchar('name', { length: 30 }),
+  description: varchar('description', { length: 50 }),
+  categoryId: uuid('category_id').references(() => PurchaseCategoriesTable.id),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
@@ -125,9 +136,27 @@ export const InvestmentHistoryTable = createTable('investment_history', {
   investmentId: uuid('investment_id')
     .notNull()
     .references(() => InvestmentsTable.id),
-  time: timestamp('time', { withTimezone: true })
+  time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
+  value: doublePrecision('value').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+});
+
+export const BudgetsTable = createTable('budgets', {
+  id: uuid('id')
+    .primaryKey()
     .notNull()
-    .defaultNow(),
+    .unique()
+    .default(sql`uuid_generate_v4()`),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => UsersTable.id),
+  invoiceId: uuid('invoice_id')
+    .notNull()
+    .references(() => InvoicesTable.id),
+  categoryId: uuid('category_id')
+    .notNull()
+    .references(() => PurchaseCategoriesTable.id),
   value: doublePrecision('value').notNull().default(0),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
