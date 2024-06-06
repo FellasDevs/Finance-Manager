@@ -58,8 +58,8 @@ export const TransactionsTable = createTable('transactions', {
     .notNull()
     .references(() => BankAccountsTable.id),
   time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
-  description: varchar('description', { length: 30 }),
-  category: varchar('category', { length: 30 }),
+  description: varchar('description', { length: 50 }),
+  category: varchar('category', { length: 50 }),
   value: doublePrecision('value').notNull().default(0),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
@@ -121,7 +121,7 @@ export const InvestmentsTable = createTable('investments', {
   userId: uuid('user_id')
     .notNull()
     .references(() => UsersTable.id),
-  name: varchar('name', { length: 30 }).notNull(),
+  name: varchar('name', { length: 50 }).notNull(),
   value: doublePrecision('value').notNull().default(0),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
