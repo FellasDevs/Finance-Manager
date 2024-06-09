@@ -5,6 +5,7 @@ import { type InferRouteOutput } from '~/utils/types';
 import { Button } from '~/app/_components/ui/button';
 import { Trash } from 'lucide-react';
 import { api } from '~/trpc/react';
+import dayjs from 'dayjs';
 
 type Transaction = InferRouteOutput['transactions']['getByAccountId'][0];
 
@@ -26,7 +27,7 @@ export const TransactionCard: FC<Props> = ({ transaction }) => {
 
         <p>Categoria: {transaction.category || 'Nenhuma'}</p>
 
-        <p>Momento: {transaction.time.toLocaleString()}</p>
+        <p>Momento: {dayjs(transaction.time).format('DD/mm/YYYY HH:mm')}</p>
       </div>
 
       <Button

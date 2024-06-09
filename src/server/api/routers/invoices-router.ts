@@ -1,12 +1,8 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { InvoicesTable } from '~/server/db/schema';
 import { desc, eq } from 'drizzle-orm';
-import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
-
-export const CreateInvoiceSchema = createInsertSchema(InvoicesTable).omit({
-  id: true,
-});
+import { CreateInvoiceSchema } from '~/schemas/invoices.schema';
 
 export const invoicesRouter = createTRPCRouter({
   getByAccountId: privateProcedure
@@ -21,11 +17,13 @@ export const invoicesRouter = createTRPCRouter({
 
   getById: privateProcedure
     .input(z.object({ id: z.string().uuid() }))
-    .query(({ ctx, input }) => {
-      return ctx.db
+    .query(async ({ ctx, input }) => {
+      const [invoice] = await ctx.db
         .select()
         .from(InvoicesTable)
         .where(eq(InvoicesTable.id, input.id));
+
+      return invoice;
     }),
 
   create: privateProcedure

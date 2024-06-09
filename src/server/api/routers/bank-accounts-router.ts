@@ -1,21 +1,11 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BankAccountsTable } from '~/server/db/schema';
 import { and, desc, eq } from 'drizzle-orm';
-import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
-
-const CreateBankAccountSchema = createInsertSchema(BankAccountsTable).omit({
-  id: true,
-  userId: true,
-});
-
-const EditBankAccountSchema = createInsertSchema(BankAccountsTable)
-  .omit({
-    userId: true,
-  })
-  .required({
-    id: true,
-  });
+import {
+  CreateBankAccountSchema,
+  EditBankAccountSchema,
+} from '~/schemas/bank-account.schema';
 
 export const bankAccountsRouter = createTRPCRouter({
   getByUser: privateProcedure.query(({ ctx }) => {
@@ -32,12 +22,7 @@ export const bankAccountsRouter = createTRPCRouter({
       const [account] = await ctx.db
         .select()
         .from(BankAccountsTable)
-        .where(
-          and(
-            eq(BankAccountsTable.id, input.id),
-            eq(BankAccountsTable.userId, ctx.user.id),
-          ),
-        );
+        .where(eq(BankAccountsTable.id, input.id));
 
       return account;
     }),

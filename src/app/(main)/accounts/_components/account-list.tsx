@@ -14,14 +14,14 @@ export function AccountList({ initialData }: Props) {
   });
 
   return (
-    <div className="flex max-h-[80vh] max-w-[50em] flex-wrap gap-3 overflow-auto rounded-lg p-5 shadow-lg">
+    <div className="grid max-h-[70vh] grid-flow-row grid-cols-2 gap-3 overflow-auto p-2">
       {accounts.data?.length ? (
         accounts.data.map((account) => (
           <AccountCard key={account.id} account={account} />
         ))
       ) : (
         <div className="text-lg font-semibold">
-          Não há nehuma conta ainda, crie uma para começar!
+          Não há nenhuma conta ainda, crie uma para começar!
         </div>
       )}
     </div>

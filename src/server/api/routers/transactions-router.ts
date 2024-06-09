@@ -1,14 +1,8 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BankAccountsTable, TransactionsTable } from '~/server/db/schema';
 import { desc, eq, sql } from 'drizzle-orm';
-import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
-
-export const CreateTransactionSchema = createInsertSchema(
-  TransactionsTable,
-).omit({
-  id: true,
-});
+import { CreateTransactionSchema } from '~/schemas/transactions.schema';
 
 export const transactionsRouter = createTRPCRouter({
   getByAccountId: privateProcedure
