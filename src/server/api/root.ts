@@ -3,6 +3,7 @@ import { bankAccountsRouter } from '~/server/api/routers/bank-accounts-router';
 import { transactionsRouter } from '~/server/api/routers/transactions-router';
 import { usersRouter } from '~/server/api/routers/users-router';
 import { invoicesRouter } from '~/server/api/routers/invoices-router';
+import { purchaseCategoriesRouter } from '~/server/api/routers/purchase-categories-routes';
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   transactions: transactionsRouter,
   invoices: invoicesRouter,
   users: usersRouter,
+  purchaseCategories: purchaseCategoriesRouter,
 });
 
 // export type definition of API

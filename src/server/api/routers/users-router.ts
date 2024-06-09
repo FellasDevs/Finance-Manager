@@ -4,10 +4,8 @@ import {
   publicProcedure,
 } from '~/server/api/trpc';
 import { UsersTable } from '~/server/db/schema';
-import { createInsertSchema } from 'drizzle-zod';
 import { eq } from 'drizzle-orm';
-
-const CreateUserSchema = createInsertSchema(UsersTable);
+import { CreateUserSchema } from '~/schemas/user.schema';
 
 export const usersRouter = createTRPCRouter({
   getProfile: privateProcedure.query(async ({ ctx }) => {
