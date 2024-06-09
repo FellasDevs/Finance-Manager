@@ -1,6 +1,6 @@
 import { createInsertSchema } from 'drizzle-zod';
 import { UsersTable } from '~/server/db/schema';
-import { z } from 'zod';
+import { z } from '~/utils/zod-pt';
 
 const BaseUserSchema = createInsertSchema(UsersTable, {
   id: z.string().uuid(),

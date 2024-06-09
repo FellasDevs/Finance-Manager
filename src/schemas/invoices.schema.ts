@@ -1,6 +1,6 @@
 import { createInsertSchema } from 'drizzle-zod';
 import { InvoicesTable } from '~/server/db/schema';
-import { z } from 'zod';
+import { z } from '~/utils/zod-pt';
 
 const BaseInvoiceSchema = createInsertSchema(InvoicesTable, {
   value: z.number().positive(),

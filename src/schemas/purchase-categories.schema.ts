@@ -1,6 +1,6 @@
 import { createInsertSchema } from 'drizzle-zod';
 import { PurchaseCategoriesTable } from '~/server/db/schema';
-import { z } from 'zod';
+import { z } from '~/utils/zod-pt';
 
 const BasePurchaseCategorySchema = createInsertSchema(PurchaseCategoriesTable, {
   name: z.string().min(3).max(50),

@@ -1,6 +1,6 @@
 import { createInsertSchema } from 'drizzle-zod';
 import { TransactionsTable } from '~/server/db/schema';
-import { z } from 'zod';
+import { z } from '~/utils/zod-pt';
 
 const BaseTransactionSchema = createInsertSchema(TransactionsTable, {
   description: z.string().min(3).max(50),

@@ -1,6 +1,6 @@
 import { createInsertSchema } from 'drizzle-zod';
 import { BankAccountsTable } from '~/server/db/schema';
-import { z } from 'zod';
+import { z } from '~/utils/zod-pt';
 
 const BaseBankAccountSchema = createInsertSchema(BankAccountsTable, {
   name: z.string().min(3).max(50),
