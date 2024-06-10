@@ -29,7 +29,10 @@ export const invoicesRouter = createTRPCRouter({
   create: privateProcedure
     .input(CreateInvoiceSchema)
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(InvoicesTable).values(input);
+      await ctx.db.insert(InvoicesTable).values({
+        ...input,
+        dueDate: input.dueDate.toISOString(),
+      });
     }),
 
   delete: privateProcedure
