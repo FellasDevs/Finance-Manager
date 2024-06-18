@@ -26,7 +26,7 @@ export const TransactionsList: FC<Props> = ({ accountId, initialData }) => {
 
   return (
     <div className="flex h-[28em] w-[30em] flex-col justify-around rounded p-5 shadow-lg">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
         <div className="m-3 text-2xl font-bold">TRANSAÇÕES</div>
 
         <Dialog open={modalOpen} onOpenChange={setModalOpen}>
