@@ -36,7 +36,7 @@ export const InvoiceList: FC<Props> = ({ accountId, initialData }) => {
   return (
     <div className="w-[30em] rounded p-5 shadow-lg">
       <div className="flex items-center justify-between">
-        <div className="m-3 text-2xl font-bold">Faturas</div>
+        <div className="m-3 text-2xl font-bold">FATURAS</div>
 
         <Dialog open={modalOpen} onOpenChange={setModalOpen}>
           <DialogTrigger>

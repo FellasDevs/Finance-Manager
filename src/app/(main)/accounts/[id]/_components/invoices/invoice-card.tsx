@@ -1,23 +1,34 @@
 import { type FC } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
-import { Button } from '~/app/_components/ui/button';
-import Link from 'next/link';
+import { parseMoney } from '~/utils/parseMoney';
+import { InvoiceDialog } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-dialog';
 
-type Props = {
+export type InvoiceCardProps = {
   invoice: InferRouteOutput['invoices']['getByAccountId'][0];
 };
 
-export const InvoiceCard: FC<Props> = ({ invoice }) => {
+export const InvoiceCard: FC<InvoiceCardProps> = ({ invoice }) => {
   return (
-    <div className="rounded border p-1">
-      <p>{new Date(invoice.dueDate).toLocaleDateString()}</p>
-      <p>
-        {invoice.value} / {invoice.lim}
-      </p>
+    <div className="flex h-[12em] flex-col justify-between rounded-lg p-3 font-semibold shadow-lg">
+      <div className="mx-auto">
+        <p className="mb-2 text-xl font-bold">
+          {new Date(invoice.dueDate).toLocaleDateString(undefined, {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          })}
+        </p>
 
-      <Link href={'/invoices/' + invoice.id} passHref>
-        <Button>Ver mais</Button>
-      </Link>
+        <p className="text-end text-xl font-semibold">
+          Fatura: {parseMoney(invoice.value)}
+        </p>
+
+        <p className="text-end text-lg text-gray-700">
+          Limite de {parseMoney(invoice.lim)}
+        </p>
+      </div>
+
+      <InvoiceDialog invoice={invoice} />
     </div>
   );
 };

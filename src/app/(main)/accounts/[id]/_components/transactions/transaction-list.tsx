@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { PlusCircle } from 'lucide-react';
+import { Input } from '~/app/_components/ui/input';
 
 type Props = {
   accountId: string;
@@ -24,9 +25,9 @@ export const TransactionsList: FC<Props> = ({ accountId, initialData }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <div className="w-[30em] rounded p-5 shadow-lg">
+    <div className="flex h-[28em] w-[30em] flex-col justify-around rounded p-5 shadow-lg">
       <div className="flex items-center justify-between">
-        <div className="m-3 text-2xl font-bold">Transações</div>
+        <div className="m-3 text-2xl font-bold">TRANSAÇÕES</div>
 
         <Dialog open={modalOpen} onOpenChange={setModalOpen}>
           <DialogTrigger>
@@ -42,7 +43,9 @@ export const TransactionsList: FC<Props> = ({ accountId, initialData }) => {
         </Dialog>
       </div>
 
-      <div className="flex max-h-[80vh] flex-col gap-2 overflow-auto p-5">
+      <Input placeholder="Pesquisa" />
+
+      <div className="flex max-h-[18em] flex-col gap-2 overflow-auto p-5">
         {error || !transactions?.length ? (
           <div className="my-10 text-center text-xl font-bold">
             Não há transações
