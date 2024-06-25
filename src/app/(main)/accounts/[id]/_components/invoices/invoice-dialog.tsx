@@ -19,7 +19,7 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button className="w-full">Ver mais</Button>
       </DialogTrigger>
 
