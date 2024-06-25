@@ -8,13 +8,14 @@ import {
 import { Button } from '~/app/_components/ui/button';
 import { type InvoiceCardProps } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
 import { api } from '~/trpc/react';
-import { getMonth } from '~/utils/date-utils';
-import dayjs from 'dayjs';
-import { parseMoney } from '~/utils/parseMoney';
+import { PurchaseCard } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-card';
+import { InvoiceHeader } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-header';
+import { PurchaseForm } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-form';
 
 export function InvoiceDialog({ invoice }: InvoiceCardProps) {
-  // PEGAR COMPRAS PRA ESSE INVOICE
-  // const {} = api.
+  const { data: purchases, error } = api.purchases.getByInvoice.useQuery({
+    invoiceId: invoice.id,
+  });
 
   return (
     <Dialog>
@@ -22,23 +23,25 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
         <Button className="w-full">Ver mais</Button>
       </DialogTrigger>
 
-      <DialogContent>
-        <div className="flex h-[80vh] flex-col justify-between px-4 py-1 text-center text-lg font-semibold capitalize">
-          <div className="flex flex-col gap-1">
-            <p>
-              {getMonth(invoice.dueDate)} de {dayjs(invoice.dueDate).year()}
-            </p>
+      <DialogContent className="h-[85vh]">
+        <InvoiceHeader invoice={invoice} />
 
-            <p>
-              {parseMoney(invoice.value)} / {parseMoney(invoice.lim)}
-            </p>
+        <div className="rounded-lg p-3 shadow-lg">
+          <div className="mb-3 flex justify-between">
+            <p className="text-2xl font-bold">Compras</p>
+
+            <PurchaseForm invoiceId={invoice.id} />
           </div>
 
-          <div className="flex max-h-[80%] flex-col gap-2 overflow-auto rounded-lg p-3 text-start shadow-lg">
-            {Array.from({ length: 50 }).map((_, i) => (
-              <div key={i}>Compra braba no valor de {parseMoney(1000)}</div>
-            ))}
-          </div>
+          {error || !purchases?.length ? (
+            'Não há compras registradas nessa fatura'
+          ) : (
+            <div className="flex max-h-[55%] flex-col gap-2 overflow-auto rounded-lg p-2">
+              {[...purchases, ...purchases, ...purchases].map((purchase) => (
+                <PurchaseCard purchase={purchase} key={purchase.id} />
+              ))}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

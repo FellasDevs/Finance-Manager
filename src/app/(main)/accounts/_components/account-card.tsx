@@ -9,7 +9,6 @@ import { Input } from '~/app/_components/ui/input';
 import { api } from '~/trpc/react';
 import { parseMoney } from '~/utils/parseMoney';
 import type { z } from 'zod';
-import { EditBankAccountSchema } from '~/schemas/bank-account.schema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -19,6 +18,7 @@ import {
   FormItem,
   FormMessage,
 } from '~/app/_components/ui/form';
+import { EditBankAccountParams } from '~/procedure-params/bank-account-params';
 
 type Account = InferRouteOutput['bankAccounts']['getByUser'][0];
 
@@ -78,7 +78,7 @@ const Info = ({ account }: { account: Account }) => {
   );
 };
 
-type EditBankAccountInput = z.infer<typeof EditBankAccountSchema>;
+type EditBankAccountInput = z.infer<typeof EditBankAccountParams>;
 
 const EditForm = ({
   account,
@@ -88,7 +88,7 @@ const EditForm = ({
   setIsEditing: () => void;
 }) => {
   const form = useForm<EditBankAccountInput>({
-    resolver: zodResolver(EditBankAccountSchema),
+    resolver: zodResolver(EditBankAccountParams),
     mode: 'onTouched',
     defaultValues: {
       id: account.id,

@@ -15,13 +15,13 @@ import {
   FormMessage,
 } from '~/app/_components/ui/form';
 import React from 'react';
-import { CreateBankAccountSchema } from '~/schemas/bank-account.schema';
+import { CreateBankAccountParams } from '~/procedure-params/bank-account-params';
 
-type CreateBankAccountInput = z.infer<typeof CreateBankAccountSchema>;
+type CreateBankAccountInput = z.infer<typeof CreateBankAccountParams>;
 
 export const BankAccountForm = () => {
   const form = useForm<CreateBankAccountInput>({
-    resolver: zodResolver(CreateBankAccountSchema),
+    resolver: zodResolver(CreateBankAccountParams),
     mode: 'onTouched',
     defaultValues: {
       name: '',

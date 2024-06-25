@@ -4,6 +4,7 @@ import { transactionsRouter } from '~/server/api/routers/transactions-router';
 import { usersRouter } from '~/server/api/routers/users-router';
 import { invoicesRouter } from '~/server/api/routers/invoices-router';
 import { purchaseCategoriesRouter } from '~/server/api/routers/purchase-categories-routes';
+import { PurchasesRouter } from '~/server/api/routers/purchases-router';
 
 /**
  * This is the primary router for your server.
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   transactions: transactionsRouter,
   invoices: invoicesRouter,
   users: usersRouter,
+  purchases: PurchasesRouter,
   purchaseCategories: purchaseCategoriesRouter,
 });
 

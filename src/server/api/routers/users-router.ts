@@ -5,7 +5,7 @@ import {
 } from '~/server/api/trpc';
 import { UsersTable } from '~/server/db/schema';
 import { eq } from 'drizzle-orm';
-import { CreateUserSchema } from '~/schemas/user.schema';
+import { CreateUserParams } from '~/procedure-params/user-params';
 
 export const usersRouter = createTRPCRouter({
   getProfile: privateProcedure.query(async ({ ctx }) => {
@@ -18,7 +18,7 @@ export const usersRouter = createTRPCRouter({
   }),
 
   create: publicProcedure
-    .input(CreateUserSchema)
+    .input(CreateUserParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(UsersTable).values(input);
     }),

@@ -2,7 +2,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { InvoicesTable } from '~/server/db/schema';
 import { z } from '~/utils/zod-pt';
 
-const BaseInvoiceSchema = createInsertSchema(InvoicesTable, {
+const BaseInvoiceParams = createInsertSchema(InvoicesTable, {
   value: z.number().positive(),
   lim: z.number().positive(),
   dueDate: z.coerce.date(),
@@ -11,6 +11,6 @@ const BaseInvoiceSchema = createInsertSchema(InvoicesTable, {
   updatedAt: true,
 });
 
-export const CreateInvoiceSchema = BaseInvoiceSchema.omit({ id: true });
+export const CreateInvoiceParams = BaseInvoiceParams.omit({ id: true });
 
-export const EditInvoiceSchema = BaseInvoiceSchema.required({ id: true });
+export const EditInvoiceParams = BaseInvoiceParams.required({ id: true });

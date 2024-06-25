@@ -2,7 +2,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { PurchaseCategoriesTable } from '~/server/db/schema';
 import { z } from '~/utils/zod-pt';
 
-const BasePurchaseCategorySchema = createInsertSchema(PurchaseCategoriesTable, {
+const BasePurchaseCategoryParams = createInsertSchema(PurchaseCategoriesTable, {
   name: z.string().min(3).max(50),
 }).omit({
   id: true,
@@ -11,4 +11,4 @@ const BasePurchaseCategorySchema = createInsertSchema(PurchaseCategoriesTable, {
   updatedAt: true,
 });
 
-export const CreatePurchaseCategorySchema = BasePurchaseCategorySchema;
+export const CreatePurchaseCategoryParams = BasePurchaseCategoryParams;

@@ -4,11 +4,11 @@ import { api } from '~/trpc/react';
 import { type InferRouteOutput } from '~/utils/types';
 import { AccountCard } from '~/app/(main)/accounts/_components/account-card';
 
-type Props = {
+export type AccountListProps = {
   initialData: InferRouteOutput['bankAccounts']['getByUser'];
 };
 
-export function AccountList({ initialData }: Props) {
+export function AccountList({ initialData }: AccountListProps) {
   const accounts = api.bankAccounts.getByUser.useQuery(undefined, {
     initialData,
   });

@@ -2,7 +2,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { UsersTable } from '~/server/db/schema';
 import { z } from '~/utils/zod-pt';
 
-const BaseUserSchema = createInsertSchema(UsersTable, {
+const BaseUserParams = createInsertSchema(UsersTable, {
   id: z.string().uuid(),
   name: z.string().min(3).max(50),
   email: z.string().email(),
@@ -11,4 +11,4 @@ const BaseUserSchema = createInsertSchema(UsersTable, {
   updatedAt: true,
 });
 
-export const CreateUserSchema = BaseUserSchema;
+export const CreateUserParams = BaseUserParams;
