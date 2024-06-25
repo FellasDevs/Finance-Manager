@@ -2,7 +2,7 @@ import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { PurchasesTable } from '~/server/db/schema';
 import { desc, eq } from 'drizzle-orm';
 import { z } from '~/utils/zod-pt';
-import { CreatePurchaseSchema } from '~/schemas/purchases.schema';
+import { CreatePurchaseParams } from '~/procedure-params/purchases-params';
 
 export const PurchasesRouter = createTRPCRouter({
   getByInvoice: privateProcedure
@@ -16,7 +16,7 @@ export const PurchasesRouter = createTRPCRouter({
     }),
 
   create: privateProcedure
-    .input(CreatePurchaseSchema)
+    .input(CreatePurchaseParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(PurchasesTable).values(input);
     }),

@@ -3,9 +3,9 @@ import { BankAccountsTable } from '~/server/db/schema';
 import { and, desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import {
-  CreateBankAccountSchema,
-  EditBankAccountSchema,
-} from '~/schemas/bank-account.schema';
+  CreateBankAccountParams,
+  EditBankAccountParams,
+} from '~/procedure-params/bank-account-params';
 
 export const bankAccountsRouter = createTRPCRouter({
   getByUser: privateProcedure.query(({ ctx }) => {
@@ -28,7 +28,7 @@ export const bankAccountsRouter = createTRPCRouter({
     }),
 
   create: privateProcedure
-    .input(CreateBankAccountSchema)
+    .input(CreateBankAccountParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(BankAccountsTable).values({
         ...input,
@@ -50,7 +50,7 @@ export const bankAccountsRouter = createTRPCRouter({
     }),
 
   edit: privateProcedure
-    .input(EditBankAccountSchema)
+    .input(EditBankAccountParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(BankAccountsTable)

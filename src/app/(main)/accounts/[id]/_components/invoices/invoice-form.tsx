@@ -6,7 +6,6 @@ import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/react';
 import { useForm } from 'react-hook-form';
 import { type z } from 'zod';
-import { CreateInvoiceSchema } from '~/schemas/invoices.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
@@ -17,17 +16,18 @@ import {
   FormMessage,
 } from '~/app/_components/ui/form';
 import dayjs from 'dayjs';
+import { CreateInvoiceParams } from '~/procedure-params/invoices-params';
 
 type Props = {
   accountId: string;
   onSuccess?: () => void;
 };
 
-type CreateInvoiceInput = z.input<typeof CreateInvoiceSchema>;
+type CreateInvoiceInput = z.input<typeof CreateInvoiceParams>;
 
 export const InvoiceForm: FC<Props> = ({ accountId, onSuccess }) => {
   const form = useForm<CreateInvoiceInput>({
-    resolver: zodResolver(CreateInvoiceSchema),
+    resolver: zodResolver(CreateInvoiceParams),
     mode: 'onTouched',
     defaultValues: {
       accountId,

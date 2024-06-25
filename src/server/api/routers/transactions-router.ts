@@ -2,7 +2,7 @@ import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BankAccountsTable, TransactionsTable } from '~/server/db/schema';
 import { desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { CreateTransactionSchema } from '~/schemas/transactions.schema';
+import { CreateTransactionParams } from '~/procedure-params/transactions-params';
 
 export const transactionsRouter = createTRPCRouter({
   getByAccountId: privateProcedure
@@ -25,7 +25,7 @@ export const transactionsRouter = createTRPCRouter({
     }),
 
   create: privateProcedure
-    .input(CreateTransactionSchema)
+    .input(CreateTransactionParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.transaction(async (trx) => {
         await trx.insert(TransactionsTable).values(input);

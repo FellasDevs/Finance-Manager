@@ -1,7 +1,7 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { PurchaseCategoriesTable } from '~/server/db/schema';
 import { desc, eq } from 'drizzle-orm';
-import { CreatePurchaseCategorySchema } from '~/schemas/purchase-categories.schema';
+import { CreatePurchaseCategoryParams } from '~/procedure-params/purchase-categories-params';
 
 export const purchaseCategoriesRouter = createTRPCRouter({
   getByUser: privateProcedure.query(({ ctx }) => {
@@ -13,7 +13,7 @@ export const purchaseCategoriesRouter = createTRPCRouter({
   }),
 
   create: privateProcedure
-    .input(CreatePurchaseCategorySchema)
+    .input(CreatePurchaseCategoryParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(PurchaseCategoriesTable).values({
         ...input,

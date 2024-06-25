@@ -5,7 +5,6 @@ import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/react';
 import { type z } from 'zod';
-import { CreateTransactionSchema } from '~/schemas/transactions.schema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -17,17 +16,18 @@ import {
   FormMessage,
 } from '~/app/_components/ui/form';
 import dayjs from 'dayjs';
+import { CreateTransactionParams } from '~/procedure-params/transactions-params';
 
 type Props = {
   accountId: string;
   onSuccess?: () => void;
 };
 
-type CreateTransactionInput = z.input<typeof CreateTransactionSchema>;
+type CreateTransactionInput = z.input<typeof CreateTransactionParams>;
 
 export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
   const form = useForm<CreateTransactionInput>({
-    resolver: zodResolver(CreateTransactionSchema),
+    resolver: zodResolver(CreateTransactionParams),
     mode: 'onTouched',
     defaultValues: {
       accountId,
