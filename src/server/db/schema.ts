@@ -106,8 +106,10 @@ export const PurchasesTable = createTable('purchases', {
     .references(() => InvoicesTable.id),
   time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
   value: doublePrecision('value').notNull().default(0),
-  description: varchar('description', { length: 50 }),
-  categoryId: uuid('category_id').references(() => PurchaseCategoriesTable.id),
+  description: varchar('description', { length: 50 }).notNull(),
+  categoryId: uuid('category_id')
+    .notNull()
+    .references(() => PurchaseCategoriesTable.id),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
