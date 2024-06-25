@@ -4,6 +4,8 @@ import { GeistSans } from 'geist/font/sans';
 
 import { TRPCReactProvider } from '~/trpc/react';
 import { type ReactNode } from 'react';
+import { Navbar } from '~/app/_components/global/navbar';
+import { ThemeProvider } from '~/app/_components/global/theme-provider';
 
 export const metadata = {
   title: 'Finance Manager',
@@ -13,9 +15,19 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="pt-BR" className={`${GeistSans.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            {children}
+          </ThemeProvider>
+        </TRPCReactProvider>
       </body>
     </html>
   );

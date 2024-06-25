@@ -1,7 +1,6 @@
-import React, { type FC, type ReactNode, Suspense } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 import { createSupabaseServerClient } from '~/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import { AuthButton } from '~/app/(main)/_components/auth-button';
 
 const MainLayout: FC<{ children: ReactNode }> = async ({ children }) => {
   const supabase = createSupabaseServerClient();
@@ -12,19 +11,7 @@ const MainLayout: FC<{ children: ReactNode }> = async ({ children }) => {
 
   if (!user) redirect('/login');
 
-  return (
-    <>
-      <nav className="flex h-[4em] items-center justify-between border-b px-5">
-        <span className="text-2xl font-bold">Finance Manager</span>
-
-        <Suspense>
-          <AuthButton />
-        </Suspense>
-      </nav>
-
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default MainLayout;

@@ -1,7 +1,5 @@
-export default function DashboardPage() {
-  return (
-    <div className="flex h-screen items-center justify-center text-2xl font-semibold">
-      Dashboard
-    </div>
-  );
+import { redirect } from 'next/navigation';
+
+export default function Home() {
+  redirect('/login');
 }
