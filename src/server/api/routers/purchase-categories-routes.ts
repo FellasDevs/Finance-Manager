@@ -15,9 +15,14 @@ export const purchaseCategoriesRouter = createTRPCRouter({
   create: privateProcedure
     .input(CreatePurchaseCategoryParams)
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(PurchaseCategoriesTable).values({
-        ...input,
-        userId: ctx.user.id,
-      });
+      const [newCategory] = await ctx.db
+        .insert(PurchaseCategoriesTable)
+        .values({
+          ...input,
+          userId: ctx.user.id,
+        })
+        .returning();
+
+      return newCategory;
     }),
 });

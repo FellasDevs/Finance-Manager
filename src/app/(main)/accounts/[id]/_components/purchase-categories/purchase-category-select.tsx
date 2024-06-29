@@ -17,13 +17,17 @@ type CategoryOption = {
 export function PurchaseCategorySelect({ onChange, ...props }: Props) {
   const { data: categories } = api.purchaseCategories.getByUser.useQuery();
 
-  const { mutate: createCategory } =
-    api.purchaseCategories.create.useMutation();
-
   const filteredCategories: CategoryOption[] = useMemo(
     () => categories?.map(({ id, name }) => ({ value: id, label: name })) || [],
     [categories],
   );
+
+  const { mutate: createCategory } = api.purchaseCategories.create.useMutation({
+    onSuccess: (category) => {
+      console.log(category);
+      if (category) onChange(category.id);
+    },
+  });
 
   return (
     <Select<CategoryOption>
