@@ -19,7 +19,7 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button className="w-full">Ver mais</Button>
       </DialogTrigger>
 
@@ -37,7 +37,7 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
             'Não há compras registradas nessa fatura'
           ) : (
             <div className="flex max-h-[55%] flex-col gap-2 overflow-auto rounded-lg p-2">
-              {[...purchases, ...purchases, ...purchases].map((purchase) => (
+              {purchases.map((purchase) => (
                 <PurchaseCard purchase={purchase} key={purchase.id} />
               ))}
             </div>
