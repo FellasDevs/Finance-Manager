@@ -2,7 +2,7 @@ import { api } from '~/trpc/server';
 import Link from 'next/link';
 import { InvoiceList } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-list';
 import { TransactionsList } from '~/app/(main)/accounts/[id]/_components/transactions/transaction-list';
-import { parseMoney } from '~/utils/parseMoney';
+import { CurrentAccountCard } from '~/app/(main)/accounts/[id]/_components/CurrentAccountCard';
 
 type Params = {
   params: { id: string };
@@ -30,10 +30,7 @@ export default async function AccountPage({ params: { id } }: Params) {
 
     return (
       <div className="flex flex-wrap gap-12 p-10">
-        <div className="flex h-fit w-fit flex-col gap-3 rounded-lg bg-blue-200 p-12">
-          <p className="text-xl font-bold">{account.name}</p>
-          <p className="text-lg font-semibold">{parseMoney(account.balance)}</p>
-        </div>
+        <CurrentAccountCard initialData={account} />
 
         <TransactionsList accountId={id} initialData={transactions} />
         <InvoiceList accountId={id} initialData={invoices} />
