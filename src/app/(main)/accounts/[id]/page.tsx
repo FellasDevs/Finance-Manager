@@ -2,7 +2,8 @@ import { api } from '~/trpc/server';
 import Link from 'next/link';
 import { InvoiceList } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-list';
 import { TransactionsList } from '~/app/(main)/accounts/[id]/_components/transactions/transaction-list';
-import { parseMoney } from '~/utils/parseMoney';
+import { CurrentAccountCard } from '~/app/(main)/accounts/[id]/_components/CurrentAccountCard';
+import { ArrowLeft } from 'lucide-react';
 
 type Params = {
   params: { id: string };
@@ -30,9 +31,16 @@ export default async function AccountPage({ params: { id } }: Params) {
 
     return (
       <div className="flex flex-wrap gap-12 p-10">
-        <div className="flex h-fit w-fit flex-col gap-3 rounded-lg bg-blue-200 p-12">
-          <p className="text-xl font-bold">{account.name}</p>
-          <p className="text-lg font-semibold">{parseMoney(account.balance)}</p>
+        <div>
+          <Link
+            href="/accounts"
+            className="mb-2 flex items-center gap-1 rounded-lg bg-blue-200 p-2 text-lg hover:bg-blue-300"
+          >
+            <ArrowLeft size={24} />
+            <p>Voltar às contas</p>
+          </Link>
+
+          <CurrentAccountCard initialData={account} />
         </div>
 
         <TransactionsList accountId={id} initialData={transactions} />

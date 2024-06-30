@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type FC } from 'react';
+import React, { type FC, useState } from 'react';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/react';
@@ -17,6 +17,8 @@ import {
 } from '~/app/_components/ui/form';
 import dayjs from 'dayjs';
 import { CreateTransactionParams } from '~/procedure-params/transactions-params';
+import { Switch } from '~/app/_components/ui/switch';
+import { Label } from '~/app/_components/ui/label';
 
 type Props = {
   accountId: string;
@@ -37,11 +39,19 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
     },
   });
 
+  const [isReceiving, setIsReceiving] = useState(false);
+
   const { mutate, isPending } = api.transactions.create.useMutation({
     onSuccess,
   });
 
-  const onSubmit = form.handleSubmit((data) => mutate(data));
+  const onSubmit = form.handleSubmit((data) => {
+    let value = data.value ?? 0;
+
+    if (!isReceiving) value = -value;
+
+    mutate({ ...data, value });
+  });
 
   return (
     <Form {...form}>
@@ -75,16 +85,34 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
               <FormLabel className="text-muted-foreground">Valor</FormLabel>
 
               <FormControl>
-                <Input
-                  type="number"
-                  step={0.01}
-                  placeholder="Insira o valor da transação"
-                  {...field}
-                  onChange={(e) =>
-                    form.setValue('value', Number(e.target.value))
-                  }
-                  autoComplete="on"
-                />
+                <div className="flex items-center justify-between gap-2">
+                  <Input
+                    type="number"
+                    step={0.01}
+                    placeholder="Insira o valor da transação"
+                    className="w-min"
+                    {...field}
+                    onChange={(e) =>
+                      form.setValue('value', Number(e.target.value))
+                    }
+                    autoComplete="on"
+                  />
+
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="receiving"
+                      checked={isReceiving}
+                      onCheckedChange={setIsReceiving}
+                    />
+
+                    <Label
+                      htmlFor="receiving"
+                      className="text-md w-fit accent-gray-600"
+                    >
+                      Transação recebida
+                    </Label>
+                  </div>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
