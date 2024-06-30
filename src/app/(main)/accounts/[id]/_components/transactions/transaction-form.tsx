@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type FC } from 'react';
+import React, { type FC, useState } from 'react';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/react';
@@ -17,6 +17,8 @@ import {
 } from '~/app/_components/ui/form';
 import dayjs from 'dayjs';
 import { CreateTransactionParams } from '~/procedure-params/transactions-params';
+import { Switch } from '~/app/_components/ui/switch';
+import { Label } from '~/app/_components/ui/label';
 
 type Props = {
   accountId: string;
@@ -37,11 +39,19 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
     },
   });
 
+  const [isNegative, setIsNegative] = useState(false);
+
   const { mutate, isPending } = api.transactions.create.useMutation({
     onSuccess,
   });
 
-  const onSubmit = form.handleSubmit((data) => mutate(data));
+  const onSubmit = form.handleSubmit((data) => {
+    let value = data.value ?? 0;
+
+    value = isNegative ? -value : value;
+
+    mutate({ ...data, value });
+  });
 
   return (
     <Form {...form}>
@@ -66,6 +76,18 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
             </FormItem>
           )}
         />
+
+        <div className="flex items-center gap-2">
+          <Switch
+            id="isNegative"
+            checked={isNegative}
+            onCheckedChange={setIsNegative}
+          />
+
+          <Label htmlFor="isNegative" className="text-md accent-gray-600">
+            A transação foi para outra conta
+          </Label>
+        </div>
 
         <FormField
           control={form.control}
