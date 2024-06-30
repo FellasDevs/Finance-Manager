@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { InvoiceList } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-list';
 import { TransactionsList } from '~/app/(main)/accounts/[id]/_components/transactions/transaction-list';
 import { CurrentAccountCard } from '~/app/(main)/accounts/[id]/_components/CurrentAccountCard';
+import { Button } from '~/app/_components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 type Params = {
   params: { id: string };
@@ -30,7 +32,17 @@ export default async function AccountPage({ params: { id } }: Params) {
 
     return (
       <div className="flex flex-wrap gap-12 p-10">
-        <CurrentAccountCard initialData={account} />
+        <div>
+          <Link
+            href="/accounts"
+            className="mb-2 flex items-center gap-1 rounded-lg bg-blue-200 p-2 text-lg hover:bg-blue-300"
+          >
+            <ArrowLeft size={24} />
+            <p>Voltar às contas</p>
+          </Link>
+
+          <CurrentAccountCard initialData={account} />
+        </div>
 
         <TransactionsList accountId={id} initialData={transactions} />
         <InvoiceList accountId={id} initialData={invoices} />
