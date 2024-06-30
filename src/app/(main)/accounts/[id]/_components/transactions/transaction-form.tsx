@@ -39,7 +39,7 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
     },
   });
 
-  const [isNegative, setIsNegative] = useState(false);
+  const [isReceiving, setIsReceiving] = useState(false);
 
   const { mutate, isPending } = api.transactions.create.useMutation({
     onSuccess,
@@ -48,7 +48,7 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
   const onSubmit = form.handleSubmit((data) => {
     let value = data.value ?? 0;
 
-    value = isNegative ? -value : value;
+    if (!isReceiving) value = -value;
 
     mutate({ ...data, value });
   });
@@ -77,18 +77,6 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
           )}
         />
 
-        <div className="flex items-center gap-2">
-          <Switch
-            id="isNegative"
-            checked={isNegative}
-            onCheckedChange={setIsNegative}
-          />
-
-          <Label htmlFor="isNegative" className="text-md accent-gray-600">
-            A transação foi para outra conta
-          </Label>
-        </div>
-
         <FormField
           control={form.control}
           name="value"
@@ -97,16 +85,34 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
               <FormLabel className="text-muted-foreground">Valor</FormLabel>
 
               <FormControl>
-                <Input
-                  type="number"
-                  step={0.01}
-                  placeholder="Insira o valor da transação"
-                  {...field}
-                  onChange={(e) =>
-                    form.setValue('value', Number(e.target.value))
-                  }
-                  autoComplete="on"
-                />
+                <div className="flex items-center justify-between gap-2">
+                  <Input
+                    type="number"
+                    step={0.01}
+                    placeholder="Insira o valor da transação"
+                    className="w-min"
+                    {...field}
+                    onChange={(e) =>
+                      form.setValue('value', Number(e.target.value))
+                    }
+                    autoComplete="on"
+                  />
+
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="receiving"
+                      checked={isReceiving}
+                      onCheckedChange={setIsReceiving}
+                    />
+
+                    <Label
+                      htmlFor="receiving"
+                      className="text-md w-fit accent-gray-600"
+                    >
+                      Transação recebida
+                    </Label>
+                  </div>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

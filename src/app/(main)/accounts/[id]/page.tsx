@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { InvoiceList } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-list';
 import { TransactionsList } from '~/app/(main)/accounts/[id]/_components/transactions/transaction-list';
 import { CurrentAccountCard } from '~/app/(main)/accounts/[id]/_components/CurrentAccountCard';
-import { Button } from '~/app/_components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
 type Params = {
