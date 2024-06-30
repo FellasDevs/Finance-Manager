@@ -101,7 +101,7 @@ export const InvoiceForm: FC<Props> = ({ accountId, onSuccess }) => {
 
               <FormControl>
                 <Input
-                  type="datetime-local"
+                  type="date"
                   placeholder="Insira o momento em que a transação ocorreu"
                   {...field}
                   value={dayjs(field.value).format('YYYY-MM-DDTHH:mm')}

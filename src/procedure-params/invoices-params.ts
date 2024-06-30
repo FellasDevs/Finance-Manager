@@ -3,8 +3,8 @@ import { InvoicesTable } from '~/server/db/schema';
 import { z } from '~/utils/zod-pt';
 
 const BaseInvoiceParams = createInsertSchema(InvoicesTable, {
-  value: z.number().positive(),
-  lim: z.number().positive(),
+  value: z.number().nonnegative(),
+  lim: z.number().nonnegative(),
   dueDate: z.coerce.date(),
 }).omit({
   createdAt: true,

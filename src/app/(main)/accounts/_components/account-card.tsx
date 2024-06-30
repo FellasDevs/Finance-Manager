@@ -24,9 +24,10 @@ type Account = InferRouteOutput['bankAccounts']['getByUser'][0];
 
 type Props = {
   account: Account;
+  fromAccountPage?: boolean;
 };
 
-export const AccountCard: FC<Props> = ({ account }) => {
+export const AccountCard: FC<Props> = ({ account, fromAccountPage }) => {
   const deleteAccountMutation = api.bankAccounts.delete.useMutation();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -49,18 +50,22 @@ export const AccountCard: FC<Props> = ({ account }) => {
             <Pencil size={18} color="blue" />
           </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => deleteAccountMutation.mutate({ id: account.id })}
-          >
-            <Trash size={18} color="red" />
-          </Button>
+          {!fromAccountPage && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => deleteAccountMutation.mutate({ id: account.id })}
+            >
+              <Trash size={18} color="red" />
+            </Button>
+          )}
         </div>
 
-        <Link href={'accounts/' + account.id} passHref>
-          <Button>Ver mais</Button>
-        </Link>
+        {!fromAccountPage && (
+          <Link href={'accounts/' + account.id} passHref>
+            <Button>Ver mais</Button>
+          </Link>
+        )}
       </div>
     </div>
   );
