@@ -1,9 +1,8 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { InvoicesTable, PurchasesTable } from '~/server/db/schema';
-import { desc, eq, sql, SQLWrapper } from 'drizzle-orm';
+import { desc, eq, sql } from 'drizzle-orm';
 import { z } from '~/utils/zod-pt';
 import { CreatePurchaseParams } from '~/procedure-params/purchases-params';
-import { PgUUID } from 'drizzle-orm/pg-core/columns/uuid';
 import { TRPCError } from '@trpc/server';
 
 export const PurchasesRouter = createTRPCRouter({
