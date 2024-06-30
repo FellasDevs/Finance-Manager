@@ -39,6 +39,7 @@ export default async function AccountPage({ params: { id } }: Params) {
       </div>
     );
   } catch (e) {
+    console.error(e);
     return <AccountNotFound />;
   }
 }

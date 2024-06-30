@@ -17,6 +17,8 @@ import {
 } from '~/app/_components/ui/form';
 import dayjs from 'dayjs';
 import { CreateInvoiceParams } from '~/procedure-params/invoices-params';
+import { Switch } from '~/app/_components/ui/switch';
+import { Label } from '~/app/_components/ui/label';
 
 type Props = {
   accountId: string;
@@ -34,6 +36,7 @@ export const InvoiceForm: FC<Props> = ({ accountId, onSuccess }) => {
       value: 0,
       lim: 0,
       dueDate: new Date(),
+      paid: false,
     },
   });
 
@@ -54,16 +57,47 @@ export const InvoiceForm: FC<Props> = ({ accountId, onSuccess }) => {
               <FormLabel className="text-muted-foreground">Valor</FormLabel>
 
               <FormControl>
-                <Input
-                  type="number"
-                  step={0.01}
-                  placeholder="Insira o valor"
-                  {...field}
-                  onChange={(e) =>
-                    form.setValue('value', Number(e.target.value))
-                  }
-                  autoComplete="on"
-                />
+                <div className="flex items-center justify-between">
+                  <Input
+                    type="number"
+                    step={0.01}
+                    placeholder="Insira o valor"
+                    {...field}
+                    onChange={(e) =>
+                      form.setValue('value', Number(e.target.value))
+                    }
+                    autoComplete="on"
+                    className="w-fit"
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="paid"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex gap-2">
+                            <Switch
+                              id="paid"
+                              checked={field.value}
+                              onCheckedChange={(paid) =>
+                                form.setValue('paid', paid)
+                              }
+                            />
+
+                            <Label
+                              htmlFor="paid"
+                              className="text-md w-fit accent-gray-600"
+                            >
+                              Fatura paga
+                            </Label>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +138,7 @@ export const InvoiceForm: FC<Props> = ({ accountId, onSuccess }) => {
                   type="date"
                   placeholder="Insira o momento em que a transação ocorreu"
                   {...field}
-                  value={dayjs(field.value).format('YYYY-MM-DDTHH:mm')}
+                  value={dayjs(field.value).format('YYYY-MM-DD')}
                   onChange={(e) =>
                     form.setValue('dueDate', dayjs(e.target.value).toDate())
                   }

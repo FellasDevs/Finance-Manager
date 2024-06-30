@@ -9,7 +9,7 @@ export type InvoiceCardProps = {
 
 export const InvoiceCard: FC<InvoiceCardProps> = ({ invoice }) => {
   return (
-    <div className="flex h-[12em] flex-col justify-between rounded-lg p-3 font-semibold shadow-lg">
+    <div className="flex h-[12em] flex-col justify-between gap-2 rounded-lg p-3 font-semibold shadow-lg">
       <InvoiceHeader invoice={invoice} />
       <InvoiceDialog invoice={invoice} />
     </div>

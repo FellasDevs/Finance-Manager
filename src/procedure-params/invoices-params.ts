@@ -13,4 +13,6 @@ const BaseInvoiceParams = createInsertSchema(InvoicesTable, {
 
 export const CreateInvoiceParams = BaseInvoiceParams.omit({ id: true });
 
-export const EditInvoiceParams = BaseInvoiceParams.required({ id: true });
+export const EditInvoiceParams = BaseInvoiceParams.partial().required({
+  id: true,
+});

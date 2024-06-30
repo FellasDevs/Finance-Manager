@@ -3,6 +3,7 @@
 
 import { sql } from 'drizzle-orm';
 import {
+  boolean,
   date,
   doublePrecision,
   pgTableCreator,
@@ -78,6 +79,7 @@ export const InvoicesTable = createTable('invoices', {
   lim: doublePrecision('lim').notNull().default(0),
   value: doublePrecision('value').notNull().default(0),
   dueDate: date('due_date').notNull(),
+  paid: boolean('paid').notNull().default(false),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
