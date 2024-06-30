@@ -6,6 +6,7 @@ import {
   date,
   doublePrecision,
   pgTableCreator,
+  primaryKey,
   text,
   timestamp,
   uuid,
@@ -144,22 +145,20 @@ export const InvestmentHistoryTable = createTable('investment_history', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
-export const BudgetsTable = createTable('budgets', {
-  id: uuid('id')
-    .primaryKey()
-    .notNull()
-    .unique()
-    .default(sql`uuid_generate_v4()`),
-  userId: uuid('user_id')
-    .notNull()
-    .references(() => UsersTable.id),
-  invoiceId: uuid('invoice_id')
-    .notNull()
-    .references(() => InvoicesTable.id),
-  categoryId: uuid('category_id')
-    .notNull()
-    .references(() => PurchaseCategoriesTable.id),
-  value: doublePrecision('value').notNull().default(0),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
-});
+export const BudgetsTable = createTable(
+  'budgets',
+  {
+    invoiceId: uuid('invoice_id')
+      .notNull()
+      .references(() => InvoicesTable.id),
+    categoryId: uuid('category_id')
+      .notNull()
+      .references(() => PurchaseCategoriesTable.id),
+    value: doublePrecision('value').notNull().default(0),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.invoiceId, table.categoryId] }),
+  }),
+);

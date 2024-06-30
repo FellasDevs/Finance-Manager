@@ -1,11 +1,11 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BankAccountsTable } from '~/server/db/schema';
 import { and, desc, eq } from 'drizzle-orm';
-import { z } from 'zod';
 import {
   CreateBankAccountParams,
   EditBankAccountParams,
 } from '~/procedure-params/bank-account-params';
+import { z } from '~/utils/zod-pt';
 
 export const bankAccountsRouter = createTRPCRouter({
   getByUser: privateProcedure.query(({ ctx }) => {

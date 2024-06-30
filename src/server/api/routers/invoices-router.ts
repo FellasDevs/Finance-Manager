@@ -1,8 +1,8 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { InvoicesTable } from '~/server/db/schema';
 import { desc, eq } from 'drizzle-orm';
-import { z } from 'zod';
 import { CreateInvoiceParams } from '~/procedure-params/invoices-params';
+import { z } from '~/utils/zod-pt';
 
 export const invoicesRouter = createTRPCRouter({
   getByAccountId: privateProcedure
