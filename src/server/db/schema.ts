@@ -43,7 +43,7 @@ export const BankAccountsTable = createTable('bank_accounts', {
     .default(sql`uuid_generate_v4()`),
   userId: uuid('user_id')
     .notNull()
-    .references(() => UsersTable.id),
+    .references(() => UsersTable.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 50 }).notNull(),
   balance: doublePrecision('balance').notNull().default(0),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
@@ -58,7 +58,7 @@ export const TransactionsTable = createTable('transactions', {
     .default(sql`uuid_generate_v4()`),
   accountId: uuid('account_id')
     .notNull()
-    .references(() => BankAccountsTable.id),
+    .references(() => BankAccountsTable.id, { onDelete: 'cascade' }),
   time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
   description: varchar('description', { length: 50 }).notNull(),
   category: varchar('category', { length: 50 }),
@@ -75,7 +75,7 @@ export const InvoicesTable = createTable('invoices', {
     .default(sql`uuid_generate_v4()`),
   accountId: uuid('account_id')
     .notNull()
-    .references(() => BankAccountsTable.id),
+    .references(() => BankAccountsTable.id, { onDelete: 'cascade' }),
   lim: doublePrecision('lim').notNull().default(0),
   value: doublePrecision('value').notNull().default(0),
   dueDate: date('due_date').notNull(),
@@ -92,7 +92,7 @@ export const PurchaseCategoriesTable = createTable('purchase-categories', {
     .default(sql`uuid_generate_v4()`),
   userId: uuid('user_id')
     .notNull()
-    .references(() => UsersTable.id),
+    .references(() => UsersTable.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 50 }).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
@@ -106,7 +106,7 @@ export const PurchasesTable = createTable('purchases', {
     .default(sql`uuid_generate_v4()`),
   invoiceId: uuid('invoice_id')
     .notNull()
-    .references(() => InvoicesTable.id),
+    .references(() => InvoicesTable.id, { onDelete: 'cascade' }),
   time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
   value: doublePrecision('value').notNull().default(0),
   description: varchar('description', { length: 50 }).notNull(),
@@ -125,7 +125,7 @@ export const InvestmentsTable = createTable('investments', {
     .default(sql`uuid_generate_v4()`),
   userId: uuid('user_id')
     .notNull()
-    .references(() => UsersTable.id),
+    .references(() => UsersTable.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 50 }).notNull(),
   value: doublePrecision('value').notNull().default(0),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
@@ -140,7 +140,7 @@ export const InvestmentHistoryTable = createTable('investment_history', {
     .default(sql`uuid_generate_v4()`),
   investmentId: uuid('investment_id')
     .notNull()
-    .references(() => InvestmentsTable.id),
+    .references(() => InvestmentsTable.id, { onDelete: 'cascade' }),
   time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
   value: doublePrecision('value').notNull().default(0),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
@@ -152,7 +152,7 @@ export const BudgetsTable = createTable(
   {
     invoiceId: uuid('invoice_id')
       .notNull()
-      .references(() => InvoicesTable.id),
+      .references(() => InvoicesTable.id, { onDelete: 'cascade' }),
     categoryId: uuid('category_id')
       .notNull()
       .references(() => PurchaseCategoriesTable.id),

@@ -4,7 +4,7 @@ import { z } from '~/utils/zod-pt';
 
 const BaseBankAccountParams = createInsertSchema(BankAccountsTable, {
   name: z.string().min(3).max(50),
-  balance: z.number().positive().max(90000),
+  balance: z.number().nonnegative().max(90000),
 }).omit({
   userId: true,
   createdAt: true,
