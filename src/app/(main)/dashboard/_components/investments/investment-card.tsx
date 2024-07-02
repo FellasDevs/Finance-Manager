@@ -3,7 +3,7 @@
 import React, { type FC, useState } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
 import Link from 'next/link';
-import { Pencil, Trash } from 'lucide-react';
+import { Trash } from 'lucide-react';
 import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/react';
 import { parseMoney } from '~/utils/parseMoney';
@@ -47,11 +47,7 @@ export const InvestmentCard: FC<Props> = ({
 
       <div className="flex flex-col gap-1">
         <div className="flex justify-between">
-          <InvestmentsForm originalInvestment={investment}>
-            <Button variant="ghost" size="icon">
-              <Pencil size={18} color="blue" />
-            </Button>
-          </InvestmentsForm>
+          <InvestmentsForm originalInvestment={investment} />
 
           {!fromInvestmentPage && (
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

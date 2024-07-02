@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from '~/app/_components/ui/form';
-import React, { type ReactNode, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -22,7 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
-import { PlusCircle } from 'lucide-react';
+import { Pencil, PlusCircle } from 'lucide-react';
 import { CreateInvestmentParams } from '~/procedure-params/investments-params';
 import dayjs from 'dayjs';
 import { type Investment } from '~/app/(main)/dashboard/_components/investments/investment-card';
@@ -31,10 +31,9 @@ type CreateInvestmentInput = z.infer<typeof CreateInvestmentParams>;
 
 type Props = {
   originalInvestment?: Investment;
-  children?: ReactNode;
 };
 
-export const InvestmentsForm = ({ originalInvestment, children }: Props) => {
+export const InvestmentsForm = ({ originalInvestment }: Props) => {
   const form = useForm<CreateInvestmentInput>({
     resolver: zodResolver(CreateInvestmentParams),
     mode: 'all',
@@ -78,7 +77,11 @@ export const InvestmentsForm = ({ originalInvestment, children }: Props) => {
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          {children || <PlusCircle color="green" />}
+          {originalInvestment ? (
+            <Pencil size={18} color="blue" />
+          ) : (
+            <PlusCircle color="green" />
+          )}
         </Button>
       </DialogTrigger>
 

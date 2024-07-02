@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from '~/app/_components/ui/form';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { CreateBankAccountParams } from '~/procedure-params/bank-account-params';
 import {
   Dialog,
@@ -23,15 +23,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
-import { PlusCircle } from 'lucide-react';
+import { Pencil, PlusCircle } from 'lucide-react';
+import { type BankAccount } from '~/app/(main)/dashboard/_components/accounts/account-card';
 
 type CreateBankAccountInput = z.infer<typeof CreateBankAccountParams>;
 
-export const BankAccountForm = () => {
+type Props = {
+  originalBankAccount?: BankAccount;
+};
+
+export const BankAccountForm = ({ originalBankAccount }: Props) => {
   const form = useForm<CreateBankAccountInput>({
     resolver: zodResolver(CreateBankAccountParams),
     mode: 'all',
-    defaultValues: {
+    defaultValues: originalBankAccount || {
       name: '',
       balance: 0,
     },
@@ -39,7 +44,7 @@ export const BankAccountForm = () => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const { mutate: createAccount, isPending } =
+  const { mutate: createAccount, isPending: creationPending } =
     api.bankAccounts.create.useMutation({
       onSuccess: () => {
         form.reset();
@@ -47,18 +52,41 @@ export const BankAccountForm = () => {
       },
     });
 
-  const onSubmit = form.handleSubmit((data) => createAccount(data));
+  const { mutate: editAccount, isPending: editPending } =
+    api.bankAccounts.edit.useMutation({
+      onSuccess: () => {
+        form.reset();
+        setDialogOpen(false);
+      },
+    });
+
+  const isPending = useMemo(
+    () => creationPending || editPending,
+    [creationPending, editPending],
+  );
+
+  const onSubmit = form.handleSubmit((data) =>
+    originalBankAccount
+      ? editAccount({ ...originalBankAccount, ...data })
+      : createAccount(data),
+  );
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <PlusCircle color="green" />
+          {originalBankAccount ? (
+            <Pencil size={18} color="blue" />
+          ) : (
+            <PlusCircle color="green" />
+          )}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="flex flex-col">
-        <DialogTitle>Nova conta</DialogTitle>
+        <DialogTitle>
+          {originalBankAccount ? 'Editar ' : 'Nova '} conta
+        </DialogTitle>
         <DialogClose />
 
         <Form {...form}>
@@ -112,7 +140,7 @@ export const BankAccountForm = () => {
               isLoading={isPending}
               variant="outline"
             >
-              Criar conta
+              {originalBankAccount ? 'Editar ' : 'Criar '} conta
             </Button>
           </form>
         </Form>
