@@ -24,7 +24,7 @@ export default async function AccountPage({ params: { id } }: Params) {
       <div className="flex flex-wrap gap-12 p-10">
         <div>
           <Link
-            href="/accounts"
+            href={'/dashboard'}
             className="mb-2 flex items-center gap-1 rounded-lg bg-blue-200 p-2 text-lg hover:bg-blue-300"
           >
             <ArrowLeft size={24} />
@@ -49,7 +49,7 @@ function AccountNotFound() {
     <div className="flex h-screen flex-col items-center justify-center text-2xl font-bold">
       <p>Conta não encontrada</p>
 
-      <Link href={'/accounts'}>
+      <Link href={'/dashboard'}>
         <p className="underline">Retornar às minhas contas</p>
       </Link>
     </div>

@@ -32,7 +32,7 @@ export const signUp = async (data: SignupInput) => {
     name: data.name,
   });
 
-  redirect('/accounts');
+  redirect('/dashboard');
 
   return undefined;
 };
@@ -48,7 +48,7 @@ export const logIn = async (data: LoginInput) => {
     return error.message;
   }
 
-  redirect('/accounts');
+  redirect('/dashboard');
 
   return undefined;
 };

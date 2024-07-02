@@ -2,7 +2,7 @@
 
 import { type InferRouteOutput } from '~/utils/types';
 import { api } from '~/trpc/react';
-import { AccountCard } from '~/app/(main)/accounts/_components/account-card';
+import { AccountCard } from '~/app/(main)/dashboard/_components/accounts/account-card';
 
 type Props = {
   initialData: InferRouteOutput['bankAccounts']['getById'];
