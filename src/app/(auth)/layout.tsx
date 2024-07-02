@@ -14,7 +14,7 @@ const AuthLayout: FC<{ children: ReactNode }> = async ({ children }) => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user) redirect('/accounts');
+  if (user) redirect('/dashboard');
 
   return <>{children}</>;
 };

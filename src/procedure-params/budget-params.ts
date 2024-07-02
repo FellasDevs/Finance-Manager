@@ -3,7 +3,7 @@ import { BudgetsTable } from '~/server/db/schema';
 import { z } from '~/utils/zod-pt';
 
 export const BudgetParams = createInsertSchema(BudgetsTable, {
-  value: z.number().positive(),
+  value: z.number().nonnegative(),
   invoiceId: z.string().uuid(),
   categoryId: z.string().uuid(),
 }).omit({

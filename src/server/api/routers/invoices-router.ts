@@ -49,6 +49,7 @@ export const invoicesRouter = createTRPCRouter({
         .set({
           ...params,
           ...(dueDate && { dueDate: dueDate.toISOString() }),
+          updatedAt: sql`now()`,
         })
         .where(eq(InvoicesTable.id, input.id));
     }),
@@ -76,13 +77,17 @@ export const invoicesRouter = createTRPCRouter({
       await ctx.db.transaction(async (tx) => {
         await tx
           .update(InvoicesTable)
-          .set({ paid: true })
+          .set({
+            paid: true,
+            updatedAt: sql`now()`,
+          })
           .where(eq(InvoicesTable.id, input.id));
 
         await tx
           .update(BankAccountsTable)
           .set({
             balance: sql`${BankAccountsTable.balance} - ${invoice.value}`,
+            updatedAt: sql`now()`,
           })
           .where(eq(BankAccountsTable.id, invoice.accountId));
       });

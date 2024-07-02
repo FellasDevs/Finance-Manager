@@ -1,6 +1,6 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BankAccountsTable } from '~/server/db/schema';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import {
   CreateBankAccountParams,
   EditBankAccountParams,
@@ -57,6 +57,7 @@ export const bankAccountsRouter = createTRPCRouter({
         .set({
           name: input.name,
           balance: input.balance,
+          updatedAt: sql`now()`,
         })
         .where(
           and(

@@ -30,9 +30,13 @@ export const transactionsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await ctx.db.transaction(async (trx) => {
         await trx.insert(TransactionsTable).values(input);
+
         await trx
           .update(BankAccountsTable)
-          .set({ balance: sql`${BankAccountsTable.balance} + ${input.value}` })
+          .set({
+            balance: sql`${BankAccountsTable.balance} + ${input.value}`,
+            updatedAt: sql`now()`,
+          })
           .where(eq(BankAccountsTable.id, input.accountId));
       });
     }),
@@ -55,6 +59,7 @@ export const transactionsRouter = createTRPCRouter({
           .update(BankAccountsTable)
           .set({
             balance: sql`${BankAccountsTable.balance} - ${trans.value}`,
+            updatedAt: sql`now()`,
           })
           .where(eq(BankAccountsTable.id, trans.accountId));
 
