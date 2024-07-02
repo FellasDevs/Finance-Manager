@@ -1,6 +1,6 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { InvestmentsTable } from '~/server/db/schema';
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq, sql } from 'drizzle-orm';
 import { z } from '~/utils/zod-pt';
 import {
   CreateInvestmentParams,
@@ -38,7 +38,10 @@ export const investmentsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(InvestmentsTable)
-        .set(input)
+        .set({
+          ...input,
+          updatedAt: sql`now()`,
+        })
         .where(eq(InvestmentsTable.id, input.id));
     }),
 

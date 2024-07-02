@@ -1,6 +1,6 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BudgetsTable } from '~/server/db/schema';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import {
   BudgetParams,
   GetBudgetParams,
@@ -44,6 +44,7 @@ export const budgetsRouter = createTRPCRouter({
         .update(BudgetsTable)
         .set({
           value: input.value,
+          updatedAt: sql`now()`,
         })
         .where(
           and(

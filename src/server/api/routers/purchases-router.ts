@@ -24,7 +24,10 @@ export const PurchasesRouter = createTRPCRouter({
 
         await tx
           .update(InvoicesTable)
-          .set({ value: sql`${InvoicesTable.value} + ${input.value}` })
+          .set({
+            value: sql`${InvoicesTable.value} + ${input.value}`,
+            updatedAt: sql`now()`,
+          })
           // @ts-expect-error Erro nada a ver, ignorar isso
           .where(eq(input.invoiceId, InvoicesTable.id));
       });
@@ -46,7 +49,10 @@ export const PurchasesRouter = createTRPCRouter({
       await ctx.db.transaction(async (tx) => {
         await tx
           .update(InvoicesTable)
-          .set({ value: sql`${InvoicesTable.value} - ${purchase.value}` })
+          .set({
+            value: sql`${InvoicesTable.value} - ${purchase.value}`,
+            updatedAt: sql`now()`,
+          })
           .where(eq(InvoicesTable.id, purchase.invoiceId));
 
         await tx.delete(PurchasesTable).where(eq(PurchasesTable.id, input.id));
