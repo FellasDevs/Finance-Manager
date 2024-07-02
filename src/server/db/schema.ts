@@ -128,6 +128,9 @@ export const InvestmentsTable = createTable('investments', {
     .references(() => UsersTable.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 50 }).notNull(),
   value: doublePrecision('value').notNull().default(0),
+  startDate: timestamp('start_date', { withTimezone: true })
+    .notNull()
+    .defaultNow(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });

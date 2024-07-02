@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from '~/app/_components/ui/form';
-import React, { useState } from 'react';
+import React, { type ReactNode, useMemo, useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -24,22 +24,30 @@ import {
 } from '~/app/_components/ui/dialog';
 import { PlusCircle } from 'lucide-react';
 import { CreateInvestmentParams } from '~/procedure-params/investments-params';
+import dayjs from 'dayjs';
+import { type Investment } from '~/app/(main)/dashboard/_components/investments/investment-card';
 
 type CreateInvestmentInput = z.infer<typeof CreateInvestmentParams>;
 
-export const InvestmentsForm = () => {
+type Props = {
+  originalInvestment?: Investment;
+  children?: ReactNode;
+};
+
+export const InvestmentsForm = ({ originalInvestment, children }: Props) => {
   const form = useForm<CreateInvestmentInput>({
     resolver: zodResolver(CreateInvestmentParams),
     mode: 'all',
-    defaultValues: {
+    defaultValues: originalInvestment || {
       name: '',
       value: 0,
+      startDate: new Date(),
     },
   });
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const { mutate: createInvestment, isPending } =
+  const { mutate: createInvestment, isPending: isCreationPending } =
     api.investments.create.useMutation({
       onSuccess: () => {
         form.reset();
@@ -47,18 +55,37 @@ export const InvestmentsForm = () => {
       },
     });
 
-  const onSubmit = form.handleSubmit((data) => createInvestment(data));
+  const { mutate: updateInvestment, isPending: isUpdatePending } =
+    api.investments.update.useMutation({
+      onSuccess: () => {
+        form.reset();
+        setDialogOpen(false);
+      },
+    });
+
+  const isPending = useMemo(
+    () => isCreationPending || isUpdatePending,
+    [isCreationPending, isUpdatePending],
+  );
+
+  const onSubmit = form.handleSubmit((data) =>
+    originalInvestment
+      ? updateInvestment({ ...originalInvestment, ...data })
+      : createInvestment(data),
+  );
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <PlusCircle color="green" />
+          {children || <PlusCircle color="green" />}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="flex flex-col">
-        <DialogTitle>Novo investimento</DialogTitle>
+        <DialogTitle>
+          {originalInvestment ? 'Editar ' : 'Novo '} investimento
+        </DialogTitle>
         <DialogClose />
 
         <Form {...form}>
@@ -108,13 +135,42 @@ export const InvestmentsForm = () => {
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-muted-foreground">
+                    Data de início
+                  </FormLabel>
+
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="datetime-local"
+                      placeholder="Insira a data do início do investimento"
+                      value={dayjs(field.value).format('YYYY-MM-DDTHH:mm')}
+                      onChange={(e) =>
+                        form.setValue(
+                          'startDate',
+                          dayjs(e.target.value).toDate(),
+                        )
+                      }
+                      autoComplete="on"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button
               type="submit"
               disabled={isPending}
               isLoading={isPending}
               variant="outline"
             >
-              Criar investimento
+              {originalInvestment ? 'Editar ' : 'Criar '} investimento
             </Button>
           </form>
         </Form>

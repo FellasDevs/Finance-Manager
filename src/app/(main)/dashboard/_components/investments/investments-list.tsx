@@ -2,7 +2,6 @@
 
 import type { InferRouteOutput } from '~/utils/types';
 import { api } from '~/trpc/react';
-import { useState } from 'react';
 import { InvestmentsForm } from '~/app/(main)/dashboard/_components/investments/investments-form';
 import { InvestmentCard } from '~/app/(main)/dashboard/_components/investments/investment-card';
 
@@ -17,8 +16,6 @@ export function InvestmentsList({ initialData }: Props) {
       initialData,
     },
   );
-
-  const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <div className="flex max-w-[40em] flex-col gap-4 rounded-lg p-5 shadow-lg">

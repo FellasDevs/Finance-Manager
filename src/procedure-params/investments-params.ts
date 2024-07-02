@@ -6,6 +6,7 @@ const BaseInvestmentParams = createInsertSchema(InvestmentsTable, {
   id: z.string().uuid(),
   name: z.string().min(1).max(50),
   value: z.number().nonnegative(),
+  startDate: z.coerce.date(),
 }).omit({
   userId: true,
   createdAt: true,
