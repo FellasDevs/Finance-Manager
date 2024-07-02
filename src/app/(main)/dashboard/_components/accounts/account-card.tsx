@@ -19,6 +19,14 @@ import {
   FormMessage,
 } from '~/app/_components/ui/form';
 import { EditBankAccountParams } from '~/procedure-params/bank-account-params';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '~/app/_components/ui/dialog';
+import { DialogBody } from 'next/dist/client/components/react-dev-overlay/internal/components/Dialog';
 
 type Account = InferRouteOutput['bankAccounts']['getByUser'][0];
 
@@ -28,9 +36,14 @@ type Props = {
 };
 
 export const AccountCard: FC<Props> = ({ account, fromAccountPage }) => {
-  const deleteAccountMutation = api.bankAccounts.delete.useMutation();
-
   const [isEditing, setIsEditing] = useState(false);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const { mutate: deleteAccount, isPending } =
+    api.bankAccounts.delete.useMutation({
+      onSuccess: () => setDialogOpen(false),
+    });
 
   return (
     <div className="flex min-h-[7em] min-w-[18em] max-w-[25em] items-center justify-between gap-3 rounded bg-slate-200 px-5 shadow-lg">
@@ -51,13 +64,43 @@ export const AccountCard: FC<Props> = ({ account, fromAccountPage }) => {
           </Button>
 
           {!fromAccountPage && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => deleteAccountMutation.mutate({ id: account.id })}
-            >
-              <Trash size={18} color="red" />
-            </Button>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Trash size={18} color="red" />
+                </Button>
+              </DialogTrigger>
+
+              <DialogContent>
+                <DialogTitle>Excluir conta</DialogTitle>
+                <DialogClose />
+
+                <DialogBody>
+                  <p className="mb-3">
+                    Tem certeza que deseja excluir a conta e todos os seus
+                    dados?
+                  </p>
+
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setDialogOpen(false)}
+                    >
+                      Cancelar
+                    </Button>
+
+                    <Button
+                      variant="destructive"
+                      isLoading={isPending}
+                      disabled={isPending}
+                      onClick={() => deleteAccount({ id: account.id })}
+                    >
+                      Confirmar
+                    </Button>
+                  </div>
+                </DialogBody>
+              </DialogContent>
+            </Dialog>
           )}
         </div>
 
@@ -75,7 +118,7 @@ const Info = ({ account }: { account: Account }) => {
   return (
     <div className="max-w-[16em]">
       <p className="line-clamp-2 overflow-hidden text-ellipsis text-lg font-bold">
-        {account.name || 'Conta sem nome'}
+        {account.name}
       </p>
 
       <p>{parseMoney(account.balance)}</p>
@@ -95,21 +138,14 @@ const EditForm = ({
   const form = useForm<EditBankAccountInput>({
     resolver: zodResolver(EditBankAccountParams),
     mode: 'onTouched',
-    defaultValues: {
-      id: account.id,
-      name: account.name,
-      balance: account.balance,
-    },
+    defaultValues: account,
   });
 
   const { mutate, isPending } = api.bankAccounts.edit.useMutation({
     onSuccess: setIsEditing,
   });
 
-  const onSubmit = form.handleSubmit((data) => {
-    if (!form.formState.isValid) return;
-    mutate(data);
-  });
+  const onSubmit = form.handleSubmit((data) => mutate(data));
 
   return (
     <Form {...form}>
@@ -140,7 +176,7 @@ const EditForm = ({
                 <Input
                   type="number"
                   step={0.01}
-                  placeholder="Insira o nome da conta"
+                  placeholder="Insira o saldo da conta"
                   {...field}
                   onChange={(e) =>
                     form.setValue('balance', parseFloat(e.target.value))

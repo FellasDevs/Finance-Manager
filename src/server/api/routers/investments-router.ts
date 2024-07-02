@@ -30,7 +30,10 @@ export const investmentsRouter = createTRPCRouter({
   create: privateProcedure
     .input(CreateInvestmentParams)
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(InvestmentsTable).values(input);
+      await ctx.db.insert(InvestmentsTable).values({
+        ...input,
+        userId: ctx.user.id,
+      });
     }),
 
   update: privateProcedure

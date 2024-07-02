@@ -9,7 +9,7 @@ export default async function Dashboard() {
   ]);
 
   return (
-    <div className="flex flex-wrap p-10">
+    <div className="flex flex-wrap gap-3 p-10">
       <AccountList initialData={accounts} />
       <InvestmentsList initialData={investments} />
     </div>

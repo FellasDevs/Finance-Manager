@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from '~/app/_components/ui/form';
 import React, { useState } from 'react';
-import { CreateBankAccountParams } from '~/procedure-params/bank-account-params';
 import {
   Dialog,
   DialogClose,
@@ -24,30 +23,31 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { PlusCircle } from 'lucide-react';
+import { CreateInvestmentParams } from '~/procedure-params/investments-params';
 
-type CreateBankAccountInput = z.infer<typeof CreateBankAccountParams>;
+type CreateInvestmentInput = z.infer<typeof CreateInvestmentParams>;
 
-export const BankAccountForm = () => {
-  const form = useForm<CreateBankAccountInput>({
-    resolver: zodResolver(CreateBankAccountParams),
+export const InvestmentsForm = () => {
+  const form = useForm<CreateInvestmentInput>({
+    resolver: zodResolver(CreateInvestmentParams),
     mode: 'all',
     defaultValues: {
       name: '',
-      balance: 0,
+      value: 0,
     },
   });
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const { mutate: createAccount, isPending } =
-    api.bankAccounts.create.useMutation({
+  const { mutate: createInvestment, isPending } =
+    api.investments.create.useMutation({
       onSuccess: () => {
         form.reset();
         setDialogOpen(false);
       },
     });
 
-  const onSubmit = form.handleSubmit((data) => createAccount(data));
+  const onSubmit = form.handleSubmit((data) => createInvestment(data));
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -58,7 +58,7 @@ export const BankAccountForm = () => {
       </DialogTrigger>
 
       <DialogContent className="flex flex-col">
-        <DialogTitle>Nova conta</DialogTitle>
+        <DialogTitle>Novo investimento</DialogTitle>
         <DialogClose />
 
         <Form {...form}>
@@ -72,7 +72,7 @@ export const BankAccountForm = () => {
 
                   <FormControl>
                     <Input
-                      placeholder="Insira o nome da conta"
+                      placeholder="Insira o nome do investimento"
                       {...field}
                       autoComplete="on"
                     />
@@ -84,19 +84,21 @@ export const BankAccountForm = () => {
 
             <FormField
               control={form.control}
-              name="balance"
+              name="value"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-muted-foreground">Saldo</FormLabel>
+                  <FormLabel className="text-muted-foreground">
+                    Valor investido
+                  </FormLabel>
 
                   <FormControl>
                     <Input
                       type="number"
                       step={0.01}
-                      placeholder="Insira o saldo da conta"
+                      placeholder="Insira o valor investido"
                       {...field}
                       onChange={(e) =>
-                        form.setValue('balance', parseFloat(e.target.value))
+                        form.setValue('value', parseFloat(e.target.value))
                       }
                       autoComplete="on"
                     />
@@ -112,7 +114,7 @@ export const BankAccountForm = () => {
               isLoading={isPending}
               variant="outline"
             >
-              Criar conta
+              Criar investimento
             </Button>
           </form>
         </Form>
