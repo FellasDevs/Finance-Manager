@@ -9,13 +9,11 @@ type Props = {
 };
 
 export function CurrentAccountCard({ initialData }: Props) {
+  if (!initialData) return null;
+
   const { data: account } = api.bankAccounts.getById.useQuery(
-    {
-      id: initialData!.id,
-    },
-    {
-      initialData,
-    },
+    { id: initialData.id },
+    { initialData },
   );
 
   if (!account) return <div>Conta não encontrada</div>;

@@ -1,10 +1,11 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
-import { InvestmentHistoryTable, InvestmentsTable } from '~/server/db/schema';
+import { InvestmentHistoryTable } from '~/server/db/schema';
 import { desc, eq, sql } from 'drizzle-orm';
 import { z } from '~/utils/zod-pt';
-import { UpdateInvestmentParams } from '~/procedure-params/investments-params';
-import { CreateInvestmentChangeParams } from '~/procedure-params/investments-history-params';
-import { TRPCError } from '@trpc/server';
+import {
+  CreateInvestmentUpdateParams,
+  UpdateInvestmentUpdateParams,
+} from '~/procedure-params/investments-history-params';
 
 export const investmentsHistoryRouter = createTRPCRouter({
   getAllByInvestment: privateProcedure
@@ -18,23 +19,13 @@ export const investmentsHistoryRouter = createTRPCRouter({
     }),
 
   create: privateProcedure
-    .input(CreateInvestmentChangeParams)
+    .input(CreateInvestmentUpdateParams)
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.transaction(async (tx) => {
-        await tx.insert(InvestmentHistoryTable).values(input);
-
-        await tx
-          .update(InvestmentsTable)
-          .set({
-            value: sql`${InvestmentsTable.value} + ${input.value}`,
-            updatedAt: sql`now()`,
-          })
-          .where(eq(InvestmentsTable.id, input.investmentId));
-      });
+      await ctx.db.insert(InvestmentHistoryTable).values(input);
     }),
 
   update: privateProcedure
-    .input(UpdateInvestmentParams)
+    .input(UpdateInvestmentUpdateParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(InvestmentHistoryTable)
@@ -48,29 +39,8 @@ export const investmentsHistoryRouter = createTRPCRouter({
   delete: privateProcedure
     .input(z.object({ id: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
-      const [investmentChange] = await ctx.db
-        .select()
-        .from(InvestmentHistoryTable)
+      await ctx.db
+        .delete(InvestmentHistoryTable)
         .where(eq(InvestmentHistoryTable.id, input.id));
-
-      if (!investmentChange)
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Investment change not found',
-        });
-
-      await ctx.db.transaction(async (tx) => {
-        await tx
-          .update(InvestmentsTable)
-          .set({
-            value: sql`${InvestmentsTable.value} - ${investmentChange.value}`,
-            updatedAt: sql`now()`,
-          })
-          .where(eq(InvestmentsTable.id, investmentChange.investmentId));
-
-        await tx
-          .delete(InvestmentHistoryTable)
-          .where(eq(InvestmentHistoryTable.id, input.id));
-      });
     }),
 });

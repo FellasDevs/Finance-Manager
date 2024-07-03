@@ -22,7 +22,8 @@ export const investmentsRouter = createTRPCRouter({
       const [investment] = await ctx.db
         .select()
         .from(InvestmentsTable)
-        .where(eq(InvestmentsTable.id, input.id));
+        .where(eq(InvestmentsTable.id, input.id))
+        .limit(1);
 
       return investment;
     }),

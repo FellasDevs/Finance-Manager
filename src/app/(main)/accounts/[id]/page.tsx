@@ -28,7 +28,7 @@ export default async function AccountPage({ params: { id } }: Params) {
             className="mb-2 flex items-center gap-1 rounded-lg bg-blue-200 p-2 text-lg hover:bg-blue-300"
           >
             <ArrowLeft size={24} />
-            <p>Voltar às contas</p>
+            <p>Voltar ao início</p>
           </Link>
 
           <CurrentAccountCard initialData={account} />
@@ -50,7 +50,7 @@ function AccountNotFound() {
       <p>Conta não encontrada</p>
 
       <Link href={'/dashboard'}>
-        <p className="underline">Retornar às minhas contas</p>
+        <p className="underline">Retornar ao início</p>
       </Link>
     </div>
   );

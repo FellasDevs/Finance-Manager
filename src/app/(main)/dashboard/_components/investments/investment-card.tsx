@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Trash } from 'lucide-react';
 import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/react';
-import { parseMoney } from '~/utils/parseMoney';
 import {
   Dialog,
   DialogClose,
@@ -37,13 +36,9 @@ export const InvestmentCard: FC<Props> = ({
 
   return (
     <div className="flex min-h-[7em] min-w-[18em] max-w-[25em] items-center justify-between gap-3 rounded bg-slate-200 px-5 shadow-lg">
-      <div className="max-w-[16em]">
-        <p className="line-clamp-2 overflow-hidden text-ellipsis text-lg font-bold">
-          {investment.name}
-        </p>
-
-        <p>{parseMoney(investment.value)}</p>
-      </div>
+      <p className="line-clamp-2 overflow-hidden text-ellipsis text-lg font-bold">
+        {investment.name}
+      </p>
 
       <div className="flex flex-col gap-1">
         <div className="flex justify-between">

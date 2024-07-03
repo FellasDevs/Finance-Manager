@@ -19,15 +19,20 @@ import dayjs from 'dayjs';
 import { CreateTransactionParams } from '~/procedure-params/transactions-params';
 import { Switch } from '~/app/_components/ui/switch';
 import { Label } from '~/app/_components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '~/app/_components/ui/dialog';
+import { PlusCircle } from 'lucide-react';
 
 type Props = {
   accountId: string;
-  onSuccess?: () => void;
 };
 
 type CreateTransactionInput = z.input<typeof CreateTransactionParams>;
 
-export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
+export const TransactionForm: FC<Props> = ({ accountId }) => {
   const form = useForm<CreateTransactionInput>({
     resolver: zodResolver(CreateTransactionParams),
     mode: 'onTouched',
@@ -41,8 +46,10 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
 
   const [isReceiving, setIsReceiving] = useState(false);
 
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { mutate, isPending } = api.transactions.create.useMutation({
-    onSuccess,
+    onSuccess: () => setModalOpen(false),
   });
 
   const onSubmit = form.handleSubmit((data) => {
@@ -54,120 +61,135 @@ export const TransactionForm: FC<Props> = ({ accountId, onSuccess }) => {
   });
 
   return (
-    <Form {...form}>
-      <form className="flex flex-col gap-3" onSubmit={onSubmit}>
-        <span className="text-2xl font-bold">Nova transação</span>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+      <DialogTrigger>
+        <PlusCircle color="green" />
+      </DialogTrigger>
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-muted-foreground">Descrição</FormLabel>
+      <DialogContent>
+        <Form {...form}>
+          <form className="flex flex-col gap-3" onSubmit={onSubmit}>
+            <span className="text-2xl font-bold">Nova transação</span>
 
-              <FormControl>
-                <Input
-                  placeholder="Insira a descrição da transação"
-                  {...field}
-                  autoComplete="on"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-muted-foreground">
+                    Descrição
+                  </FormLabel>
 
-        <FormField
-          control={form.control}
-          name="value"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-muted-foreground">Valor</FormLabel>
-
-              <FormControl>
-                <div className="flex items-center justify-between gap-2">
-                  <Input
-                    type="number"
-                    step={0.01}
-                    placeholder="Insira o valor da transação"
-                    className="w-min"
-                    {...field}
-                    onChange={(e) =>
-                      form.setValue('value', Number(e.target.value))
-                    }
-                    autoComplete="on"
-                  />
-
-                  <div className="flex items-center gap-2">
-                    <Switch
-                      id="receiving"
-                      checked={isReceiving}
-                      onCheckedChange={setIsReceiving}
+                  <FormControl>
+                    <Input
+                      placeholder="Insira a descrição da transação"
+                      {...field}
+                      autoComplete="on"
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                    <Label
-                      htmlFor="receiving"
-                      className="text-md w-fit accent-gray-600"
-                    >
-                      Transação recebida
-                    </Label>
-                  </div>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="value"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-muted-foreground">Valor</FormLabel>
 
-        {/*<FormField*/}
-        {/*  control={form.control}*/}
-        {/*  name="category"*/}
-        {/*  render={({ field }) => (*/}
-        {/*    <FormItem>*/}
-        {/*      <FormLabel className="text-muted-foreground">Categoria</FormLabel>*/}
+                  <FormControl>
+                    <div className="flex items-center justify-between gap-2">
+                      <Input
+                        type="number"
+                        step={0.01}
+                        placeholder="Insira o valor da transação"
+                        className="w-min"
+                        {...field}
+                        onChange={(e) =>
+                          form.setValue('value', Number(e.target.value))
+                        }
+                        autoComplete="on"
+                      />
 
-        {/*      <FormControl>*/}
-        {/*        <Input*/}
-        {/*          type="number"*/}
-        {/*          step={0.01}*/}
-        {/*          placeholder="Insira o valor da transação"*/}
-        {/*          {...field}*/}
-        {/*          autoComplete="on"*/}
-        {/*        />*/}
-        {/*      </FormControl>*/}
-        {/*      <FormMessage />*/}
-        {/*    </FormItem>*/}
-        {/*  )}*/}
-        {/*/>*/}
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          id="receiving"
+                          checked={isReceiving}
+                          onCheckedChange={setIsReceiving}
+                        />
 
-        <FormField
-          control={form.control}
-          name="time"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-muted-foreground">Data</FormLabel>
+                        <Label
+                          htmlFor="receiving"
+                          className="text-md w-fit accent-gray-600"
+                        >
+                          Transação recebida
+                        </Label>
+                      </div>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormControl>
-                <Input
-                  type="datetime-local"
-                  placeholder="Insira o momento em que a transação ocorreu"
-                  {...field}
-                  value={dayjs(field.value).format('YYYY-MM-DDTHH:mm')}
-                  onChange={(e) =>
-                    form.setValue('time', dayjs(e.target.value).toDate())
-                  }
-                  autoComplete="on"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            {/*<FormField*/}
+            {/*  control={form.control}*/}
+            {/*  name="category"*/}
+            {/*  render={({ field }) => (*/}
+            {/*    <FormItem>*/}
+            {/*      <FormLabel className="text-muted-foreground">Categoria</FormLabel>*/}
 
-        <Button type="submit" disabled={isPending} variant="outline">
-          Criar
-        </Button>
-      </form>
-    </Form>
+            {/*      <FormControl>*/}
+            {/*        <Input*/}
+            {/*          type="number"*/}
+            {/*          step={0.01}*/}
+            {/*          placeholder="Insira o valor da transação"*/}
+            {/*          {...field}*/}
+            {/*          autoComplete="on"*/}
+            {/*        />*/}
+            {/*      </FormControl>*/}
+            {/*      <FormMessage />*/}
+            {/*    </FormItem>*/}
+            {/*  )}*/}
+            {/*/>*/}
+
+            <FormField
+              control={form.control}
+              name="time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-muted-foreground">Data</FormLabel>
+
+                  <FormControl>
+                    <Input
+                      type="datetime-local"
+                      placeholder="Insira o momento em que a transação ocorreu"
+                      {...field}
+                      value={dayjs(field.value).format('YYYY-MM-DDTHH:mm')}
+                      onChange={(e) =>
+                        form.setValue('time', dayjs(e.target.value).toDate())
+                      }
+                      autoComplete="on"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="submit"
+              isLoading={isPending}
+              disabled={isPending}
+              variant="outline"
+            >
+              Criar
+            </Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
