@@ -24,7 +24,6 @@ import {
 } from '~/app/_components/ui/dialog';
 import { Pencil, PlusCircle } from 'lucide-react';
 import { CreateInvestmentParams } from '~/procedure-params/investments-params';
-import dayjs from 'dayjs';
 import { type Investment } from '~/app/(main)/dashboard/_components/investments/investment-card';
 
 type CreateInvestmentInput = z.infer<typeof CreateInvestmentParams>;
@@ -39,8 +38,6 @@ export const InvestmentsForm = ({ originalInvestment }: Props) => {
     mode: 'all',
     defaultValues: originalInvestment || {
       name: '',
-      value: 0,
-      startDate: new Date(),
     },
   });
 
@@ -112,60 +109,7 @@ export const InvestmentsForm = ({ originalInvestment }: Props) => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-muted-foreground">
-                    Valor investido
-                  </FormLabel>
-
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step={0.01}
-                      placeholder="Insira o valor investido"
-                      {...field}
-                      onChange={(e) =>
-                        form.setValue('value', parseFloat(e.target.value))
-                      }
-                      autoComplete="on"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="startDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-muted-foreground">
-                    Data de início
-                  </FormLabel>
-
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="datetime-local"
-                      placeholder="Insira a data do início do investimento"
-                      value={dayjs(field.value).format('YYYY-MM-DDTHH:mm')}
-                      onChange={(e) =>
-                        form.setValue(
-                          'startDate',
-                          dayjs(e.target.value).toDate(),
-                        )
-                      }
-                      autoComplete="on"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            
 
             <Button
               type="submit"

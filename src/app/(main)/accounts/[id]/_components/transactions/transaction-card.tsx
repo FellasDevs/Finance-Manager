@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const TransactionCard: FC<Props> = ({ transaction }) => {
-  const deleteTransactionMutation = api.transactions.delete.useMutation();
+  const { mutate: deleteTransaction } = api.transactions.delete.useMutation();
 
   return (
     <div className="flex items-center justify-between gap-10 rounded bg-slate-200 px-5 py-3 shadow-lg ">
@@ -33,7 +33,7 @@ export const TransactionCard: FC<Props> = ({ transaction }) => {
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => deleteTransactionMutation.mutate({ id: transaction.id })}
+        onClick={() => deleteTransaction({ id: transaction.id })}
       >
         <Trash color="red" />
       </Button>

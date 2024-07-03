@@ -10,6 +10,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  unique,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
@@ -127,28 +128,30 @@ export const InvestmentsTable = createTable('investments', {
     .notNull()
     .references(() => UsersTable.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 50 }).notNull(),
-  value: doublePrecision('value').notNull().default(0),
-  startDate: timestamp('start_date', { withTimezone: true })
-    .notNull()
-    .defaultNow(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });
 
-export const InvestmentHistoryTable = createTable('investment_history', {
-  id: uuid('id')
-    .primaryKey()
-    .notNull()
-    .unique()
-    .default(sql`uuid_generate_v4()`),
-  investmentId: uuid('investment_id')
-    .notNull()
-    .references(() => InvestmentsTable.id, { onDelete: 'cascade' }),
-  time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
-  value: doublePrecision('value').notNull().default(0),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
-});
+export const InvestmentHistoryTable = createTable(
+  'investment_history',
+  {
+    id: uuid('id')
+      .primaryKey()
+      .notNull()
+      .unique()
+      .default(sql`uuid_generate_v4()`),
+    investmentId: uuid('investment_id')
+      .notNull()
+      .references(() => InvestmentsTable.id, { onDelete: 'cascade' }),
+    time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
+    value: doublePrecision('value').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    unique: unique('unq').on(table.investmentId, table.time),
+  }),
+);
 
 export const BudgetsTable = createTable(
   'budgets',
