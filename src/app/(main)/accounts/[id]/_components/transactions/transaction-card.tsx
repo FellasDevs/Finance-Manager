@@ -6,6 +6,7 @@ import { Button } from '~/app/_components/ui/button';
 import { Trash } from 'lucide-react';
 import { api } from '~/trpc/react';
 import dayjs from 'dayjs';
+import { parseMoney } from '~/utils/parseMoney';
 
 type Transaction = InferRouteOutput['transactions']['getByAccountId'][0];
 
@@ -17,17 +18,30 @@ export const TransactionCard: FC<Props> = ({ transaction }) => {
   const { mutate: deleteTransaction } = api.transactions.delete.useMutation();
 
   return (
-    <div className="flex items-center justify-between gap-10 rounded bg-slate-200 px-5 py-3 shadow-lg ">
+    <div className="flex items-center justify-between gap-10 rounded bg-slate-200 px-5 py-3 shadow-lg">
       <div>
         <p className="text-lg">
           Descrição: <b>{transaction.description}</b>
         </p>
 
-        <p>Valor: R$ {transaction.value}</p>
+        <p>
+          Valor:{' '}
+          <b
+            className={
+              transaction.value > 0 ? 'text-green-600' : 'text-red-600'
+            }
+          >
+            {parseMoney(transaction.value)}
+          </b>
+        </p>
 
-        <p>Categoria: {transaction.category || 'Nenhuma'}</p>
+        <p>
+          Categoria: <b>{transaction.category || 'Nenhuma'}</b>
+        </p>
 
-        <p>Momento: {dayjs(transaction.time).format('DD/mm/YYYY HH:mm')}</p>
+        <p>
+          Momento: <b>{dayjs(transaction.time).format('DD/mm/YYYY HH:mm')}</b>
+        </p>
       </div>
 
       <Button
