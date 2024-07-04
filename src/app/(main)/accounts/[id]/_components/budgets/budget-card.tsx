@@ -54,7 +54,7 @@ export function BudgetCard({ budget }: Props) {
           </p>
         </div>
 
-        <div>
+        <div className="min-w-fit">
           <BudgetForm invoiceId={budget.invoiceId} createdBudget={budget} />
 
           <Button
@@ -68,7 +68,7 @@ export function BudgetCard({ budget }: Props) {
             variant="ghost"
             size="icon"
           >
-            <FaTrash size={20} color="red" />
+            <FaTrash size={20} className="text-red-500" />
           </Button>
         </div>
       </div>

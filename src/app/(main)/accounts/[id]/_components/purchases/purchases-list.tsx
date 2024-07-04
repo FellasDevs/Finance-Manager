@@ -13,7 +13,7 @@ export function PurchasesList({ invoiceId }: Props) {
   });
 
   return (
-    <div className="max-w-[28em] grow rounded-lg p-3 shadow-lg">
+    <div className="min-w-[25em] grow rounded-lg p-3 shadow-lg">
       <div className="mb-3 flex justify-between">
         <p className="text-2xl font-bold">Compras</p>
 

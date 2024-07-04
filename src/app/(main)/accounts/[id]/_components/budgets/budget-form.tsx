@@ -38,9 +38,9 @@ export function BudgetForm(props: Props) {
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
           {props.createdBudget ? (
-            <Pencil color="blue" size={20} />
+            <Pencil size={20} className="text-blue-500" />
           ) : (
-            <PlusCircle color="green" />
+            <PlusCircle className="text-green-500" />
           )}
         </Button>
       </DialogTrigger>

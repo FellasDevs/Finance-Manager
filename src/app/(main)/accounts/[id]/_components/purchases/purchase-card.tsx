@@ -47,7 +47,7 @@ export function PurchaseCard({ purchase }: Props) {
           variant="ghost"
           size="icon"
         >
-          <FaTrash size={20} color="red" />
+          <FaTrash size={20} className="text-red-500" />
         </Button>
       </div>
     </div>

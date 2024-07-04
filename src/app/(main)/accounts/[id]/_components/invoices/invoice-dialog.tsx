@@ -14,6 +14,7 @@ import { Label } from '~/app/_components/ui/label';
 import React, { useMemo } from 'react';
 import { PurchasesList } from '~/app/(main)/accounts/[id]/_components/purchases/purchases-list';
 import { BudgetsList } from '~/app/(main)/accounts/[id]/_components/budgets/budgets-list';
+import { PurchasesGraph } from '~/app/(main)/accounts/[id]/_components/purchases/purchases-graph';
 
 export function InvoiceDialog({ invoice }: InvoiceCardProps) {
   const { mutate: editInvoice, isPending: isEditing } =
@@ -29,7 +30,7 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
         <Button className="w-full">Ver mais</Button>
       </DialogTrigger>
 
-      <DialogContent className="flex h-[95vh] max-w-[90vw] flex-col">
+      <DialogContent className="flex h-[95vh] w-fit max-w-[90vw] flex-col overflow-auto p-8">
         <div className="mx-auto flex w-full max-w-[30em] flex-col gap-2">
           <InvoiceHeader invoice={invoice} />
 
@@ -62,9 +63,12 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
           <hr />
         </div>
 
-        <div className="flex max-h-[75%] justify-around gap-3">
+        <div className="flex max-h-[70%] justify-around gap-10">
           <PurchasesList invoiceId={invoice.id} />
+
           <BudgetsList invoiceId={invoice.id} />
+
+          <PurchasesGraph invoiceId={invoice.id} />
         </div>
       </DialogContent>
     </Dialog>
