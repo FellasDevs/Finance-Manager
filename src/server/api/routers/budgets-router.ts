@@ -22,7 +22,7 @@ export const budgetsRouter = createTRPCRouter({
     return budget;
   }),
 
-  getAll: privateProcedure
+  getAllFromInvoice: privateProcedure
     .input(z.object({ invoiceId: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
       return ctx.db

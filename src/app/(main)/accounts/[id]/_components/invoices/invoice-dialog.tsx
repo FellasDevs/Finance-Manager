@@ -14,12 +14,9 @@ import { PurchaseForm } from '~/app/(main)/accounts/[id]/_components/purchases/p
 import { Switch } from '~/app/_components/ui/switch';
 import { Label } from '~/app/_components/ui/label';
 import React, { useMemo } from 'react';
+import { PurchaseList } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-list';
 
 export function InvoiceDialog({ invoice }: InvoiceCardProps) {
-  const { data: purchases, error } = api.purchases.getByInvoice.useQuery({
-    invoiceId: invoice.id,
-  });
-
   const { mutate: editInvoice, isPending: isEditing } =
     api.invoices.edit.useMutation();
   const { mutate: payInvoice, isPending: isPaying } =
@@ -33,13 +30,13 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
         <Button className="w-full">Ver mais</Button>
       </DialogTrigger>
 
-      <DialogContent className="flex h-[85vh] flex-col">
-        <div className="flex flex-col gap-3">
+      <DialogContent className="flex h-[95vh] max-w-[90vw] flex-col">
+        <div className="mx-auto flex w-full max-w-[30em] flex-col gap-3">
           <InvoiceHeader invoice={invoice} />
 
           <hr />
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
             <div className="flex gap-2">
               <Switch
                 id="paid"
@@ -66,22 +63,8 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
           <hr />
         </div>
 
-        <div className="grow rounded-lg p-3 shadow-lg">
-          <div className="mb-3 flex justify-between">
-            <p className="text-2xl font-bold">Compras</p>
-
-            <PurchaseForm invoiceId={invoice.id} />
-          </div>
-
-          {error || !purchases?.length ? (
-            'Não há compras registradas nessa fatura'
-          ) : (
-            <div className="flex max-h-[55%] flex-col gap-2 overflow-auto rounded-lg p-2">
-              {purchases.map((purchase) => (
-                <PurchaseCard purchase={purchase} key={purchase.id} />
-              ))}
-            </div>
-          )}
+        <div className="flex max-h-[75%] gap-3">
+          <PurchaseList invoiceId={invoice.id} />
         </div>
       </DialogContent>
     </Dialog>
