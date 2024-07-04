@@ -34,7 +34,7 @@ export function PurchasesGraph({ invoiceId }: Props) {
       valuePurchasedPerCategory,
       usedCategories.map((category) => category.name),
     ];
-  }, []);
+  }, [categories, purchases]);
 
   return (
     <div className="grow p-3">
@@ -45,13 +45,9 @@ export function PurchasesGraph({ invoiceId }: Props) {
         type="pie"
         width={500}
         options={{
-          chart: {
-            type: 'pie',
-          },
+          chart: { type: 'pie' },
           labels: usedCategoriesNames,
-          legend: {
-            position: 'bottom',
-          },
+          legend: { position: 'bottom' },
         }}
       />
     </div>

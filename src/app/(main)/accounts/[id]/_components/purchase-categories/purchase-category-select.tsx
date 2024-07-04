@@ -24,7 +24,6 @@ export function PurchaseCategorySelect({ onChange, ...props }: Props) {
 
   const { mutate: createCategory } = api.purchaseCategories.create.useMutation({
     onSuccess: (category) => {
-      console.log(category);
       if (category) onChange(category.id);
     },
   });
