@@ -6,7 +6,7 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { Button } from '~/app/_components/ui/button';
-import { type InvoiceCardProps } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
+import { type Invoice } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
 import { api } from '~/trpc/react';
 import { InvoiceHeader } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-header';
 import { Switch } from '~/app/_components/ui/switch';
@@ -16,7 +16,11 @@ import { PurchasesList } from '~/app/(main)/accounts/[id]/_components/purchases/
 import { BudgetsList } from '~/app/(main)/accounts/[id]/_components/budgets/budgets-list';
 import { PurchasesGraph } from '~/app/(main)/accounts/[id]/_components/purchases/purchases-graph';
 
-export function InvoiceDialog({ invoice }: InvoiceCardProps) {
+type Props = {
+  invoice: Invoice;
+};
+
+export function InvoiceDialog({ invoice }: Props) {
   const { mutate: editInvoice, isPending: isEditing } =
     api.invoices.edit.useMutation();
   const { mutate: payInvoice, isPending: isPaying } =
@@ -32,7 +36,7 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
 
       <DialogContent className="flex h-[95vh] w-fit max-w-[90vw] flex-col overflow-auto p-8">
         <div className="mx-auto flex w-full max-w-[30em] flex-col gap-2">
-          <InvoiceHeader invoice={invoice} />
+          <InvoiceHeader invoice={invoice} fromDialog />
 
           <hr />
 

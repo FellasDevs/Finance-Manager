@@ -37,19 +37,21 @@ export function PurchasesGraph({ invoiceId }: Props) {
   }, [categories, purchases]);
 
   return (
-    <div className="grow p-3">
-      <p className="mb-5 text-2xl font-bold">Compras por categoria</p>
+    <div className="flex grow flex-col rounded-lg p-3 shadow-lg">
+      <p className="text-2xl font-bold">Compras por categoria</p>
 
-      <Chart
-        series={valuePurchasedPerCategory}
-        type="pie"
-        width={500}
-        options={{
-          chart: { type: 'pie' },
-          labels: usedCategoriesNames,
-          legend: { position: 'bottom' },
-        }}
-      />
+      <div className="my-auto">
+        <Chart
+          series={valuePurchasedPerCategory}
+          type="pie"
+          width={500}
+          options={{
+            chart: { type: 'pie' },
+            labels: usedCategoriesNames,
+            legend: { position: 'bottom' },
+          }}
+        />
+      </div>
     </div>
   );
 }

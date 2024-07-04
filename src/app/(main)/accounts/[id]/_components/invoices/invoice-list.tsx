@@ -31,25 +31,12 @@ export const InvoiceList: FC<Props> = ({ accountId, initialData }) => {
     [currentInvoice, invoices],
   );
 
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <div className="w-[30em] rounded p-5 shadow-lg">
       <div className="flex items-center justify-between">
         <div className="m-3 text-2xl font-bold">FATURAS</div>
 
-        <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-          <DialogTrigger>
-            <PlusCircle color="green" />
-          </DialogTrigger>
-
-          <DialogContent>
-            <InvoiceForm
-              accountId={accountId}
-              onSuccess={() => setModalOpen(false)}
-            />
-          </DialogContent>
-        </Dialog>
+        <InvoiceForm accountId={accountId} />
       </div>
 
       <div className="flex max-h-[80vh] flex-col gap-2 overflow-auto p-5">
