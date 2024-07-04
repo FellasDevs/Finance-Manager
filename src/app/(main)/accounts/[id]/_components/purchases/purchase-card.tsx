@@ -1,7 +1,7 @@
 'use client';
 
 import { type InferRouteOutput } from '~/utils/types';
-import { type FC, useMemo } from 'react';
+import { useMemo } from 'react';
 import { parseMoney } from '~/utils/parseMoney';
 import { api } from '~/trpc/react';
 import { Button } from '~/app/_components/ui/button';
@@ -14,7 +14,7 @@ type Props = {
   purchase: Purchase;
 };
 
-export const PurchaseCard: FC<Props> = ({ purchase }) => {
+export function PurchaseCard({ purchase }: Props) {
   const { data: categories } = api.purchaseCategories.getByUser.useQuery();
 
   const { mutate: deletePurchase, isPending } =
@@ -28,7 +28,7 @@ export const PurchaseCard: FC<Props> = ({ purchase }) => {
   return (
     <div className="flex items-center justify-between rounded-lg p-3 shadow-lg">
       <div>
-        <p className="mb-2 text-xl font-bold">{parseMoney(purchase.value)}</p>
+        <p className="mb-1 text-xl font-bold">{parseMoney(purchase.value)}</p>
         <p className="truncate text-lg font-semibold">{purchase.description}</p>
         <p>
           Categoria: <b>{category?.name}</b>
@@ -52,4 +52,4 @@ export const PurchaseCard: FC<Props> = ({ purchase }) => {
       </div>
     </div>
   );
-};
+}

@@ -31,7 +31,7 @@ export function InvoiceHeader({ invoice }: InvoiceCardProps) {
         </div>
       </div>
 
-      <div className="mt-1 text-center font-semibold">
+      <div className="mt-1 text-center text-lg font-semibold">
         {invoice.paid ? (
           <p className="text-green-500">Fatura paga</p>
         ) : expired ? (

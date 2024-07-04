@@ -8,13 +8,12 @@ import {
 import { Button } from '~/app/_components/ui/button';
 import { type InvoiceCardProps } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
 import { api } from '~/trpc/react';
-import { PurchaseCard } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-card';
 import { InvoiceHeader } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-header';
-import { PurchaseForm } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-form';
 import { Switch } from '~/app/_components/ui/switch';
 import { Label } from '~/app/_components/ui/label';
 import React, { useMemo } from 'react';
-import { PurchaseList } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-list';
+import { PurchasesList } from '~/app/(main)/accounts/[id]/_components/purchases/purchases-list';
+import { BudgetsList } from '~/app/(main)/accounts/[id]/_components/budgets/budgets-list';
 
 export function InvoiceDialog({ invoice }: InvoiceCardProps) {
   const { mutate: editInvoice, isPending: isEditing } =
@@ -31,12 +30,12 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
       </DialogTrigger>
 
       <DialogContent className="flex h-[95vh] max-w-[90vw] flex-col">
-        <div className="mx-auto flex w-full max-w-[30em] flex-col gap-3">
+        <div className="mx-auto flex w-full max-w-[30em] flex-col gap-2">
           <InvoiceHeader invoice={invoice} />
 
           <hr />
 
-          <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
+          <div className="flex flex-col items-center justify-between gap-3 p-2 md:flex-row">
             <div className="flex gap-2">
               <Switch
                 id="paid"
@@ -63,8 +62,9 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
           <hr />
         </div>
 
-        <div className="flex max-h-[75%] gap-3">
-          <PurchaseList invoiceId={invoice.id} />
+        <div className="flex max-h-[75%] justify-around gap-3">
+          <PurchasesList invoiceId={invoice.id} />
+          <BudgetsList invoiceId={invoice.id} />
         </div>
       </DialogContent>
     </Dialog>

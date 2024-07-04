@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type FC, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/react';
@@ -31,14 +31,12 @@ type Props = {
   createdPurchase?: Purchase;
 };
 
-type CreatePurchaseInput = z.input<typeof CreatePurchaseParams>;
-
 export function PurchaseForm(props: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
           {props.createdPurchase ? (
             <Pencil color="blue" size={20} />
@@ -58,6 +56,8 @@ export function PurchaseForm(props: Props) {
 type FormComponentProps = Props & {
   closeModal: () => void;
 };
+
+type CreatePurchaseInput = z.input<typeof CreatePurchaseParams>;
 
 function FormComponent({
   invoiceId,
