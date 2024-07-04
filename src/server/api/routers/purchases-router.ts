@@ -2,7 +2,10 @@ import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { InvoicesTable, PurchasesTable } from '~/server/db/schema';
 import { desc, eq, sql } from 'drizzle-orm';
 import { z } from '~/utils/zod-pt';
-import { CreatePurchaseParams } from '~/procedure-params/purchases-params';
+import {
+  CreatePurchaseParams,
+  EditPurchaseParams,
+} from '~/procedure-params/purchases-params';
 import { TRPCError } from '@trpc/server';
 
 export const PurchasesRouter = createTRPCRouter({
@@ -31,6 +34,18 @@ export const PurchasesRouter = createTRPCRouter({
           // @ts-expect-error Erro nada a ver, ignorar isso
           .where(eq(input.invoiceId, InvoicesTable.id));
       });
+    }),
+
+  edit: privateProcedure
+    .input(EditPurchaseParams)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(PurchasesTable)
+        .set({
+          ...input,
+          updatedAt: sql`now()`,
+        })
+        .where(eq(PurchasesTable.id, input.id));
     }),
 
   delete: privateProcedure

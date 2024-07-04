@@ -2,7 +2,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { BudgetsTable } from '~/server/db/schema';
 import { z } from '~/utils/zod-pt';
 
-export const BudgetParams = createInsertSchema(BudgetsTable, {
+export const CreateBudgetParams = createInsertSchema(BudgetsTable, {
   value: z.number().nonnegative(),
   invoiceId: z.string().uuid(),
   categoryId: z.string().uuid(),
@@ -11,4 +11,4 @@ export const BudgetParams = createInsertSchema(BudgetsTable, {
   updatedAt: true,
 });
 
-export const GetBudgetParams = BudgetParams.omit({ value: true });
+export const GetBudgetParams = CreateBudgetParams.omit({ value: true });

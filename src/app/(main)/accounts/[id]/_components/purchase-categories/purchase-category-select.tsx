@@ -24,7 +24,6 @@ export function PurchaseCategorySelect({ onChange, ...props }: Props) {
 
   const { mutate: createCategory } = api.purchaseCategories.create.useMutation({
     onSuccess: (category) => {
-      console.log(category);
       if (category) onChange(category.id);
     },
   });
@@ -33,6 +32,9 @@ export function PurchaseCategorySelect({ onChange, ...props }: Props) {
     <Select<CategoryOption>
       {...props}
       options={filteredCategories}
+      value={filteredCategories.find(
+        (category) => category.value === props.value,
+      )}
       onChange={(value) => onChange(value?.value)}
       placeholder="Selecione a categoria"
       isSearchable

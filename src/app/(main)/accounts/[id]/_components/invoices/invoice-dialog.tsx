@@ -6,20 +6,21 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { Button } from '~/app/_components/ui/button';
-import { type InvoiceCardProps } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
+import { type Invoice } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
 import { api } from '~/trpc/react';
-import { PurchaseCard } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-card';
 import { InvoiceHeader } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-header';
-import { PurchaseForm } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-form';
 import { Switch } from '~/app/_components/ui/switch';
 import { Label } from '~/app/_components/ui/label';
 import React, { useMemo } from 'react';
+import { PurchasesList } from '~/app/(main)/accounts/[id]/_components/purchases/purchases-list';
+import { BudgetsList } from '~/app/(main)/accounts/[id]/_components/budgets/budgets-list';
+import { PurchasesGraph } from '~/app/(main)/accounts/[id]/_components/purchases/purchases-graph';
 
-export function InvoiceDialog({ invoice }: InvoiceCardProps) {
-  const { data: purchases, error } = api.purchases.getByInvoice.useQuery({
-    invoiceId: invoice.id,
-  });
+type Props = {
+  invoice: Invoice;
+};
 
+export function InvoiceDialog({ invoice }: Props) {
   const { mutate: editInvoice, isPending: isEditing } =
     api.invoices.edit.useMutation();
   const { mutate: payInvoice, isPending: isPaying } =
@@ -33,13 +34,13 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
         <Button className="w-full">Ver mais</Button>
       </DialogTrigger>
 
-      <DialogContent className="flex h-[85vh] flex-col">
-        <div className="flex flex-col gap-3">
-          <InvoiceHeader invoice={invoice} />
+      <DialogContent className="flex h-[95vh] w-fit max-w-[90vw] flex-col overflow-auto p-8">
+        <div className="mx-auto flex w-full max-w-[30em] flex-col gap-2">
+          <InvoiceHeader invoice={invoice} fromDialog />
 
           <hr />
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center justify-between gap-3 p-2 md:flex-row">
             <div className="flex gap-2">
               <Switch
                 id="paid"
@@ -66,22 +67,12 @@ export function InvoiceDialog({ invoice }: InvoiceCardProps) {
           <hr />
         </div>
 
-        <div className="grow rounded-lg p-3 shadow-lg">
-          <div className="mb-3 flex justify-between">
-            <p className="text-2xl font-bold">Compras</p>
+        <div className="flex max-h-[70%] justify-around gap-10">
+          <PurchasesList invoiceId={invoice.id} />
 
-            <PurchaseForm invoiceId={invoice.id} />
-          </div>
+          <BudgetsList invoiceId={invoice.id} />
 
-          {error || !purchases?.length ? (
-            'Não há compras registradas nessa fatura'
-          ) : (
-            <div className="flex max-h-[55%] flex-col gap-2 overflow-auto rounded-lg p-2">
-              {purchases.map((purchase) => (
-                <PurchaseCard purchase={purchase} key={purchase.id} />
-              ))}
-            </div>
-          )}
+          <PurchasesGraph invoiceId={invoice.id} />
         </div>
       </DialogContent>
     </Dialog>

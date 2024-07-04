@@ -14,3 +14,7 @@ const BasePurchaseParams = createInsertSchema(PurchasesTable, {
 });
 
 export const CreatePurchaseParams = BasePurchaseParams.omit({ id: true });
+
+export const EditPurchaseParams = BasePurchaseParams.partial()
+  .omit({ invoiceId: true })
+  .required({ id: true });

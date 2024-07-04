@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type FC } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Input } from '~/app/_components/ui/input';
 import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/react';
@@ -19,35 +19,90 @@ import dayjs from 'dayjs';
 import { CreateInvoiceParams } from '~/procedure-params/invoices-params';
 import { Switch } from '~/app/_components/ui/switch';
 import { Label } from '~/app/_components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '~/app/_components/ui/dialog';
+import { Pencil, PlusCircle } from 'lucide-react';
+import { type Invoice } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
 
 type Props = {
   accountId: string;
-  onSuccess?: () => void;
+  createdInvoice?: Invoice;
 };
+
+export function InvoiceForm(props: Props) {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  return (
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+      <DialogTrigger>
+        {props.createdInvoice ? (
+          <Pencil className="text-blue-500" />
+        ) : (
+          <PlusCircle className="text-green-500" />
+        )}
+      </DialogTrigger>
+
+      <DialogContent>
+        <FormComponent {...props} onSuccess={() => setModalOpen(false)} />
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 type CreateInvoiceInput = z.input<typeof CreateInvoiceParams>;
 
-export const InvoiceForm: FC<Props> = ({ accountId, onSuccess }) => {
+type InvoiceFormProps = Props & {
+  onSuccess: () => void;
+};
+
+function FormComponent({
+  onSuccess,
+  accountId,
+  createdInvoice,
+}: InvoiceFormProps) {
   const form = useForm<CreateInvoiceInput>({
     resolver: zodResolver(CreateInvoiceParams),
-    mode: 'onTouched',
-    defaultValues: {
-      accountId,
-      value: 0,
-      lim: 0,
-      dueDate: new Date(),
-      paid: false,
-    },
+    mode: 'all',
+    defaultValues: createdInvoice
+      ? { ...createdInvoice, dueDate: new Date(createdInvoice.dueDate) }
+      : {
+          accountId,
+          value: 0,
+          lim: 0,
+          dueDate: new Date(),
+          paid: false,
+        },
   });
 
-  const { mutate, isPending } = api.invoices.create.useMutation({ onSuccess });
+  const { mutate: createInvoice, isPending: createPending } =
+    api.invoices.create.useMutation({ onSuccess });
 
-  const onSubmit = form.handleSubmit((values) => mutate(values));
+  const { mutate: editInvoice, isPending: editPending } =
+    api.invoices.edit.useMutation({ onSuccess });
+
+  const isPending = useMemo(
+    () => createPending || editPending,
+    [createPending, editPending],
+  );
+
+  const onSubmit = form.handleSubmit((values) =>
+    createdInvoice
+      ? editInvoice({ ...values, id: createdInvoice.id })
+      : createInvoice(values),
+  );
+
+  const date = form.watch('dueDate');
+  console.log(date);
 
   return (
     <Form {...form}>
       <form className="flex flex-col gap-3" onSubmit={onSubmit}>
-        <span className="text-2xl font-bold">Nova fatura</span>
+        <span className="text-2xl font-bold">
+          {createdInvoice ? 'Editar ' : 'Nova '} fatura
+        </span>
 
         <FormField
           control={form.control}
@@ -150,10 +205,15 @@ export const InvoiceForm: FC<Props> = ({ accountId, onSuccess }) => {
           )}
         />
 
-        <Button type="submit" disabled={isPending} variant="outline">
-          Criar
+        <Button
+          type="submit"
+          isLoading={isPending}
+          disabled={isPending}
+          variant="outline"
+        >
+          {createdInvoice ? 'Editar ' : 'Criar '} fatura
         </Button>
       </form>
     </Form>
   );
-};
+}

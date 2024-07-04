@@ -2,9 +2,9 @@ import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { BudgetsTable } from '~/server/db/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import {
-  BudgetParams,
+  CreateBudgetParams,
   GetBudgetParams,
-} from '~/procedure-params/budget-params';
+} from '~/procedure-params/create-budget-params';
 import { z } from '~/utils/zod-pt';
 
 export const budgetsRouter = createTRPCRouter({
@@ -22,7 +22,7 @@ export const budgetsRouter = createTRPCRouter({
     return budget;
   }),
 
-  getAll: privateProcedure
+  getByInvoice: privateProcedure
     .input(z.object({ invoiceId: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
       return ctx.db
@@ -32,18 +32,18 @@ export const budgetsRouter = createTRPCRouter({
     }),
 
   create: privateProcedure
-    .input(BudgetParams)
+    .input(CreateBudgetParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(BudgetsTable).values(input);
     }),
 
   edit: privateProcedure
-    .input(BudgetParams)
+    .input(CreateBudgetParams)
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(BudgetsTable)
         .set({
-          value: input.value,
+          ...input,
           updatedAt: sql`now()`,
         })
         .where(
