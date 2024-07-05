@@ -5,18 +5,27 @@ import { type FC } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
 import { TransactionCard } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transaction-card';
 import { TransactionForm } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transaction-form';
+import type { PurchaseCategories } from '~/app/(main)/(items)/accounts/[id]/page';
 
 export type TransactionsRouteOutput =
   InferRouteOutput['transactions']['getByAccountId'];
 
 type Props = {
   accountId: string;
-  initialData: TransactionsRouteOutput;
+  initialTransactions: TransactionsRouteOutput;
+  initialCategories: PurchaseCategories;
 };
 
-export const TransactionsList: FC<Props> = ({ accountId, initialData }) => {
+export const TransactionsList: FC<Props> = ({
+  accountId,
+  initialTransactions,
+  initialCategories,
+}) => {
   const { data: transactions, error } =
-    api.transactions.getByAccountId.useQuery({ accountId }, { initialData });
+    api.transactions.getByAccountId.useQuery(
+      { accountId },
+      { initialData: initialTransactions },
+    );
 
   return (
     <div className="flex max-h-[40em] w-[30em] flex-col gap-2 rounded-lg p-5 shadow-lg">
@@ -33,7 +42,11 @@ export const TransactionsList: FC<Props> = ({ accountId, initialData }) => {
           </div>
         ) : (
           transactions.map((transaction) => (
-            <TransactionCard key={transaction.id} transaction={transaction} />
+            <TransactionCard
+              key={transaction.id}
+              transaction={transaction}
+              categories={initialCategories}
+            />
           ))
         )}
       </div>

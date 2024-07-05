@@ -5,6 +5,10 @@ import { TransactionsList } from '~/app/(main)/(items)/accounts/[id]/_components
 import { CurrentAccountCard } from '~/app/(main)/(items)/accounts/[id]/_components/CurrentAccountCard';
 import { TransactionsGraph } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transactions-graph';
 import { InvoicesGraph } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoices-graph';
+import { type InferRouteOutput } from '~/utils/types';
+
+export type PurchaseCategories =
+  InferRouteOutput['purchaseCategories']['getByUser'];
 
 type Props = {
   params: { id: string };
@@ -16,9 +20,10 @@ export default async function AccountPage({ params: { id } }: Props) {
 
     if (!account) return <AccountNotFound />;
 
-    const [invoices, transactions] = await Promise.all([
+    const [invoices, transactions, categories] = await Promise.all([
       api.invoices.getByAccountId({ accountId: id }),
       api.transactions.getByAccountId({ accountId: id }),
+      api.purchaseCategories.getByUser(),
     ]);
 
     return (
@@ -32,8 +37,16 @@ export default async function AccountPage({ params: { id } }: Props) {
           </div>
 
           <div className="flex flex-col  gap-6 lg:flex-row">
-            <TransactionsList accountId={id} initialData={transactions} />
-            <TransactionsGraph accountId={id} initialData={transactions} />
+            <TransactionsList
+              accountId={id}
+              initialTransactions={transactions}
+              initialCategories={categories}
+            />
+            <TransactionsGraph
+              accountId={id}
+              initialTransactions={transactions}
+              initialCategories={categories}
+            />
           </div>
         </div>
       </div>
