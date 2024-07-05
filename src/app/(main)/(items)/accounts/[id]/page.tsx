@@ -25,13 +25,15 @@ export default async function AccountPage({ params: { id } }: Props) {
       <div className="m-auto flex flex-col gap-5">
         <CurrentAccountCard initialData={account} />
 
-        <div className="flex flex-col flex-wrap gap-6 lg:flex-row">
-          <TransactionsList accountId={id} initialData={transactions} />
-          <TransactionsGraph />
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col  gap-6 lg:flex-row">
+            <TransactionsList accountId={id} initialData={transactions} />
+            <TransactionsGraph />
+          </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-6 lg:flex-row">
             <InvoiceList accountId={id} initialData={invoices} />
-            <InvoicesGraph />
+            <InvoicesGraph accountId={id} initialData={invoices} />
           </div>
         </div>
       </div>

@@ -8,9 +8,11 @@ import { InvoiceCard } from '~/app/(main)/(items)/accounts/[id]/_components/invo
 import { Button } from '~/app/_components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
+export type InvoiceRouteOutput = InferRouteOutput['invoices']['getByAccountId'];
+
 type Props = {
   accountId: string;
-  initialData: InferRouteOutput['invoices']['getByAccountId'];
+  initialData: InvoiceRouteOutput;
 };
 
 export const InvoiceList: FC<Props> = ({ accountId, initialData }) => {
@@ -29,7 +31,7 @@ export const InvoiceList: FC<Props> = ({ accountId, initialData }) => {
   return (
     <div className="w-[30em] rounded p-5 shadow-lg">
       <div className="flex items-center justify-between">
-        <div className="m-3 text-2xl font-bold">FATURAS</div>
+        <div className="m-3 text-2xl font-bold">Faturas</div>
 
         <InvoiceForm accountId={accountId} />
       </div>

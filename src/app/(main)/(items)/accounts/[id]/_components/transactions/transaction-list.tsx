@@ -18,7 +18,7 @@ export const TransactionsList: FC<Props> = ({ accountId, initialData }) => {
   return (
     <div className="flex max-h-[40em] w-[30em] flex-col gap-2 rounded-lg p-5 shadow-lg">
       <div className="flex items-center justify-between gap-3">
-        <div className="text-2xl font-bold">TRANSAÇÕES</div>
+        <div className="text-2xl font-bold">Transações</div>
 
         <TransactionForm accountId={accountId} />
       </div>
