@@ -33,13 +33,13 @@ export const AccountCard: FC<Props> = ({ account, fromAccountPage }) => {
     });
 
   return (
-    <div className="flex min-h-[7em] min-w-[18em] max-w-[25em] items-center justify-between gap-3 rounded bg-slate-200 px-5 shadow-lg">
+    <div className="flex min-h-[7em] w-fit min-w-[18em] max-w-[25em] items-center justify-between gap-3 rounded bg-slate-200 px-5 shadow-lg">
       <div className="max-w-[16em]">
-        <p className="line-clamp-2 overflow-hidden text-ellipsis text-lg font-bold">
+        <p className="line-clamp-2 overflow-hidden text-ellipsis text-xl font-bold">
           {account.name}
         </p>
 
-        <p>{parseMoney(account.balance)}</p>
+        <p className="text-lg">{parseMoney(account.balance)}</p>
       </div>
 
       <div className="flex flex-col gap-1">

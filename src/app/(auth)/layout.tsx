@@ -1,13 +1,12 @@
-import React, { type FC, type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { createSupabaseServerClient } from '~/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
-export const metadata = {
-  title: 'Finance Manager - Entrar',
-  description: 'Entre em sua conta',
-};
-
-const AuthLayout: FC<{ children: ReactNode }> = async ({ children }) => {
+export default async function AuthLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const supabase = createSupabaseServerClient();
 
   const {
@@ -17,6 +16,9 @@ const AuthLayout: FC<{ children: ReactNode }> = async ({ children }) => {
   if (user) redirect('/dashboard');
 
   return <>{children}</>;
-};
+}
 
-export default AuthLayout;
+export const metadata = {
+  title: 'Finance Manager - Login',
+  description: 'Entre ou crie sua conta',
+};

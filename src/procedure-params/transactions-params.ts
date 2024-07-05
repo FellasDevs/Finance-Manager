@@ -6,6 +6,7 @@ const BaseTransactionParams = createInsertSchema(TransactionsTable, {
   description: z.string().min(3).max(50),
   value: z.number(),
   category: z.string().uuid(),
+  categoryId: z.string().uuid(),
   time: z.coerce.date(),
 }).omit({
   createdAt: true,
@@ -13,7 +14,3 @@ const BaseTransactionParams = createInsertSchema(TransactionsTable, {
 });
 
 export const CreateTransactionParams = BaseTransactionParams.omit({ id: true });
-
-export const EditTransactionParams = BaseTransactionParams.required({
-  id: true,
-});
