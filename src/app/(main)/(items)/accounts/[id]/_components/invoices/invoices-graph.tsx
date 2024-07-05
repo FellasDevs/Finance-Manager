@@ -29,7 +29,7 @@ export function InvoicesGraph({ accountId, initialData }: Props) {
         })),
       },
     ],
-    [history],
+    [invoices],
   );
 
   return (
