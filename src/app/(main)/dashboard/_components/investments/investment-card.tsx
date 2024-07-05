@@ -35,7 +35,7 @@ export const InvestmentCard: FC<Props> = ({
     });
 
   return (
-    <div className="flex min-h-[7em] min-w-[18em] max-w-[25em] items-center justify-between gap-3 rounded bg-slate-200 px-5 shadow-lg">
+    <div className="flex min-h-[7em] w-fit min-w-[18em] max-w-[25em] items-center justify-between gap-3 rounded bg-slate-200 px-5 shadow-lg">
       <p className="line-clamp-2 overflow-hidden text-ellipsis text-lg font-bold">
         {investment.name}
       </p>

@@ -1,10 +1,8 @@
 import { api } from '~/trpc/server';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
 import { CurrentInvestmentCard } from '~/app/(main)/(items)/investments/[id]/_components/CurrentInvestmentCard';
 import { InvestmentHistoryList } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-history-list';
 import { InvestmentHistoryGraph } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-history-graph';
-import Head from 'next/head';
 
 type Props = {
   params: { id: string };
@@ -21,32 +19,20 @@ export default async function InvestmentPage({ params: { id } }: Props) {
     });
 
     return (
-      <div className="flex flex-wrap gap-5">
-        <Head>
-          <title>Finance Manager - {investment.name}</title>
-        </Head>
+      <div className="m-auto flex flex-col justify-center gap-5">
+        <CurrentInvestmentCard initialData={investment} />
 
-        <div>
-          <Link
-            href={'/dashboard'}
-            className="mb-2 flex items-center gap-1 rounded-lg bg-blue-200 p-2 text-lg hover:bg-blue-300"
-          >
-            <ArrowLeft size={24} />
-            <p>Voltar ao início</p>
-          </Link>
+        <div className="flex flex-wrap gap-16">
+          <InvestmentHistoryList
+            investmentId={investment.id}
+            initialData={investmentHistory}
+          />
 
-          <CurrentInvestmentCard initialData={investment} />
+          <InvestmentHistoryGraph
+            investmentId={investment.id}
+            initialData={investmentHistory}
+          />
         </div>
-
-        <InvestmentHistoryList
-          investmentId={investment.id}
-          initialData={investmentHistory}
-        />
-
-        <InvestmentHistoryGraph
-          investmentId={investment.id}
-          initialData={investmentHistory}
-        />
       </div>
     );
   } catch (e) {
