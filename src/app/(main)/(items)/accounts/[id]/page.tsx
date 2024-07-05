@@ -26,14 +26,14 @@ export default async function AccountPage({ params: { id } }: Props) {
         <CurrentAccountCard initialData={account} />
 
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col  gap-6 lg:flex-row">
-            <TransactionsList accountId={id} initialData={transactions} />
-            <TransactionsGraph />
-          </div>
-
           <div className="flex flex-col gap-6 lg:flex-row">
             <InvoiceList accountId={id} initialData={invoices} />
             <InvoicesGraph accountId={id} initialData={invoices} />
+          </div>
+
+          <div className="flex flex-col  gap-6 lg:flex-row">
+            <TransactionsList accountId={id} initialData={transactions} />
+            <TransactionsGraph accountId={id} initialData={transactions} />
           </div>
         </div>
       </div>

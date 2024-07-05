@@ -60,6 +60,9 @@ export const TransactionsTable = createTable('transactions', {
   accountId: uuid('account_id')
     .notNull()
     .references(() => BankAccountsTable.id, { onDelete: 'cascade' }),
+  categoryId: uuid('category_id')
+    .notNull()
+    .references(() => PurchaseCategoriesTable.id),
   time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
   description: varchar('description', { length: 50 }).notNull(),
   category: varchar('category', { length: 50 }),

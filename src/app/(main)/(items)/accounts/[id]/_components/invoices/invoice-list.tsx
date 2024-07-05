@@ -8,11 +8,12 @@ import { InvoiceCard } from '~/app/(main)/(items)/accounts/[id]/_components/invo
 import { Button } from '~/app/_components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-export type InvoiceRouteOutput = InferRouteOutput['invoices']['getByAccountId'];
+export type InvoicesRouteOutput =
+  InferRouteOutput['invoices']['getByAccountId'];
 
 type Props = {
   accountId: string;
-  initialData: InvoiceRouteOutput;
+  initialData: InvoicesRouteOutput;
 };
 
 export const InvoiceList: FC<Props> = ({ accountId, initialData }) => {

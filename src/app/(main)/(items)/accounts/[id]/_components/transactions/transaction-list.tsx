@@ -6,9 +6,12 @@ import { type InferRouteOutput } from '~/utils/types';
 import { TransactionCard } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transaction-card';
 import { TransactionForm } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transaction-form';
 
+export type TransactionsRouteOutput =
+  InferRouteOutput['transactions']['getByAccountId'];
+
 type Props = {
   accountId: string;
-  initialData: InferRouteOutput['transactions']['getByAccountId'];
+  initialData: TransactionsRouteOutput;
 };
 
 export const TransactionsList: FC<Props> = ({ accountId, initialData }) => {

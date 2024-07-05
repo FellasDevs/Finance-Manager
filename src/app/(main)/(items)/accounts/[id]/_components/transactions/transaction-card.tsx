@@ -1,6 +1,6 @@
 'use client';
 
-import { type FC } from 'react';
+import { type FC, useMemo } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
 import { Button } from '~/app/_components/ui/button';
 import { Trash } from 'lucide-react';
@@ -15,7 +15,16 @@ type Props = {
 };
 
 export const TransactionCard: FC<Props> = ({ transaction }) => {
+  const { data: categories } = api.purchaseCategories.getByUser.useQuery();
+
   const { mutate: deleteTransaction } = api.transactions.delete.useMutation();
+
+  const category = useMemo(
+    () =>
+      categories?.find((category) => category.id === transaction.categoryId)
+        ?.name || '',
+    [categories, transaction.categoryId],
+  );
 
   return (
     <div className="flex items-center justify-between gap-10 rounded bg-slate-200 px-5 py-3 shadow-lg">
@@ -36,11 +45,11 @@ export const TransactionCard: FC<Props> = ({ transaction }) => {
         </p>
 
         <p>
-          Categoria: <b>{transaction.category || 'Nenhuma'}</b>
+          Categoria: <b>{category || 'Nenhuma'}</b>
         </p>
 
         <p>
-          Momento: <b>{dayjs(transaction.time).format('DD/mm/YYYY HH:mm')}</b>
+          Data: <b>{dayjs(transaction.time).format('DD/mm/YYYY HH:mm')}</b>
         </p>
       </div>
 

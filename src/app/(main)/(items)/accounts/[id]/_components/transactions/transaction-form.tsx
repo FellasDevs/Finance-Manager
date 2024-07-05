@@ -25,6 +25,7 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { PlusCircle } from 'lucide-react';
+import { PurchaseCategorySelect } from '~/app/(main)/(items)/accounts/[id]/_components/purchase-categories/purchase-category-select';
 
 type Props = {
   accountId: string;
@@ -35,7 +36,7 @@ type CreateTransactionInput = z.input<typeof CreateTransactionParams>;
 export const TransactionForm: FC<Props> = ({ accountId }) => {
   const form = useForm<CreateTransactionInput>({
     resolver: zodResolver(CreateTransactionParams),
-    mode: 'onTouched',
+    mode: 'all',
     defaultValues: {
       accountId,
       value: 0,
@@ -103,6 +104,7 @@ export const TransactionForm: FC<Props> = ({ accountId }) => {
                     <div className="flex items-center justify-between gap-2">
                       <Input
                         type="number"
+                        min={0.01}
                         step={0.01}
                         placeholder="Insira o valor da transação"
                         className="w-min"
@@ -134,26 +136,31 @@ export const TransactionForm: FC<Props> = ({ accountId }) => {
               )}
             />
 
-            {/*<FormField*/}
-            {/*  control={form.control}*/}
-            {/*  name="category"*/}
-            {/*  render={({ field }) => (*/}
-            {/*    <FormItem>*/}
-            {/*      <FormLabel className="text-muted-foreground">Categoria</FormLabel>*/}
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-muted-foreground">
+                    Categoria
+                    <p className="text-xs font-bold">
+                      Digite para criar uma nova categoria
+                    </p>
+                  </FormLabel>
 
-            {/*      <FormControl>*/}
-            {/*        <Input*/}
-            {/*          type="number"*/}
-            {/*          step={0.01}*/}
-            {/*          placeholder="Insira o valor da transação"*/}
-            {/*          {...field}*/}
-            {/*          autoComplete="on"*/}
-            {/*        />*/}
-            {/*      </FormControl>*/}
-            {/*      <FormMessage />*/}
-            {/*    </FormItem>*/}
-            {/*  )}*/}
-            {/*/>*/}
+                  <FormControl>
+                    <PurchaseCategorySelect
+                      {...form}
+                      value={field.value}
+                      onChange={(categoryId) =>
+                        form.setValue('categoryId', categoryId as string)
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}

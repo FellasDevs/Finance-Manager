@@ -73,10 +73,7 @@ export function PurchasesGraph({ invoiceId }: Props) {
             novamente
           </ErrorMessage>
         ) : !valuePurchasedPerCategory.length ? (
-          <ErrorMessage>
-            Os valores não puderam ser carregados, recarregue a página para
-            tentar novamente
-          </ErrorMessage>
+          <ErrorMessage>Não há valores a exibir</ErrorMessage>
         ) : (
           <div className="m-auto">
             <Chart
