@@ -5,7 +5,7 @@ import { type InferRouteOutput } from '~/utils/types';
 import { api } from '~/trpc/react';
 import dayjs from 'dayjs';
 import { Button } from '~/app/_components/ui/button';
-import { InvestmentUpdateForm } from '~/app/(main)/investments/[id]/_components/investment-history/investment-update-form';
+import { InvestmentUpdateForm } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-update-form';
 
 export type InvestmentUpdate =
   InferRouteOutput['investmentsHistory']['getAllByInvestment'][0];

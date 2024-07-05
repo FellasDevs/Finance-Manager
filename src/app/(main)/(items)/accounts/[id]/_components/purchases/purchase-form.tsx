@@ -22,9 +22,9 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { Pencil, PlusCircle } from 'lucide-react';
-import { PurchaseCategorySelect } from '~/app/(main)/accounts/[id]/_components/purchase-categories/purchase-category-select';
+import { PurchaseCategorySelect } from '~/app/(main)/(items)/accounts/[id]/_components/purchase-categories/purchase-category-select';
 import { CreatePurchaseParams } from '~/procedure-params/purchases-params';
-import { type Purchase } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-card';
+import { type Purchase } from '~/app/(main)/(items)/accounts/[id]/_components/purchases/purchase-card';
 
 type Props = {
   invoiceId: string;

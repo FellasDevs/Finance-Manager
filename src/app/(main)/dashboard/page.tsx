@@ -15,3 +15,8 @@ export default async function Dashboard() {
     </div>
   );
 }
+
+export const metadata = {
+  title: 'Finance Manager - Início',
+  description: 'Navegue suas contas e investimentos',
+};

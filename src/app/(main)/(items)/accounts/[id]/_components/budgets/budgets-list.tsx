@@ -2,8 +2,8 @@
 
 import React, { type ReactNode } from 'react';
 import { api } from '~/trpc/react';
-import { BudgetCard } from '~/app/(main)/accounts/[id]/_components/budgets/budget-card';
-import { BudgetForm } from '~/app/(main)/accounts/[id]/_components/budgets/budget-form';
+import { BudgetCard } from '~/app/(main)/(items)/accounts/[id]/_components/budgets/budget-card';
+import { BudgetForm } from '~/app/(main)/(items)/accounts/[id]/_components/budgets/budget-form';
 import { Spinner } from '~/app/_components/ui/spinner';
 
 type Props = {

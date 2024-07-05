@@ -23,7 +23,8 @@ const createQueryClient = () => {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: 'always',
-        staleTime: 1000 * 60,
+        staleTime: 60000,
+        retry: 3,
       },
     },
   });

@@ -23,7 +23,7 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { Pencil, PlusCircle } from 'lucide-react';
-import { type InvestmentUpdate } from '~/app/(main)/investments/[id]/_components/investment-history/investment-update-card';
+import { type InvestmentUpdate } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-update-card';
 
 type Props = {
   investmentId: string;

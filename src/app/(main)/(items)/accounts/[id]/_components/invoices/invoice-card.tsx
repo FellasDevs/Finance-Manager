@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
-import { InvoiceDialog } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-dialog';
-import { InvoiceHeader } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-header';
+import { InvoiceDialog } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-dialog';
+import { InvoiceHeader } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-header';
 
 export type Invoice = InferRouteOutput['invoices']['getByAccountId'][0];
 

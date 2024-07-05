@@ -1,15 +1,16 @@
 import { api } from '~/trpc/server';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import { CurrentInvestmentCard } from '~/app/(main)/investments/[id]/_components/CurrentInvestmentCard';
-import { InvestmentHistoryList } from '~/app/(main)/investments/[id]/_components/investment-history/investment-history-list';
-import { InvestmentHistoryGraph } from '~/app/(main)/investments/[id]/_components/investment-history/investment-history-graph';
+import { CurrentInvestmentCard } from '~/app/(main)/(items)/investments/[id]/_components/CurrentInvestmentCard';
+import { InvestmentHistoryList } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-history-list';
+import { InvestmentHistoryGraph } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-history-graph';
+import Head from 'next/head';
 
-type Params = {
+type Props = {
   params: { id: string };
 };
 
-export default async function InvestmentPage({ params: { id } }: Params) {
+export default async function InvestmentPage({ params: { id } }: Props) {
   try {
     const investment = await api.investments.getById({ id });
 
@@ -20,7 +21,11 @@ export default async function InvestmentPage({ params: { id } }: Params) {
     });
 
     return (
-      <div className="flex flex-wrap gap-12 p-10">
+      <div className="flex flex-wrap gap-5">
+        <Head>
+          <title>Finance Manager - {investment.name}</title>
+        </Head>
+
         <div>
           <Link
             href={'/dashboard'}
@@ -60,4 +65,14 @@ function InvestmentNotFound() {
       </Link>
     </div>
   );
+}
+
+export async function generateMetadata({ params: { id } }: Props) {
+  const investment = await api.investments.getById({ id });
+
+  return {
+    title:
+      'Finance Manager - ' + investment?.name || 'Investimento não encontrado',
+    description: 'Gerencie as atualizações de seu investimento',
+  };
 }

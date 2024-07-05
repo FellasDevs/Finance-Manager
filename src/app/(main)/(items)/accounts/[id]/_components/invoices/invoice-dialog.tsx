@@ -6,15 +6,15 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { Button } from '~/app/_components/ui/button';
-import { type Invoice } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
+import { type Invoice } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-card';
 import { api } from '~/trpc/react';
-import { InvoiceHeader } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-header';
+import { InvoiceHeader } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-header';
 import { Switch } from '~/app/_components/ui/switch';
 import { Label } from '~/app/_components/ui/label';
 import React, { useMemo } from 'react';
-import { PurchasesList } from '~/app/(main)/accounts/[id]/_components/purchases/purchases-list';
-import { BudgetsList } from '~/app/(main)/accounts/[id]/_components/budgets/budgets-list';
-import { PurchasesGraph } from '~/app/(main)/accounts/[id]/_components/purchases/purchases-graph';
+import { PurchasesList } from '~/app/(main)/(items)/accounts/[id]/_components/purchases/purchases-list';
+import { BudgetsList } from '~/app/(main)/(items)/accounts/[id]/_components/budgets/budgets-list';
+import { PurchasesGraph } from '~/app/(main)/(items)/accounts/[id]/_components/purchases/purchases-graph';
 
 type Props = {
   invoice: Invoice;

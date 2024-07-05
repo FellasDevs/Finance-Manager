@@ -7,12 +7,6 @@ import { type ReactNode } from 'react';
 import { Navbar } from '~/app/_components/global/navbar';
 import { ThemeProvider } from '~/app/_components/global/theme-provider';
 
-export const metadata = {
-  title: 'Finance Manager',
-  description: 'O seu gerenciador de finanças',
-  icons: [{ rel: 'icon', url: '/favicon.ico' }],
-};
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR" className={`${GeistSans.variable}`}>
@@ -32,3 +26,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </html>
   );
 }
+
+export const metadata = {
+  title: 'Finance Manager',
+  description: 'O seu gerenciador de finanças',
+  icons: [{ rel: 'icon', url: '/favicon.ico' }],
+};

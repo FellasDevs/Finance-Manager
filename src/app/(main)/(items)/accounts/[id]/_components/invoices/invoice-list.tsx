@@ -3,15 +3,10 @@
 import { api } from '~/trpc/react';
 import { type FC, useMemo, useState } from 'react';
 import { type InferRouteOutput } from '~/utils/types';
-import { InvoiceForm } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-form';
-import { InvoiceCard } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
+import { InvoiceForm } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-form';
+import { InvoiceCard } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-card';
 import { Button } from '~/app/_components/ui/button';
-import { ArrowLeft, ArrowRight, PlusCircle } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from '~/app/_components/ui/dialog';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 type Props = {
   accountId: string;

@@ -6,7 +6,7 @@ import { parseMoney } from '~/utils/parseMoney';
 import { api } from '~/trpc/react';
 import { Button } from '~/app/_components/ui/button';
 import { FaTrash } from 'react-icons/fa';
-import { BudgetForm } from '~/app/(main)/accounts/[id]/_components/budgets/budget-form';
+import { BudgetForm } from '~/app/(main)/(items)/accounts/[id]/_components/budgets/budget-form';
 import { Progress } from '~/app/_components/ui/progress';
 
 export type Budget = InferRouteOutput['budgets']['getByInvoice'][0];

@@ -1,8 +1,12 @@
-import React, { type FC, type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { createSupabaseServerClient } from '~/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
-const MainLayout: FC<{ children: ReactNode }> = async ({ children }) => {
+export default async function MainLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const supabase = createSupabaseServerClient();
 
   const {
@@ -12,6 +16,4 @@ const MainLayout: FC<{ children: ReactNode }> = async ({ children }) => {
   if (!user) redirect('/login');
 
   return <>{children}</>;
-};
-
-export default MainLayout;
+}

@@ -1,7 +1,7 @@
 import { parseMoney } from '~/utils/parseMoney';
-import { type Invoice } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
+import { type Invoice } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-card';
 import dayjs from 'dayjs';
-import { InvoiceForm } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-form';
+import { InvoiceForm } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-form';
 
 type Props = {
   invoice: Invoice;

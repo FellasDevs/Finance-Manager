@@ -25,7 +25,7 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { Pencil, PlusCircle } from 'lucide-react';
-import { type Invoice } from '~/app/(main)/accounts/[id]/_components/invoices/invoice-card';
+import { type Invoice } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-card';
 
 type Props = {
   accountId: string;

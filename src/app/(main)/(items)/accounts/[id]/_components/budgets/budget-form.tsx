@@ -21,8 +21,8 @@ import {
   DialogTrigger,
 } from '~/app/_components/ui/dialog';
 import { Pencil, PlusCircle } from 'lucide-react';
-import { PurchaseCategorySelect } from '~/app/(main)/accounts/[id]/_components/purchase-categories/purchase-category-select';
-import { type Budget } from '~/app/(main)/accounts/[id]/_components/budgets/budget-card';
+import { PurchaseCategorySelect } from '~/app/(main)/(items)/accounts/[id]/_components/purchase-categories/purchase-category-select';
+import { type Budget } from '~/app/(main)/(items)/accounts/[id]/_components/budgets/budget-card';
 import { CreateBudgetParams } from '~/procedure-params/create-budget-params';
 
 type Props = {

@@ -1,7 +1,7 @@
 'use client';
 
-import { PurchaseForm } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-form';
-import { PurchaseCard } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-card';
+import { PurchaseForm } from '~/app/(main)/(items)/accounts/[id]/_components/purchases/purchase-form';
+import { PurchaseCard } from '~/app/(main)/(items)/accounts/[id]/_components/purchases/purchase-card';
 import React, { type ReactNode } from 'react';
 import { api } from '~/trpc/react';
 import { Spinner } from '~/app/_components/ui/spinner';

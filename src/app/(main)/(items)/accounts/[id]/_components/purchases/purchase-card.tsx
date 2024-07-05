@@ -6,7 +6,7 @@ import { parseMoney } from '~/utils/parseMoney';
 import { api } from '~/trpc/react';
 import { Button } from '~/app/_components/ui/button';
 import { FaTrash } from 'react-icons/fa';
-import { PurchaseForm } from '~/app/(main)/accounts/[id]/_components/purchases/purchase-form';
+import { PurchaseForm } from '~/app/(main)/(items)/accounts/[id]/_components/purchases/purchase-form';
 
 export type Purchase = InferRouteOutput['purchases']['getByInvoice'][0];
 
