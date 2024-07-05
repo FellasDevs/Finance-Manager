@@ -13,13 +13,7 @@ export async function AuthButton() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return (
-      <Link href="/login" passHref>
-        <Button variant="outline">Entrar</Button>
-      </Link>
-    );
-  }
+  if (!user) return null;
 
   const profile = await api.users.getProfile();
 

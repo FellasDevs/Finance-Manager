@@ -3,13 +3,12 @@
 import { headers } from 'next/headers';
 import { createSupabaseServerClient } from '~/utils/supabase/server';
 import { type SignupInput } from '~/app/(auth)/signup/page';
-import { type LoginInput } from '~/app/(auth)/login/page';
 import { api } from '~/trpc/server';
 import { redirect } from 'next/navigation';
 
-const supabase = createSupabaseServerClient();
+export async function signUp(data: SignupInput) {
+  const supabase = createSupabaseServerClient();
 
-export const signUp = async (data: SignupInput) => {
   const { data: createdUser, error } = await supabase.auth.signUp({
     email: data.email,
     password: data.password,
@@ -32,25 +31,9 @@ export const signUp = async (data: SignupInput) => {
     name: data.name,
   });
 
-  return redirect('/dashboard');
-};
+  redirect('/');
+}
 
-export const logIn = async (data: LoginInput) => {
-  const { error } = await supabase.auth.signInWithPassword({
-    email: data.email,
-    password: data.password,
-  });
-
-  if (error) {
-    console.error(error);
-    return error.message;
-  }
-
-  return redirect('/');
-};
-
-export const signOut = async () => {
-  const supabase = createSupabaseServerClient();
-  await supabase.auth.signOut();
-  return redirect('/login');
-};
+export async function redirectFromClient(url: string) {
+  redirect(url);
+}
