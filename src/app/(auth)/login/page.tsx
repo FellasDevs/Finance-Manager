@@ -15,9 +15,10 @@ import { Input } from '~/app/_components/ui/input';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
-import { logIn } from '~/app/(auth)/_actions/auth';
+import React, { useState, useTransition } from 'react';
+import { redirectFromClient } from '~/app/(auth)/_actions/auth';
 import { OauthButton } from '~/app/(auth)/_components/oauth-button';
+import { createSupabaseBrowserClient } from '~/utils/supabase/client';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -27,6 +28,8 @@ const loginSchema = z.object({
 export type LoginInput = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -37,14 +40,23 @@ export default function LoginPage() {
 
   const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = async (data: LoginInput) => {
-    const error = await logIn(data);
+  const onSubmit = (data: LoginInput) => {
+    startTransition(async () => {
+      const supabase = createSupabaseBrowserClient();
 
-    if (error) setError(error);
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (error) return setError(error.message);
+
+      await redirectFromClient('/');
+    });
   };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-background p-5">
+    <div className="flex h-[40em] items-center justify-center bg-background p-5">
       <div className="flex w-[35em] flex-col gap-6 rounded-lg px-10 py-8 shadow-lg">
         <h1 className="text-2xl font-semibold">Entre em sua conta</h1>
 
@@ -94,7 +106,13 @@ export default function LoginPage() {
               )}
             />
 
-            <Button variant="default" className="my-3 w-full" type="submit">
+            <Button
+              isLoading={isPending}
+              disabled={isPending}
+              variant="default"
+              className="my-3 w-full"
+              type="submit"
+            >
               Entrar
             </Button>
 

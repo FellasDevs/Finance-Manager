@@ -59,7 +59,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-background p-5">
+    <div className="flex h-[40em] items-center justify-center bg-background p-5">
       <div className="flex w-[35em] flex-col gap-6 rounded-lg px-10 py-8 shadow-lg">
         <h1 className="text-2xl font-semibold">Crie sua conta</h1>
 

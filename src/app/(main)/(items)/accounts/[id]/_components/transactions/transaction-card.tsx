@@ -7,16 +7,16 @@ import { Trash } from 'lucide-react';
 import { api } from '~/trpc/react';
 import dayjs from 'dayjs';
 import { parseMoney } from '~/utils/parseMoney';
+import { type PurchaseCategories } from '~/app/(main)/(items)/accounts/[id]/page';
 
 type Transaction = InferRouteOutput['transactions']['getByAccountId'][0];
 
 type Props = {
   transaction: Transaction;
+  categories: PurchaseCategories;
 };
 
-export const TransactionCard: FC<Props> = ({ transaction }) => {
-  const { data: categories } = api.purchaseCategories.getByUser.useQuery();
-
+export const TransactionCard: FC<Props> = ({ transaction, categories }) => {
   const { mutate: deleteTransaction } = api.transactions.delete.useMutation();
 
   const category = useMemo(

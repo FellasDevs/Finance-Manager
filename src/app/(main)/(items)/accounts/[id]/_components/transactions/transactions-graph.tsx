@@ -6,24 +6,35 @@ import Chart from 'react-apexcharts';
 import React, { type ReactNode, useMemo } from 'react';
 import { type TransactionsRouteOutput } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transaction-list';
 import { parseMoney } from '~/utils/parseMoney';
+import { type PurchaseCategories } from '~/app/(main)/(items)/accounts/[id]/page';
 
 type Props = {
   accountId: string;
-  initialData: TransactionsRouteOutput;
+  initialTransactions: TransactionsRouteOutput;
+  initialCategories: PurchaseCategories;
 };
 
-export function TransactionsGraph({ accountId, initialData }: Props) {
+export function TransactionsGraph({
+  accountId,
+  initialTransactions,
+  initialCategories,
+}: Props) {
   const {
     data: categories,
     isPending: categoriesPending,
     error: categoriesError,
-  } = api.purchaseCategories.getByUser.useQuery();
+  } = api.purchaseCategories.getByUser.useQuery(undefined, {
+    initialData: initialCategories,
+  });
 
   const {
     data: transactions,
     error: transactionsError,
     isPending: transactionsPending,
-  } = api.transactions.getByAccountId.useQuery({ accountId }, { initialData });
+  } = api.transactions.getByAccountId.useQuery(
+    { accountId },
+    { initialData: initialTransactions },
+  );
 
   const isPending = useMemo(
     () => categoriesPending || transactionsPending,

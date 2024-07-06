@@ -65,7 +65,6 @@ export const TransactionsTable = createTable('transactions', {
     .references(() => PurchaseCategoriesTable.id),
   time: timestamp('time', { withTimezone: true }).notNull().defaultNow(),
   description: varchar('description', { length: 50 }).notNull(),
-  category: varchar('category', { length: 50 }),
   value: doublePrecision('value').notNull().default(0),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),

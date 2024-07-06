@@ -25,19 +25,10 @@ import { createSupabaseServerClient } from '~/utils/supabase/server';
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const supabase = createSupabaseServerClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return {
-    user,
-    db,
-    ...opts,
-  };
-};
+export const createTRPCContext = async (opts: { headers: Headers }) => ({
+  db,
+  ...opts,
+});
 
 /**
  * 2. INITIALIZATION
@@ -91,17 +82,19 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
-  if (!ctx.user) {
+  const supabase = createSupabaseServerClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
     });
   }
 
-  return next({
-    ctx: {
-      user: ctx.user,
-    },
-  });
+  return next({ ctx: { user } });
 });
 
 export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
