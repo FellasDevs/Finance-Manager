@@ -1,6 +1,4 @@
-import Link from 'next/link';
 import { createSupabaseServerClient } from '~/utils/supabase/server';
-import { Button } from '~/app/_components/ui/button';
 import { api } from '~/trpc/server';
 import { SignOutForm } from '~/app/_components/global/signout-form';
 import { UserPicture } from '~/app/_components/global/user-picture';

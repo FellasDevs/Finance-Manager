@@ -5,7 +5,6 @@ import { z } from '~/utils/zod-pt';
 const BaseTransactionParams = createInsertSchema(TransactionsTable, {
   description: z.string().min(3).max(50),
   value: z.number(),
-  category: z.string().uuid(),
   categoryId: z.string().uuid(),
   time: z.coerce.date(),
 }).omit({
