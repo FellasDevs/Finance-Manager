@@ -23,7 +23,7 @@ export function InvoicesGraph({ accountId, initialData }: Props) {
     () => [
       {
         name: 'Valor em reais',
-        data: invoices.reverse().map((invoice) => ({
+        data: [...invoices].reverse().map((invoice) => ({
           x: dayjs(invoice.dueDate).format('DD/MM/YYYY HH:mm'),
           y: invoice.value,
         })),
