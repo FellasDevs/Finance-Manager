@@ -21,7 +21,7 @@ export function InvestmentHistoryGraph({ investmentId, initialData }: Props) {
     () => [
       {
         name: 'Valor em reais',
-        data: history.reverse().map((update) => ({
+        data: [...history].reverse().map((update) => ({
           x: dayjs(update.time).format('DD/MM/YYYY HH:mm'),
           y: update.value,
         })),
