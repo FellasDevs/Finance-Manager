@@ -28,7 +28,7 @@ export function InvoiceList({ accountId, initialData }: Props) {
   );
 
   return (
-    <div className="w-[30em] rounded p-5 shadow-lg">
+    <div className="w-[30em] rounded-lg p-5 shadow-lg">
       <div className="flex items-center justify-between">
         <div className="m-3 text-2xl font-bold">Faturas</div>
 
