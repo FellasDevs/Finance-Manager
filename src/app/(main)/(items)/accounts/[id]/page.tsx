@@ -6,6 +6,7 @@ import { CurrentAccountCard } from '~/app/(main)/(items)/accounts/[id]/_componen
 import { TransactionsGraph } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transactions-graph';
 import { InvoicesGraph } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoices-graph';
 import { type InferRouteOutput } from '~/utils/types';
+import { Skeleton } from '~/app/_components/ui/skeleton';
 
 export type PurchaseCategories =
   InferRouteOutput['purchaseCategories']['getByUser'];

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { CurrentInvestmentCard } from '~/app/(main)/(items)/investments/[id]/_components/CurrentInvestmentCard';
 import { InvestmentHistoryList } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-history-list';
 import { InvestmentHistoryGraph } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-history-graph';
+import { Skeleton } from '~/app/_components/ui/skeleton';
 
 type Props = {
   params: { id: string };
