@@ -64,7 +64,7 @@ export const TransactionForm: FC<Props> = ({ accountId }) => {
   return (
     <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger>
-        <PlusCircle color="green" />
+        <PlusCircle className="text-green-500" />
       </DialogTrigger>
 
       <DialogContent>

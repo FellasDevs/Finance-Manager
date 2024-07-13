@@ -74,9 +74,9 @@ export function InvestmentUpdateForm({
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
           {createdInvestmentUpdate ? (
-            <Pencil color="blue" size={18} />
+            <Pencil size={18} className="text-blue-500" />
           ) : (
-            <PlusCircle color="green" />
+            <PlusCircle className="text-green-500" />
           )}
         </Button>
       </DialogTrigger>

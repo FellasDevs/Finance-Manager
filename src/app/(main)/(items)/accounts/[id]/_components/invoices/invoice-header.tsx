@@ -32,7 +32,7 @@ export function InvoiceHeader({ invoice, fromDialog }: Props) {
             <p>{parseMoney(invoice.value)}</p>
           </div>
 
-          <div className="text-lg text-gray-700">
+          <div className="text-lg text-muted-foreground">
             <p>Limite</p>
             <p>{parseMoney(invoice.lim)}</p>
           </div>

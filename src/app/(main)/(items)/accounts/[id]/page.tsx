@@ -1,12 +1,9 @@
 import { api } from '~/trpc/server';
 import Link from 'next/link';
-import { InvoiceList } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-list';
-import { TransactionsList } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transaction-list';
 import { CurrentAccountCard } from '~/app/(main)/(items)/accounts/[id]/_components/CurrentAccountCard';
-import { TransactionsGraph } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transactions-graph';
-import { InvoicesGraph } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoices-graph';
 import { type InferRouteOutput } from '~/utils/types';
-import { Skeleton } from '~/app/_components/ui/skeleton';
+import { InvoicesContainer } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoices-container';
+import { TransactionsContainer } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transactions-container';
 
 export type PurchaseCategories =
   InferRouteOutput['purchaseCategories']['getByUser'];
@@ -28,27 +25,17 @@ export default async function AccountPage({ params: { id } }: Props) {
     ]);
 
     return (
-      <div className="m-auto flex flex-col gap-5">
+      <div className="m-auto flex flex-col gap-6">
         <CurrentAccountCard initialData={account} />
 
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-6 lg:flex-row">
-            <InvoiceList accountId={id} initialData={invoices} />
-            <InvoicesGraph accountId={id} initialData={invoices} />
-          </div>
+          <InvoicesContainer accountId={id} initialData={invoices} />
 
-          <div className="flex flex-col  gap-6 lg:flex-row">
-            <TransactionsList
-              accountId={id}
-              initialTransactions={transactions}
-              initialCategories={categories}
-            />
-            <TransactionsGraph
-              accountId={id}
-              initialTransactions={transactions}
-              initialCategories={categories}
-            />
-          </div>
+          <TransactionsContainer
+            accountId={id}
+            initialTransactions={transactions}
+            initialCategories={categories}
+          />
         </div>
       </div>
     );

@@ -8,6 +8,7 @@ import { api } from '~/trpc/react';
 import dayjs from 'dayjs';
 import { parseMoney } from '~/utils/parseMoney';
 import { type PurchaseCategories } from '~/app/(main)/(items)/accounts/[id]/page';
+import { Card } from '~/app/_components/ui/card';
 
 type Transaction = InferRouteOutput['transactions']['getByAccountId'][0];
 
@@ -27,7 +28,7 @@ export const TransactionCard: FC<Props> = ({ transaction, categories }) => {
   );
 
   return (
-    <div className="flex items-center justify-between gap-10 rounded bg-slate-200 px-5 py-3 shadow-lg">
+    <Card className="flex items-center justify-between gap-10 px-5 py-3">
       <div>
         <p className="text-lg">
           Descrição: <b>{transaction.description}</b>
@@ -37,7 +38,7 @@ export const TransactionCard: FC<Props> = ({ transaction, categories }) => {
           Valor:{' '}
           <b
             className={
-              transaction.value > 0 ? 'text-green-600' : 'text-red-600'
+              transaction.value > 0 ? 'text-green-500' : 'text-red-500'
             }
           >
             {parseMoney(transaction.value)}
@@ -58,8 +59,8 @@ export const TransactionCard: FC<Props> = ({ transaction, categories }) => {
         size="icon"
         onClick={() => deleteTransaction({ id: transaction.id })}
       >
-        <Trash color="red" />
+        <Trash className="text-red-500" />
       </Button>
-    </div>
+    </Card>
   );
 };
