@@ -18,8 +18,8 @@ export async function AuthButton() {
   if (!profile) console.error('Profile not found');
 
   return (
-    <div className="flex items-center gap-4 font-semibold">
-      <p>Olá {profile?.name || 'novo usuário'}!</p>
+    <div className="flex items-center gap-4 text-lg font-semibold">
+      <p>Olá {profile?.name || 'novo usuário'}</p>
 
       {profile?.picture && (
         <Suspense>
