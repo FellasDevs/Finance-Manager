@@ -1,51 +1,18 @@
 'use client';
 
-import { api } from '~/trpc/react';
-import { Spinner } from '~/app/_components/ui/spinner';
 import Chart from 'react-apexcharts';
-import React, { type ReactNode, useMemo } from 'react';
-import { type TransactionsRouteOutput } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transaction-list';
+import React, { useMemo } from 'react';
 import { parseMoney } from '~/utils/parseMoney';
 import { type PurchaseCategories } from '~/app/(main)/(items)/accounts/[id]/page';
+import { type TransactionsRouteOutput } from '~/app/(main)/(items)/accounts/[id]/_components/transactions/transactions-container';
+import { Card } from '~/app/_components/ui/card';
 
 type Props = {
-  accountId: string;
-  initialTransactions: TransactionsRouteOutput;
-  initialCategories: PurchaseCategories;
+  transactions: TransactionsRouteOutput;
+  categories: PurchaseCategories;
 };
 
-export function TransactionsGraph({
-  accountId,
-  initialTransactions,
-  initialCategories,
-}: Props) {
-  const {
-    data: categories,
-    isPending: categoriesPending,
-    error: categoriesError,
-  } = api.purchaseCategories.getByUser.useQuery(undefined, {
-    initialData: initialCategories,
-  });
-
-  const {
-    data: transactions,
-    error: transactionsError,
-    isPending: transactionsPending,
-  } = api.transactions.getByAccountId.useQuery(
-    { accountId },
-    { initialData: initialTransactions },
-  );
-
-  const isPending = useMemo(
-    () => categoriesPending || transactionsPending,
-    [categoriesPending, transactionsPending],
-  );
-
-  const error = useMemo(
-    () => categoriesError || transactionsError,
-    [categoriesError, transactionsError],
-  );
-
+export function TransactionsGraph({ transactions, categories }: Props) {
   const [series, usedCategoriesNames] = useMemo(() => {
     const usedCategoriesIds = [
       ...new Set(
@@ -77,58 +44,38 @@ export function TransactionsGraph({
   }, [categories, transactions]);
 
   return (
-    <div className="flex min-w-[30em] grow flex-col rounded-lg p-3 shadow-lg">
+    <Card className="flex min-w-[30em] grow flex-col p-3">
       <p className="mb-7 text-2xl font-bold">Transações por categoria</p>
 
-      <div className="m-auto">
-        {isPending ? (
-          <ErrorMessage>
-            <Spinner />
-            <p>Carregando...</p>
-          </ErrorMessage>
-        ) : error ? (
-          <ErrorMessage>
-            Ocorreu um erro inesperado, recarregue a página para tentar
-            novamente
-          </ErrorMessage>
-        ) : !transactions.length ? (
-          <ErrorMessage>Não há transações</ErrorMessage>
-        ) : (
-          <Chart
-            type="bar"
-            width={800}
-            height={500}
-            series={series}
-            options={{
-              yaxis: {
-                title: {
-                  text: 'Valor gasto por categoria',
-                },
-                labels: {
-                  formatter: function (y) {
-                    return parseMoney(y);
-                  },
+      <div className="m-auto text-black">
+        <Chart
+          type="bar"
+          width={800}
+          height={400}
+          series={series}
+          options={{
+            yaxis: {
+              title: {
+                text: 'Valor gasto por categoria',
+              },
+              labels: {
+                formatter: function (y) {
+                  return parseMoney(y);
                 },
               },
-              xaxis: {
-                title: {
-                  text: 'Categorias',
-                },
-                categories: usedCategoriesNames,
-                labels: {
-                  rotate: -90,
-                },
+            },
+            xaxis: {
+              title: {
+                text: 'Categorias',
               },
-            }}
-          />
-        )}
+              categories: usedCategoriesNames,
+              labels: {
+                rotate: -90,
+              },
+            },
+          }}
+        />
       </div>
-    </div>
-  );
-}
-
-function ErrorMessage({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex items-center gap-2 text-xl font-bold">{children}</div>
+    </Card>
   );
 }

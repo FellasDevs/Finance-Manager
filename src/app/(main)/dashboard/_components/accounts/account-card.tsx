@@ -16,6 +16,7 @@ import {
 } from '~/app/_components/ui/dialog';
 import { DialogBody } from 'next/dist/client/components/react-dev-overlay/internal/components/Dialog';
 import { BankAccountForm } from '~/app/(main)/dashboard/_components/accounts/bank-account-form';
+import { Card } from '~/app/_components/ui/card';
 
 export type BankAccount = InferRouteOutput['bankAccounts']['getByUser'][0];
 
@@ -33,7 +34,7 @@ export const AccountCard: FC<Props> = ({ account, fromAccountPage }) => {
     });
 
   return (
-    <div className="flex min-h-[7em] w-fit min-w-[18em] max-w-[25em] items-center justify-between gap-3 rounded-lg bg-slate-200 px-5 shadow-lg">
+    <Card className="flex min-h-[7em] w-fit min-w-[18em] max-w-[25em] items-center justify-between gap-3 px-5">
       <div className="max-w-[16em]">
         <p className="line-clamp-2 overflow-hidden text-ellipsis text-xl font-bold">
           {account.name}
@@ -50,7 +51,7 @@ export const AccountCard: FC<Props> = ({ account, fromAccountPage }) => {
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <Trash size={18} color="red" />
+                  <Trash size={18} className="text-red-500" />
                 </Button>
               </DialogTrigger>
 
@@ -93,6 +94,6 @@ export const AccountCard: FC<Props> = ({ account, fromAccountPage }) => {
           </Link>
         )}
       </div>
-    </div>
+    </Card>
   );
 };

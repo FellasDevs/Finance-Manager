@@ -1,8 +1,5 @@
 'use client';
 
-import { api } from '~/trpc/react';
-import { type InferRouteOutput } from '~/utils/types';
-import { InvoiceForm } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-form';
 import { InvoiceCard } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoice-card';
 
 import {
@@ -12,42 +9,16 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '~/app/_components/ui/carousel';
-
-export type InvoicesRouteOutput =
-  InferRouteOutput['invoices']['getByAccountId'];
+import { type InvoicesRouteOutput } from '~/app/(main)/(items)/accounts/[id]/_components/invoices/invoices-container';
+import { Card } from '~/app/_components/ui/card';
 
 type Props = {
-  accountId: string;
-  initialData: InvoicesRouteOutput;
+  invoices: InvoicesRouteOutput;
 };
 
-export function InvoiceList({ accountId, initialData }: Props) {
-  const { data: invoices } = api.invoices.getByAccountId.useQuery(
-    { accountId },
-    { initialData },
-  );
-
+export function InvoiceList({ invoices }: Props) {
   return (
-    <div className="w-[30em] rounded-lg p-5 shadow-lg">
-      <div className="flex items-center justify-between">
-        <div className="m-3 text-2xl font-bold">Faturas</div>
-
-        <InvoiceForm accountId={accountId} />
-      </div>
-
-      <InvoicesCarousel invoices={invoices} />
-    </div>
-  );
-}
-
-function InvoicesCarousel({ invoices }: { invoices: InvoicesRouteOutput }) {
-  if (!invoices.length)
-    return (
-      <div className="my-10 text-center text-xl font-bold">Não há faturas</div>
-    );
-
-  return (
-    <div className="mx-auto my-16 w-[23em] rounded-lg p-2 shadow-lg">
+    <Card className="mx-10 h-fit w-[25em] p-2">
       <Carousel>
         <CarouselContent>
           {invoices.map((invoice) => (
@@ -59,6 +30,6 @@ function InvoicesCarousel({ invoices }: { invoices: InvoicesRouteOutput }) {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-    </div>
+    </Card>
   );
 }

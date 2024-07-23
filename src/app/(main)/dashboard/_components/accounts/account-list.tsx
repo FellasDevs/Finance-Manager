@@ -4,6 +4,7 @@ import { api } from '~/trpc/react';
 import { type InferRouteOutput } from '~/utils/types';
 import { AccountCard } from '~/app/(main)/dashboard/_components/accounts/account-card';
 import { BankAccountForm } from '~/app/(main)/dashboard/_components/accounts/bank-account-form';
+import { Card } from '~/app/_components/ui/card';
 
 type Props = {
   initialData: InferRouteOutput['bankAccounts']['getByUser'];
@@ -15,7 +16,7 @@ export function AccountList({ initialData }: Props) {
   });
 
   return (
-    <div className="flex max-w-[40em] flex-col gap-4 rounded-lg p-5 shadow-lg">
+    <Card className="flex max-w-[40em] flex-col gap-4 p-5">
       <div className="flex justify-between">
         <span className="text-2xl font-bold">Contas bancárias</span>
         <BankAccountForm />
@@ -32,6 +33,6 @@ export function AccountList({ initialData }: Props) {
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

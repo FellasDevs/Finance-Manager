@@ -4,6 +4,7 @@ import type { InferRouteOutput } from '~/utils/types';
 import { api } from '~/trpc/react';
 import { InvestmentsForm } from '~/app/(main)/dashboard/_components/investments/investments-form';
 import { InvestmentCard } from '~/app/(main)/dashboard/_components/investments/investment-card';
+import { Card } from '~/app/_components/ui/card';
 
 type Props = {
   initialData: InferRouteOutput['investments']['getAllByUser'];
@@ -18,7 +19,7 @@ export function InvestmentsList({ initialData }: Props) {
   );
 
   return (
-    <div className="flex max-w-[40em] flex-col gap-4 rounded-lg p-5 shadow-lg">
+    <Card className="flex max-w-[40em] flex-col gap-4 p-5">
       <div className="flex justify-between">
         <span className="text-2xl font-bold">Investimentos</span>
         <InvestmentsForm />
@@ -36,6 +37,6 @@ export function InvestmentsList({ initialData }: Props) {
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

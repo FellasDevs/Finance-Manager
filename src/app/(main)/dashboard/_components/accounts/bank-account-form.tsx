@@ -76,9 +76,9 @@ export const BankAccountForm = ({ originalBankAccount }: Props) => {
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
           {originalBankAccount ? (
-            <Pencil size={18} color="blue" />
+            <Pencil size={18} className="text-blue-500" />
           ) : (
-            <PlusCircle color="green" />
+            <PlusCircle className="text-green-500" />
           )}
         </Button>
       </DialogTrigger>

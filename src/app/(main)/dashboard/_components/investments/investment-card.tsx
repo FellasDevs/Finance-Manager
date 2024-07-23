@@ -15,6 +15,7 @@ import {
 } from '~/app/_components/ui/dialog';
 import { DialogBody } from 'next/dist/client/components/react-dev-overlay/internal/components/Dialog';
 import { InvestmentsForm } from '~/app/(main)/dashboard/_components/investments/investments-form';
+import { Card } from '~/app/_components/ui/card';
 
 export type Investment = InferRouteOutput['investments']['getAllByUser'][0];
 
@@ -35,7 +36,7 @@ export const InvestmentCard: FC<Props> = ({
     });
 
   return (
-    <div className="flex min-h-[7em] w-fit min-w-[18em] max-w-[25em] items-center justify-between gap-3 rounded bg-slate-200 px-5 shadow-lg">
+    <Card className="flex min-h-[7em] w-fit min-w-[18em] max-w-[25em] items-center justify-between gap-3 px-5">
       <p className="line-clamp-2 overflow-hidden text-ellipsis text-lg font-bold">
         {investment.name}
       </p>
@@ -48,7 +49,7 @@ export const InvestmentCard: FC<Props> = ({
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <Trash size={18} color="red" />
+                  <Trash size={18} className="text-red-500" />
                 </Button>
               </DialogTrigger>
 
@@ -91,6 +92,6 @@ export const InvestmentCard: FC<Props> = ({
           </Link>
         )}
       </div>
-    </div>
+    </Card>
   );
 };

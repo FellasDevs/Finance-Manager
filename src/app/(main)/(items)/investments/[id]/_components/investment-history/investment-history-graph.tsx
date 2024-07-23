@@ -1,22 +1,15 @@
 'use client';
 
-import type { InferRouteOutput } from '~/utils/types';
 import Chart from 'react-apexcharts';
 import { useMemo } from 'react';
 import dayjs from 'dayjs';
-import { api } from '~/trpc/react';
+import { type InvestmentHistory } from '~/app/(main)/(items)/investments/[id]/_components/investment-container';
 
 type Props = {
-  investmentId: string;
-  initialData: InferRouteOutput['investmentsHistory']['getAllByInvestment'];
+  history: InvestmentHistory;
 };
 
-export function InvestmentHistoryGraph({ investmentId, initialData }: Props) {
-  const { data: history } = api.investmentsHistory.getAllByInvestment.useQuery(
-    { investmentId },
-    { initialData },
-  );
-
+export function InvestmentHistoryGraph({ history }: Props) {
   const series = useMemo(
     () => [
       {
@@ -32,8 +25,8 @@ export function InvestmentHistoryGraph({ investmentId, initialData }: Props) {
 
   return (
     <Chart
-      width={900}
-      height={500}
+      width={800}
+      height={600}
       series={series}
       options={{
         chart: {

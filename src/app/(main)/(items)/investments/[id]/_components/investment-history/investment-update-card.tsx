@@ -6,6 +6,7 @@ import { api } from '~/trpc/react';
 import dayjs from 'dayjs';
 import { Button } from '~/app/_components/ui/button';
 import { InvestmentUpdateForm } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-update-form';
+import { Card } from '~/app/_components/ui/card';
 
 export type InvestmentUpdate =
   InferRouteOutput['investmentsHistory']['getAllByInvestment'][0];
@@ -19,12 +20,14 @@ export function InvestmentUpdateCard({ investmentUpdate }: Props) {
     api.investmentsHistory.delete.useMutation();
 
   return (
-    <div className="flex items-center justify-between gap-10 rounded bg-slate-200 px-5 py-3 shadow-lg ">
+    <Card className="flex items-center justify-between gap-10 px-5 py-3">
       <div>
-        <p>Valor: R$ {investmentUpdate.value}</p>
+        <p className="text-lg">
+          Valor: <b>R$ {investmentUpdate.value}</b>
+        </p>
 
-        <p>
-          Momento: {dayjs(investmentUpdate.time).format('DD/mm/YYYY HH:mm')}
+        <p className="font-semibold">
+          {dayjs(investmentUpdate.time).format('DD/mm/YYYY HH:mm')}
         </p>
       </div>
 
@@ -39,9 +42,9 @@ export function InvestmentUpdateCard({ investmentUpdate }: Props) {
           size="icon"
           onClick={() => deleteInvestmentUpdate({ id: investmentUpdate.id })}
         >
-          <Trash color="red" size={18} />
+          <Trash size={18} className="text-red-500" />
         </Button>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -1,9 +1,7 @@
 import { api } from '~/trpc/server';
 import Link from 'next/link';
 import { CurrentInvestmentCard } from '~/app/(main)/(items)/investments/[id]/_components/CurrentInvestmentCard';
-import { InvestmentHistoryList } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-history-list';
-import { InvestmentHistoryGraph } from '~/app/(main)/(items)/investments/[id]/_components/investment-history/investment-history-graph';
-import { Skeleton } from '~/app/_components/ui/skeleton';
+import { InvestmentContainer } from '~/app/(main)/(items)/investments/[id]/_components/investment-container';
 
 type Props = {
   params: { id: string };
@@ -20,20 +18,13 @@ export default async function InvestmentPage({ params: { id } }: Props) {
     });
 
     return (
-      <div className="m-auto flex flex-col justify-center gap-5">
+      <div className="m-auto flex flex-col gap-6">
         <CurrentInvestmentCard initialData={investment} />
 
-        <div className="flex flex-wrap gap-16">
-          <InvestmentHistoryList
-            investmentId={investment.id}
-            initialData={investmentHistory}
-          />
-
-          <InvestmentHistoryGraph
-            investmentId={investment.id}
-            initialData={investmentHistory}
-          />
-        </div>
+        <InvestmentContainer
+          investmentId={investment.id}
+          initialData={investmentHistory}
+        />
       </div>
     );
   } catch (e) {

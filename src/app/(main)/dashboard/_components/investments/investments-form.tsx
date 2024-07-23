@@ -75,9 +75,9 @@ export const InvestmentsForm = ({ originalInvestment }: Props) => {
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
           {originalInvestment ? (
-            <Pencil size={18} color="blue" />
+            <Pencil size={18} className="text-blue-500" />
           ) : (
-            <PlusCircle color="green" />
+            <PlusCircle className="text-green-500" />
           )}
         </Button>
       </DialogTrigger>
@@ -108,8 +108,6 @@ export const InvestmentsForm = ({ originalInvestment }: Props) => {
                 </FormItem>
               )}
             />
-
-            
 
             <Button
               type="submit"
